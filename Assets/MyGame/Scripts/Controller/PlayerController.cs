@@ -17,7 +17,7 @@ namespace StarterAssets
     {
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
-        public float MoveSpeed = 2.0f;
+        public float MoveSpeed = 1.0f;
 
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 6f;
@@ -296,6 +296,15 @@ namespace StarterAssets
             else
             {
                 _animator.SetBool("Idle", true);
+            }
+
+            if (_input.m_PlayerAction != PlayerAction.Run)
+            {
+                _animator.SetBool("Run", false);
+            }
+            else
+            {
+                _animator.SetBool("Run", true);
             }
 
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;

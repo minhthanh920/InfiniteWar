@@ -74,7 +74,9 @@ namespace StarterAssets
 		public void SprintInput(bool newSprintState)
 		{
 			sprint = newSprintState;
-		}
+            m_PlayerAction = PlayerAction.Run;
+
+        }
 		public void AttackInput(bool newAttackState)
         {
             attack = newAttackState;
