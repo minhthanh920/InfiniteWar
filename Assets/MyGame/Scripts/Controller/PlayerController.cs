@@ -197,12 +197,13 @@ namespace StarterAssets
                 transform.position.z);
             Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
                 QueryTriggerInteraction.Ignore);
-
+            //Debug.Log(Grounded);
             // update animator if using character
             if (_hasAnimator)
             {
                 _animator.SetBool(_animIDGrounded, Grounded);
             }
+
         }
 
         private void CameraRotation()
@@ -321,7 +322,7 @@ namespace StarterAssets
                     if (_hasAnimator)
                     {
                         _animator.SetBool(_animIDJump, true);
-                        //_input.JumpInput(false);
+                        _input.JumpInput(false);
                     }
                 }
 

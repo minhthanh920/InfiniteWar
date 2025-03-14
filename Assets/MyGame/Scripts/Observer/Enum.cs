@@ -1,3 +1,13 @@
+public enum PlayerAction
+{
+    None,
+    Walk,
+    Run,
+    Attack,
+    Jump,
+    Die,
+    WalkBack
+}
 public enum ListenType
 {
     ANY = 0,
