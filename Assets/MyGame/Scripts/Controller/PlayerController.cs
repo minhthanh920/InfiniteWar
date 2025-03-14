@@ -1,4 +1,4 @@
-﻿ using UnityEngine;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
@@ -12,7 +12,7 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM 
     [RequireComponent(typeof(PlayerInput))]
 #endif
-    public class ThirdPersonController : MonoBehaviour
+    public class PlayerController : MonoBehaviour
     {
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
@@ -137,7 +137,7 @@ namespace StarterAssets
         private void Start()
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-            
+
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
@@ -161,17 +161,15 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
-            
+
             AttackCheck();
             _AttackTime -= Time.deltaTime;
-            //Debug.Log(_AttackTime);
         }
 
         private void LateUpdate()
         {
             CameraRotation();
         }
-
         private void AssignAnimationIDs()
         {
             _animIDSpeed = Animator.StringToHash("Speed");
@@ -184,17 +182,12 @@ namespace StarterAssets
         {
             if (_input.attack)
             {
-                if (_hasAnimator && _AttackTime <= 0f)
+                if (_hasAnimator && _AttackTime <= 0f && _input.m_PlayerAction == PlayerAction.Attack)
                 {
                     _AttackTime = 1f;
                     _animator.Play("Attack_3Combo_1");
-                    //_animator.SetTrigger("Attack");
                     _input.AttackInput(false);
                 }
-            }
-            else if (!_input.attack && _AttackTime <= 0f)
-            {
-                //_animator.SetBool("Attack", false);
             }
         }
         private void GroundedCheck()
@@ -235,16 +228,9 @@ namespace StarterAssets
 
         private void Move()
         {
-            // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
-            // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
-
-            // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-            // if there is no input, set the target speed to 0
             if (_input.move == Vector2.zero) targetSpeed = 0.0f;
-
-            // a reference to the players current horizontal velocity
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
             float speedOffset = 0.1f;
@@ -273,8 +259,6 @@ namespace StarterAssets
             // normalise input direction
             Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
 
-            // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-            // if there is a move input rotate player when the player is moving
             if (_input.move != Vector2.zero)
             {
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
@@ -290,16 +274,16 @@ namespace StarterAssets
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
             // move the player
-            if(_AttackTime <= 0)
+            if (_input.m_PlayerAction == PlayerAction.Walk)
             {
-                _animator.Play("Attack_3Combo_1");
+                //_animator.Play("Walk_ver_B_Front_Root");
                 _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                                  new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
             }
 
 
             // update animator if using character
-            
+
             if (_hasAnimator)
             {
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
@@ -337,6 +321,7 @@ namespace StarterAssets
                     if (_hasAnimator)
                     {
                         _animator.SetBool(_animIDJump, true);
+                        //_input.JumpInput(false);
                     }
                 }
 

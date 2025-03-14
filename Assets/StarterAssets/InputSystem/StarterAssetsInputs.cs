@@ -20,9 +20,10 @@ namespace StarterAssets
 		[Header("Mouse Cursor Settings")]
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
+		public PlayerAction m_PlayerAction = PlayerAction.None;
 
 #if ENABLE_INPUT_SYSTEM
-		public void OnMove(InputValue value)
+        public void OnMove(InputValue value)
 		{
 			MoveInput(value.Get<Vector2>());
 		}
@@ -54,7 +55,8 @@ namespace StarterAssets
         public void MoveInput(Vector2 newMoveDirection)
 		{
 			move = newMoveDirection;
-		} 
+            m_PlayerAction = PlayerAction.Walk;
+        } 
 
 		public void LookInput(Vector2 newLookDirection)
 		{
@@ -64,7 +66,9 @@ namespace StarterAssets
 		public void JumpInput(bool newJumpState)
 		{
 			jump = newJumpState;
-		}
+            m_PlayerAction = PlayerAction.Jump;
+
+        }
 
 		public void SprintInput(bool newSprintState)
 		{
@@ -73,6 +77,7 @@ namespace StarterAssets
 		public void AttackInput(bool newAttackState)
         {
             attack = newAttackState;
+            m_PlayerAction = PlayerAction.Attack;
         }
         private void OnApplicationFocus(bool hasFocus)
 		{
