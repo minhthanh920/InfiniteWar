@@ -86,6 +86,7 @@ namespace StarterAssets
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
+        private float _AttackTime = 1f;
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -159,7 +160,10 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
-            //_animator.Play(RUN_STATE, 0, 1f);
+            
+            AttackCheck();
+            _AttackTime -= Time.deltaTime;
+            //Debug.Log(_AttackTime);
         }
 
         private void LateUpdate()
@@ -175,7 +179,23 @@ namespace StarterAssets
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
         }
-
+        private void AttackCheck()
+        {
+            if (_input.attack)
+            {
+                if (_hasAnimator && _AttackTime <= 0f)
+                {
+                    _AttackTime = 1f;
+                    _animator.Play("Attack_3Combo_1");
+                    //_animator.SetTrigger("Attack");
+                    _input.AttackInput(false);
+                }
+            }
+            else if (!_input.attack && _AttackTime <= 0f)
+            {
+                //_animator.SetBool("Attack", false);
+            }
+        }
         private void GroundedCheck()
         {
             // set sphere position, with offset
@@ -269,8 +289,12 @@ namespace StarterAssets
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
             // move the player
-            _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-                             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            if(_AttackTime <= 0)
+            {
+                _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
+                                 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            }
+
 
             // update animator if using character
             
