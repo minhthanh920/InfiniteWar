@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
@@ -98,7 +99,8 @@ namespace StarterAssets
         private int _animIDJump;
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
-
+        private int _animIDx;
+        private int _animIDy;
 
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
@@ -177,6 +179,9 @@ namespace StarterAssets
             _animIDJump = Animator.StringToHash("Jump");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+
+            _animIDx = Animator.StringToHash("x");
+            _animIDy = Animator.StringToHash("y");
         }
         private void AttackCheck()
         {
@@ -230,7 +235,12 @@ namespace StarterAssets
         private void Move()
         {
             float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
-
+            _animator.SetFloat(_animIDx, _input.move.x, 0.1f, Time.deltaTime);
+            _animator.SetFloat(_animIDy, _input.move.y, 0.1f, Time.deltaTime);
+            //if(_input.move.y == -1)
+            //{
+            //    targetSpeed = 10;
+            //}
             if (_input.move == Vector2.zero) targetSpeed = 0.0f;
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
@@ -259,27 +269,48 @@ namespace StarterAssets
 
             // normalise input direction
             Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
-
+            //Debug.Log(inputDirection);
             if (_input.move != Vector2.zero)
             {
+                if (inputDirection.z == -1)
+                {
+                    inputDirection.z = 0;
+                }
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
                                   _mainCamera.transform.eulerAngles.y;
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
                     RotationSmoothTime);
 
                 // rotate to face input direction relative to camera position
-                transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+                //transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+            }
+            else
+            {
+                _input.m_PlayerAction = PlayerAction.None;
             }
 
+            if(_input.m_PlayerAction != PlayerAction.None)
+            {
+                _animator.SetBool("Idle", false);
+            }
+            else
+            {
+                _animator.SetBool("Idle", true);
+            }
 
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
             // move the player
             if (_input.m_PlayerAction == PlayerAction.Walk)
             {
+                _animator.SetBool("Walk", true);
                 //_animator.Play("Walk_ver_B_Front_Root");
-                _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-                                 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+                //_controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
+                //                 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            }
+            else
+            {
+                _animator.SetBool("Walk", false);
             }
 
 
