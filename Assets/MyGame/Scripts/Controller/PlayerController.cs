@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
@@ -105,14 +106,14 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
 #endif
-        private Animator _animator;
+        private Animator m_Animator;
         private CharacterController _controller;
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
 
         private const float _threshold = 0.01f;
 
-        private bool _hasAnimator;
+        private bool m_HasAnimator;
 
         private bool IsCurrentDeviceMouse
         {
@@ -140,7 +141,7 @@ namespace StarterAssets
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
 
-            _hasAnimator = TryGetComponent(out _animator);
+            m_HasAnimator = TryGetComponent(out m_Animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
 #if ENABLE_INPUT_SYSTEM 
@@ -158,7 +159,7 @@ namespace StarterAssets
 
         private void Update()
         {
-            _hasAnimator = TryGetComponent(out _animator);
+            m_HasAnimator = TryGetComponent(out m_Animator);
 
             JumpAndGravity();
             GroundedCheck();
@@ -185,12 +186,16 @@ namespace StarterAssets
         }
         private void AttackCheck()
         {
+            if(ListenerManager.HasInstance)
+            {
+
+            }
             if (_input.attack)
             {
-                if (_hasAnimator && _AttackTime <= 0f && _input.m_PlayerAction == PlayerAction.Attack)
+                if (m_HasAnimator && _AttackTime <= 0f && _input.m_PlayerAction == PlayerAction.Attack)
                 {
                     _AttackTime = 1f;
-                    _animator.Play("Attack_3Combo_1");
+                    m_Animator.Play("Attack_3Combo_ALL");
                     _input.AttackInput(false);
                 }
             }
@@ -202,11 +207,10 @@ namespace StarterAssets
                 transform.position.z);
             Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
                 QueryTriggerInteraction.Ignore);
-            //Debug.Log(Grounded);
             // update animator if using character
-            if (_hasAnimator)
+            if (m_HasAnimator)
             {
-                _animator.SetBool(_animIDGrounded, Grounded);
+                m_Animator.SetBool(_animIDGrounded, Grounded);
             }
 
         }
@@ -234,104 +238,70 @@ namespace StarterAssets
 
         private void Move()
         {
-            float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
-            _animator.SetFloat(_animIDx, _input.move.x, 0.1f, Time.deltaTime);
-            _animator.SetFloat(_animIDy, _input.move.y, 0.1f, Time.deltaTime);
-            //if(_input.move.y == -1)
-            //{
-            //    targetSpeed = 10;
-            //}
-            if (_input.move == Vector2.zero) targetSpeed = 0.0f;
-            float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
-
-            float speedOffset = 0.1f;
-            float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
-
-            // accelerate or decelerate to target speed
-            if (currentHorizontalSpeed < targetSpeed - speedOffset ||
-                currentHorizontalSpeed > targetSpeed + speedOffset)
-            {
-                // creates curved result rather than a linear one giving a more organic speed change
-                // note T in Lerp is clamped, so we don't need to clamp our speed
-                _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
-                    Time.deltaTime * SpeedChangeRate);
-
-                // round speed to 3 decimal places
-                _speed = Mathf.Round(_speed * 1000f) / 1000f;
-            }
-            else
-            {
-                _speed = targetSpeed;
-            }
-
-            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
-            if (_animationBlend < 0.01f) _animationBlend = 0f;
-
-            // normalise input direction
+            m_Animator.SetFloat(_animIDx, _input.move.x, 0.1f, Time.deltaTime);
+            m_Animator.SetFloat(_animIDy, _input.move.y, 0.1f, Time.deltaTime);
             Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
-            //Debug.Log(inputDirection);
             if (_input.move != Vector2.zero)
             {
                 if (inputDirection.z == -1)
                 {
                     inputDirection.z = 0;
                 }
-                _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                                  _mainCamera.transform.eulerAngles.y;
-                float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
-                    RotationSmoothTime);
-
-                // rotate to face input direction relative to camera position
-                //transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             }
-            else
-            {
-                _input.m_PlayerAction = PlayerAction.None;
-            }
-
-            if(_input.m_PlayerAction != PlayerAction.None)
-            {
-                _animator.SetBool("Idle", false);
-            }
-            else
-            {
-                _animator.SetBool("Idle", true);
-            }
-
-            if (_input.m_PlayerAction != PlayerAction.Run)
-            {
-                _animator.SetBool("Run", false);
-            }
-            else
-            {
-                _animator.SetBool("Run", true);
-            }
-
+            //else
+            //{
+            //    _input.m_PlayerAction = PlayerAction.None;
+            //}
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-
-            // move the player
+            _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
+                 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            if (_input.m_PlayerAction == PlayerAction.None)
+            {
+                PlayerAnmation("Idle");
+                
+            }
+            else
+            {
+                m_Animator.SetBool("Idle", false);
+                
+            }
+            if (_input.m_PlayerAction == PlayerAction.Run)
+            {
+                PlayerAnmation("Run");
+            }
+            else
+            {
+                m_Animator.SetBool("Run", false);
+                
+            }
             if (_input.m_PlayerAction == PlayerAction.Walk)
             {
-                _animator.SetBool("Walk", true);
-                //_animator.Play("Walk_ver_B_Front_Root");
-                //_controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-                //                 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+                PlayerAnmation("Walk");
             }
             else
             {
-                _animator.SetBool("Walk", false);
+                m_Animator.SetBool("Walk", false);
             }
-
-
             // update animator if using character
 
-            if (_hasAnimator)
+            if (m_HasAnimator)
             {
-                _animator.SetFloat(_animIDSpeed, _animationBlend);
-                _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+                m_Animator.SetFloat(_animIDSpeed, _animationBlend);
+                m_Animator.SetFloat(_animIDMotionSpeed, 1f);
             }
         }
-
+        private void PlayerAnmation(string ani)
+        {
+            m_Animator.SetBool(ani, true);
+        }
+        private void StopAllAnimation()
+        {
+            m_Animator.SetBool("Idle", false);
+            m_Animator.SetBool("Run", false);
+            m_Animator.SetBool("Walk", false);
+            //m_Animator.SetBool("Jump", false);
+            //m_Animator.SetBool("FreeFall", false);
+        }
         private void JumpAndGravity()
         {
             if (Grounded)
@@ -340,10 +310,10 @@ namespace StarterAssets
                 _fallTimeoutDelta = FallTimeout;
 
                 // update animator if using character
-                if (_hasAnimator)
+                if (m_HasAnimator)
                 {
-                    _animator.SetBool(_animIDJump, false);
-                    _animator.SetBool(_animIDFreeFall, false);
+                    m_Animator.SetBool(_animIDJump, false);
+                    m_Animator.SetBool(_animIDFreeFall, false);
                 }
 
                 // stop our velocity dropping infinitely when grounded
@@ -359,10 +329,10 @@ namespace StarterAssets
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
                     // update animator if using character
-                    if (_hasAnimator)
+                    if (m_HasAnimator)
                     {
-                        _animator.SetBool(_animIDJump, true);
-                        _input.JumpInput(false);
+                        m_Animator.SetBool(_animIDJump, true);
+                        //_input.JumpInput(false);
                     }
                 }
 
@@ -385,9 +355,9 @@ namespace StarterAssets
                 else
                 {
                     // update animator if using character
-                    if (_hasAnimator)
+                    if (m_HasAnimator)
                     {
-                        _animator.SetBool(_animIDFreeFall, true);
+                        m_Animator.SetBool(_animIDFreeFall, true);
                     }
                 }
 

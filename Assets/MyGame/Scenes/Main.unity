@@ -28292,12 +28292,12 @@ MonoBehaviour:
   FootstepAudioClips: []
   FootstepAudioVolume: 0.5
   JumpHeight: 2
-  Gravity: -15
+  Gravity: -14
   JumpTimeout: 0.5
   FallTimeout: 0.15
   Grounded: 0
-  GroundedOffset: -0.14
-  GroundedRadius: 0.28
+  GroundedOffset: -0.2
+  GroundedRadius: 0.4
   GroundLayers:
     serializedVersion: 2
     m_Bits: 64
@@ -28356,7 +28356,7 @@ CharacterController:
   serializedVersion: 3
   m_Height: 1.7
   m_Radius: 0.5
-  m_SlopeLimit: 45
+  m_SlopeLimit: 0
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
