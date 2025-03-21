@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0c9c82816c7fdc44a2bc938f24bd3df, type: 3}
+  m_Name: GlobalConfig
+  m_EditorClassIdentifier: 
+  maxTime: 0.5
+  maxDistance: 1
+  aiMaxHealth: 100
+  blinkDuration: 0.1
+  dieForce: 5
+  maxSight: 5
+  timeDestroyAI: 2
+  pickupWeaponSpeed: 5
+  jumpHeight: 3
+  gravity: 20
+  stepDown: 0.1
+  airControl: 2.5
+  jumpDamp: 0.5
+  groundSpeed: 1.2
+  pushPower: 2
+  turnSpeed: 15
+  defaultRecoil: 1
+  aimRecoil: 0.3
+  timeDestroyDroppedMagazine: 5
+  maxCroissHairTargetDistance: 100
+  maxBulletPoolSize: 30
+  playerMaxHealth: 100
+  loadingOverLapTime: 1
