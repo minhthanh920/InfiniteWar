@@ -195,7 +195,7 @@ namespace StarterAssets
                 if (m_HasAnimator && _AttackTime <= 0f && _input.m_PlayerAction == PlayerAction.Attack)
                 {
                     _AttackTime = 1f;
-                    m_Animator.Play("Attack_3Combo_ALL");
+                    m_Animator.Play("Attack_3Combo_1");
                     _input.AttackInput(false);
                 }
             }
@@ -247,14 +247,25 @@ namespace StarterAssets
                 {
                     inputDirection.z = 0;
                 }
+                _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
+                                  _mainCamera.transform.eulerAngles.y;
+                float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
+                    RotationSmoothTime);
+
+                // rotate to face input direction relative to camera position
+                transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             }
-            //else
-            //{
-            //    _input.m_PlayerAction = PlayerAction.None;
-            //}
+            else
+            {
+                _input.m_PlayerAction = PlayerAction.None;
+            }
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
             _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                  new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+
+
+
+
             if (_input.m_PlayerAction == PlayerAction.None)
             {
                 PlayerAnmation("Idle");
