@@ -127,10 +127,10 @@ public class PlayerController : MonoBehaviour
         {
             m_Animator.SetBool("Run", false);
         }
-        //if(userInput == Vector2.zero)
-        //{
-        //    m_Input.m_PlayerAction = PlayerAction.None;
-        //}
+        if(userInput == Vector2.zero && !m_Input.jump)
+        {
+            m_Input.m_PlayerAction = PlayerAction.None;
+        }
     }
 
     //private bool IsSprinting()
