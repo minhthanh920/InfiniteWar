@@ -2,7 +2,7 @@
 - Project name: InfiniteWar
 - Unity version: Unity 6000.0.40f1
 - Active game object:
-  - Name: Player
+  - Name: Grruzam_Base_Modeling
   - Tag: Untagged
   - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

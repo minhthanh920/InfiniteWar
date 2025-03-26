@@ -10,8 +10,8 @@ public class CharacterAiming : MonoBehaviour
     //private float defaultRecoil;
     //private float aimRecoil;
     public Transform cameraLookAt;
-    //public AxisState xAxis;
-    //public InputAxis yAxis;
+    public AxisState xAxis;
+    public AxisState yAxis;
     public InputAxis Axis;
     //public bool isAiming;
 
@@ -55,11 +55,12 @@ public class CharacterAiming : MonoBehaviour
 
     void FixedUpdate()
     {
-       // xAxis.Update(Time.fixedDeltaTime);
-       // yAxis.Update(Time.fixedDeltaTime);
-
-        //cameraLookAt.eulerAngles = new Vector3(Axis.Value, Axis.Value, 0);
-        cameraLookAt.eulerAngles = new Vector3(m_Input.look.x, m_Input.look.y, 0);
+        xAxis.Update(Time.fixedDeltaTime);
+        yAxis.Update(Time.fixedDeltaTime);
+        Axis.UpdateRecentering(Time.fixedDeltaTime, true);
+        Debug.Log($"Axis : {Axis.Value}");
+        cameraLookAt.eulerAngles = new Vector3(Axis.Value, Axis.Value, 0);
+        //cameraLookAt.eulerAngles = new Vector3(m_Input.look.x, m_Input.look.y, 0);
         
         float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
         Debug.Log(yawCamera);
