@@ -9,9 +9,6 @@ public class PlayerController : MonoBehaviour
 
     private Animator m_Animator;
     private CharacterController characterController;
-    //private ActiveWeapon activeWeapon;
-    //private WeaponReload reloadWeapon;
-    //private CharacterAiming characterAiming;
     private Vector2 userInput;
     private Vector3 rootMotion;
     private Vector3 velocity;
@@ -22,9 +19,8 @@ public class PlayerController : MonoBehaviour
     private float jumpDamp;
     private float groundSpeed;
     private float pushPower;
-    private bool Grounded;
+    private bool isJumping;
     private int isSprintingParam = Animator.StringToHash("IsSprinting");
-    //private PlayerAction m_PlayerAction = PlayerAction.None;
     private StarterAssetsInputs m_Input;
 
     void Start()
@@ -32,20 +28,17 @@ public class PlayerController : MonoBehaviour
         m_Animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
         m_Input = GetComponent<StarterAssetsInputs>();
-        //activeWeapon = GetComponent<ActiveWeapon>();
-        //reloadWeapon = GetComponent<WeaponReload>();
-        //characterAiming = GetComponent<CharacterAiming>();
         if (DataManager.HasInstance)
         {
             jumpHeight = DataManager.Instance.GlobalConfig.jumpHeight;
             gravity = DataManager.Instance.GlobalConfig.gravity;
-            Debug.Log($"gravity : {gravity}");
+            //Debug.Log($"gravity : {gravity}");
             stepDown = DataManager.Instance.GlobalConfig.stepDown;
             airControl = DataManager.Instance.GlobalConfig.airControl;
             jumpDamp = DataManager.Instance.GlobalConfig.jumpDamp;
             groundSpeed = DataManager.Instance.GlobalConfig.groundSpeed;
             pushPower = DataManager.Instance.GlobalConfig.pushPower;
-            Debug.Log($"groundSpeed : {groundSpeed}");
+            //Debug.Log($"groundSpeed : {groundSpeed}");
         }
     }
 
@@ -67,7 +60,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Grounded)
+        if (isJumping)
         {
             UpdateInAir();
         }
@@ -78,11 +71,7 @@ public class PlayerController : MonoBehaviour
     }
     private void UpdateAnimation()
     {
-        //if (m_Input.jump)
-        //{
-        //    return;
-        //}
-        Debug.Log(m_Input.jump);
+        m_Animator.SetBool("Grounded", characterController.isGrounded);
         if (m_Input.m_PlayerAction == PlayerAction.None)
         {
             m_Animator.SetBool("Idle", true);
@@ -93,23 +82,26 @@ public class PlayerController : MonoBehaviour
         }
         if (m_Input.m_PlayerAction == PlayerAction.Jump)
         {
-            m_Animator.SetBool("Jump", m_Input.jump);
-            m_Animator.SetBool("FreeFall", m_Input.jump);
+            //m_Animator.SetBool("IsJumping", m_Input.jump);
+            //m_Input.jump = false;
+            //m_Input.m_PlayerAction = PlayerAction.None;
+            //m_Animator.SetBool("FreeFall", m_Input.jump);
         }
-        else
-        {
-            m_Animator.SetBool("Jump", false);
-        }
+        //else
+        //{
+        //    m_Animator.SetBool("IsJumping", false);
+        //}
         if (m_Input.m_PlayerAction == PlayerAction.Attack)
         {
             m_Animator.Play("Attack_3Combo_1");
             m_Animator.SetBool("Idle", true);
+            m_Input.attack = false;
             m_Input.m_PlayerAction = PlayerAction.None;
             //m_Animator.SetBool("Attack", true);
         }
         else
         {
-
+        
         }
         if (m_Input.m_PlayerAction == PlayerAction.Walk)
         {
@@ -127,7 +119,7 @@ public class PlayerController : MonoBehaviour
         {
             m_Animator.SetBool("Run", false);
         }
-        if(userInput == Vector2.zero && !m_Input.jump)
+        if(userInput == Vector2.zero)
         {
             m_Input.m_PlayerAction = PlayerAction.None;
         }
@@ -163,25 +155,22 @@ public class PlayerController : MonoBehaviour
         Vector3 stepDownAmount = Vector3.down * stepDown;
         characterController.Move(stepForwardAmount + stepDownAmount);
         rootMotion = Vector3.zero;
+        
         if (!characterController.isGrounded)
         {
             SetInAir(0);
         }
-        //else
-        //{
-        //    m_Input.jump = false;
-        //}
     }
-
     private void UpdateInAir()
     {
         velocity.y -= gravity * Time.fixedDeltaTime;
         Vector3 airDisplacement = velocity * Time.fixedDeltaTime;
         airDisplacement += CalculateAircontrol();
+        //Debug.Log($"magnitude : {airDisplacement.magnitude}");
         characterController.Move(airDisplacement);
-        Grounded = !characterController.isGrounded;
+        isJumping = !characterController.isGrounded;
         rootMotion = Vector3.zero;
-        //animator.SetBool("FreeFall", Grounded);
+        m_Animator.SetBool("IsJumping", isJumping);
     }
 
     private void OnAnimatorMove()
@@ -191,7 +180,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (!Grounded)
+        if (!isJumping)
         {
             float jumpVelocity = Mathf.Sqrt(2 * gravity * jumpHeight);
             SetInAir(jumpVelocity);
@@ -200,11 +189,10 @@ public class PlayerController : MonoBehaviour
 
     private void SetInAir(float jumpVelocity)
     {
-        Grounded = false;
+        isJumping = true;
         velocity = m_Animator.velocity * jumpDamp * groundSpeed;
         velocity.y = jumpVelocity;
-        //m_Animator.SetBool("Jump", true);
-        //m_Animator.SetBool("FreeFall", true);
+        m_Animator.SetBool("IsJumping", true);
     }
 
     private Vector3 CalculateAircontrol()

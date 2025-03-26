@@ -59,7 +59,7 @@ public class CharacterAiming : MonoBehaviour
         yAxis.Update(Time.fixedDeltaTime);
         Axis.UpdateRecentering(Time.fixedDeltaTime, true);
         Debug.Log($"Axis : {Axis.Value}");
-        cameraLookAt.eulerAngles = new Vector3(Axis.Value, Axis.Value, 0);
+        cameraLookAt.eulerAngles = new Vector3(yAxis.Value, xAxis.Value, 0);
         //cameraLookAt.eulerAngles = new Vector3(m_Input.look.x, m_Input.look.y, 0);
         
         float yawCamera = mainCamera.transform.rotation.eulerAngles.y;

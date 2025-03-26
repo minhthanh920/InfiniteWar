@@ -68,6 +68,7 @@ namespace StarterAssets
 		{
 			jump = newJumpState;
             m_PlayerAction = PlayerAction.Jump;
+            //jump = false;
 
         }
 

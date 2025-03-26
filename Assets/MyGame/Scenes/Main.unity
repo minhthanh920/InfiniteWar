@@ -15059,8 +15059,8 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 63db16faa18ae804e9dfccbf7820f461, type: 3}
-  - {fileID: 2100002, guid: 63db16faa18ae804e9dfccbf7820f461, type: 3}
+  - {fileID: 2100000, guid: 709ce3671bc15df4f898a1891a44435e, type: 2}
+  - {fileID: 2100000, guid: 7fc86f8526232d54e8f6e1d0cf45bd8c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -22946,7 +22946,7 @@ Transform:
   m_GameObject: {fileID: 1448908177}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 500.45, y: 37.343002, z: 397.22998}
+  m_LocalPosition: {x: 500.95, y: 36.673, z: 396.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -32127,7 +32127,7 @@ Animator:
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
+  m_AnimatePhysics: 1
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -32179,19 +32179,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ab2de7617731754fbf41cb18f5c5815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraLookAt: {fileID: 7985749505475266512}
+  cameraLookAt: {fileID: 7535119508214270760}
   xAxis:
-    Value: 0
+    Value: 50
     m_SpeedMode: 0
-    m_MaxSpeed: 0
-    m_AccelTime: 0
-    m_DecelTime: 0
-    m_InputAxisName: 
+    m_MaxSpeed: 100
+    m_AccelTime: 0.2
+    m_DecelTime: 0.2
+    m_InputAxisName: Mouse X
     m_InputAxisValue: 0
     m_InvertInput: 0
-    m_MinValue: 0
-    m_MaxValue: 0
-    m_Wrap: 0
+    m_MinValue: -180
+    m_MaxValue: 180
+    m_Wrap: 1
     m_Recentering:
       m_enabled: 0
       m_WaitTime: 0
@@ -32199,16 +32199,16 @@ MonoBehaviour:
       m_LegacyHeadingDefinition: 0
       m_LegacyVelocityFilterStrength: 0
   yAxis:
-    Value: 0
+    Value: 50
     m_SpeedMode: 0
-    m_MaxSpeed: 0
-    m_AccelTime: 0
-    m_DecelTime: 0
-    m_InputAxisName: 
+    m_MaxSpeed: 100
+    m_AccelTime: 0.2
+    m_DecelTime: 0.2
+    m_InputAxisName: Mouse Y
     m_InputAxisValue: 0
     m_InvertInput: 0
-    m_MinValue: 0
-    m_MaxValue: 0
+    m_MinValue: -20
+    m_MaxValue: 20
     m_Wrap: 0
     m_Recentering:
       m_enabled: 0
@@ -32356,7 +32356,7 @@ Transform:
   m_GameObject: {fileID: 2041194303648863242}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.705, z: -0.89}
+  m_LocalPosition: {x: 0, y: 1.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -32393,29 +32393,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &7783117066070138255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8578713303216349032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ApplyAfter: 2
-  ChannelMask: 1
-  Gain: 1
-  Use2DDistance: 0
-  UseCameraSpace: 1
-  ReactionSettings:
-    m_SecondaryNoise: {fileID: 0}
-    AmplitudeGain: 1
-    FrequencyGain: 1
-    Duration: 1
-    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!4 &7985749505475266512
 Transform:
   m_ObjectHideFlags: 0
@@ -32425,7 +32402,7 @@ Transform:
   m_GameObject: {fileID: 8578713303216349032}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.47, z: -3.14}
+  m_LocalPosition: {x: 0.5, y: 1.7999992, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -32465,7 +32442,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7985749505475266512}
   - component: {fileID: 6159248807365512788}
-  - component: {fileID: 7783117066070138255}
+  - component: {fileID: 8578713303216349033}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -32473,6 +32450,32 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8578713303216349033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8578713303216349032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 625c14eee3ad46c99df7c7c891ef668a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damping: {x: 0, y: 0, z: 0}
+  ShoulderOffset: {x: 0.5, y: -0.4, z: 0}
+  VerticalArmLength: 0.4
+  CameraSide: 1
+  CameraDistance: 4
+  AvoidObstacles:
+    Enabled: 0
+    CollisionFilter:
+      serializedVersion: 2
+      m_Bits: 1
+    IgnoreTag: 
+    CameraRadius: 0.2
+    DampingIntoCollision: 0
+    DampingFromCollision: 0.5
 --- !u!143 &9189951789576880551
 CharacterController:
   m_ObjectHideFlags: 0
@@ -32491,13 +32494,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 1.7
-  m_Radius: 0.5
+  m_Height: 1.8
+  m_Radius: 0.2
   m_SlopeLimit: 45
   m_StepOffset: 0.5
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 0.95, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
