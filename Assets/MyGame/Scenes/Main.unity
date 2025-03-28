@@ -19913,11 +19913,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ae034b459c1e1934e90eb992886ac180, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 40
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ae034b459c1e1934e90eb992886ac180, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 350
+      value: 405.44
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ae034b459c1e1934e90eb992886ac180, type: 3}
       propertyPath: m_LocalRotation.w
@@ -19951,6 +19951,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mutant
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: ae034b459c1e1934e90eb992886ac180, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: df73d39425d4fc94899e51a5fd854536, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
