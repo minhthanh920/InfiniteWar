@@ -67,7 +67,7 @@ namespace StarterAssets
 		public void JumpInput(bool newJumpState)
 		{
 			jump = newJumpState;
-            m_PlayerAction = PlayerAction.Jump;
+            //m_PlayerAction = PlayerAction.Jump;
             //jump = false;
 
         }
@@ -81,7 +81,7 @@ namespace StarterAssets
 		public void AttackInput(bool newAttackState)
         {
             attack = newAttackState;
-            m_PlayerAction = PlayerAction.Attack;
+            //m_PlayerAction = PlayerAction.Attack;
         }
         private void OnApplicationFocus(bool hasFocus)
 		{

@@ -91,18 +91,23 @@ public class PlayerController : MonoBehaviour
         //{
         //    m_Animator.SetBool("IsJumping", false);
         //}
-        if (m_Input.m_PlayerAction == PlayerAction.Attack)
+        if(m_Input.attack && characterController.isGrounded)
         {
             m_Animator.Play("Attack_3Combo_1");
-            m_Animator.SetBool("Idle", true);
             m_Input.attack = false;
-            m_Input.m_PlayerAction = PlayerAction.None;
-            //m_Animator.SetBool("Attack", true);
         }
-        else
-        {
-        
-        }
+        //if (m_Input.m_PlayerAction == PlayerAction.Attack)
+        //{
+        //    m_Animator.Play("Attack_3Combo_1");
+        //    m_Animator.SetBool("Idle", true);
+        //    m_Input.attack = false;
+        //    m_Input.m_PlayerAction = PlayerAction.None;
+        //    //m_Animator.SetBool("Attack", true);
+        //}
+        //else
+        //{
+        //
+        //}
         if (m_Input.m_PlayerAction == PlayerAction.Walk)
         {
             m_Animator.SetBool("Walk", true);
