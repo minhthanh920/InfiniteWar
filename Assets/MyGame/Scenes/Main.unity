@@ -19962,6 +19962,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ae034b459c1e1934e90eb992886ac180, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1396574163}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ae034b459c1e1934e90eb992886ac180, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1396574164}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ae034b459c1e1934e90eb992886ac180, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1396574165}
     - targetCorrespondingSourceObject: {fileID: 1082271958561512970, guid: ae034b459c1e1934e90eb992886ac180, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1396574161}
@@ -20025,6 +20031,34 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1396574164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396574159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87836e6137715c141912ad0ff33660ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1396574165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396574159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c48dfdfd2aa52e54c84ab8c082851e72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initState: 0
+  navMeshAgent: {fileID: 0}
+  playerTransform: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!4 &1397667495 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7318671460919949246, guid: 135b122a307315242b9e5fb6c2262e48, type: 3}
@@ -29803,6 +29837,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8001622701488033419, guid: cf2662440db9fd845a2a2943fe7ec3d7, type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8001622701488033419, guid: cf2662440db9fd845a2a2943fe7ec3d7, type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
