@@ -58,12 +58,12 @@ public class CharacterAiming : MonoBehaviour
         xAxis.Update(Time.fixedDeltaTime);
         yAxis.Update(Time.fixedDeltaTime);
         Axis.UpdateRecentering(Time.fixedDeltaTime, true);
-        Debug.Log($"Axis : {Axis.Value}");
+        //Debug.Log($"Axis : {Axis.Value}");
         cameraLookAt.eulerAngles = new Vector3(yAxis.Value, xAxis.Value, 0);
         //cameraLookAt.eulerAngles = new Vector3(m_Input.look.x, m_Input.look.y, 0);
         
         float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
-        Debug.Log(yawCamera);
+        //Debug.Log(yawCamera);
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), turnSpeed * Time.fixedDeltaTime);
     }
 }
