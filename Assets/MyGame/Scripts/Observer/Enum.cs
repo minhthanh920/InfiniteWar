@@ -32,8 +32,8 @@ public enum AiStateID
     ChasePlayer,
     Death,
     Idle,
-    FindWeapon,
-    Attack
+    Attack,
+    Patrol,
 }
 
 public enum WeaponSlot

@@ -1,8 +1,9 @@
+using DG.Tweening.Core.Easing;
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : BaseManager<PlayerController>
 {
     public Animator rigController;
     public Volume postProcessVolume;
@@ -72,6 +73,10 @@ public class PlayerController : MonoBehaviour
     private void UpdateAnimation()
     {
         m_Animator.SetBool("Grounded", characterController.isGrounded);
+        if(!characterController.isGrounded)
+        {
+            return;
+        }
         if (m_Input.m_PlayerAction == PlayerAction.None)
         {
             m_Animator.SetBool("Idle", true);
@@ -176,6 +181,7 @@ public class PlayerController : MonoBehaviour
         isJumping = !characterController.isGrounded;
         rootMotion = Vector3.zero;
         m_Animator.SetBool("IsJumping", isJumping);
+
     }
 
     private void OnAnimatorMove()
@@ -197,6 +203,9 @@ public class PlayerController : MonoBehaviour
         isJumping = true;
         velocity = m_Animator.velocity * jumpDamp * groundSpeed;
         velocity.y = jumpVelocity;
+        m_Animator.SetBool("Idle", false);
+        m_Animator.SetBool("Walk", false);
+        m_Animator.SetBool("Run", false);
         m_Animator.SetBool("IsJumping", true);
     }
 

@@ -21,6 +21,7 @@ public class EnemyController : MonoBehaviour
         player = FindFirstObjectByType<PlayerController>();
         agent.stoppingDistance = 1f;
         m_SpawnPoint = gameObject.transform.position;
+
     }
 
     // Update is called once per frame
@@ -56,7 +57,7 @@ public class EnemyController : MonoBehaviour
     {
         if (Vector3.Distance(tager, gameObject.transform.position) > 5)
         {
-            Debug.Log(Vector3.Dot(gameObject.transform.position, tager));
+            //Debug.Log(Vector3.Dot(gameObject.transform.position, tager));
             //if(Vector3.Dot(tager, gameObject.transform.position))
             return false;
         }
