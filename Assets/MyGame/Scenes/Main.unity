@@ -13742,6 +13742,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &913985265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913985254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cb46b5cd07e2a447a24ffc783dba0fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigController: {fileID: 0}
+  postProcessVolume: {fileID: 0}
 --- !u!1001 &922597459
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20006,6 +20020,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mutant
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ae034b459c1e1934e90eb992886ac180, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: ae034b459c1e1934e90eb992886ac180, type: 3}
       propertyPath: m_Controller
       value: 
@@ -20032,7 +20050,7 @@ PrefabInstance:
       addedObject: {fileID: 1396574168}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ae034b459c1e1934e90eb992886ac180, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1396574171}
+      addedObject: {fileID: 1396574174}
     - targetCorrespondingSourceObject: {fileID: 1082271958561512970, guid: ae034b459c1e1934e90eb992886ac180, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1396574161}
@@ -20156,7 +20174,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.5
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &1396574171
+--- !u!114 &1396574174
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20165,7 +20183,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1396574159}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2172e993b26f09d4abfa83ffb0c1c753, type: 3}
+  m_Script: {fileID: 11500000, guid: bc730fa017bee024190e53021169aeaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1397667495 stripped
@@ -29952,7 +29970,8 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1547395256103235539, guid: cf2662440db9fd845a2a2943fe7ec3d7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -29962,6 +29981,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8001622701488033419, guid: cf2662440db9fd845a2a2943fe7ec3d7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 913985264}
+    - targetCorrespondingSourceObject: {fileID: 8001622701488033419, guid: cf2662440db9fd845a2a2943fe7ec3d7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 913985265}
   m_SourcePrefab: {fileID: 100100000, guid: cf2662440db9fd845a2a2943fe7ec3d7, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

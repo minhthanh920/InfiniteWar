@@ -1,4 +1,4 @@
-public enum PlayerAction
+public enum PlayerStateID
 {
     None,
     Walk,
@@ -26,14 +26,15 @@ public enum UIType
     Notify = 3,
     Overlap = 4,
 }
-
-public enum AiStateID
+public enum CharacterStateID
 {
-    ChasePlayer,
+    Walk,
+    Run,
+    Jump,
     Death,
     Idle,
     Attack,
-    Patrol,
+    Chasing,
 }
 
 public enum WeaponSlot

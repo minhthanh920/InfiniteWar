@@ -3,7 +3,7 @@ using StarterAssets;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class PlayerController : BaseManager<PlayerController>
+public class Player : BaseManager<Player>
 {
     public Animator rigController;
     public Volume postProcessVolume;
@@ -23,6 +23,8 @@ public class PlayerController : BaseManager<PlayerController>
     private bool isJumping;
     private int isSprintingParam = Animator.StringToHash("IsSprinting");
     private StarterAssetsInputs m_Input;
+
+    public float m_AttackTime;
 
     void Start()
     {
@@ -45,6 +47,10 @@ public class PlayerController : BaseManager<PlayerController>
 
     void Update()
     {
+        if (m_AttackTime > 0)
+        {
+            m_AttackTime -= Time.deltaTime;
+        }
         userInput.x = Input.GetAxis("Horizontal");
         userInput.y = Input.GetAxis("Vertical");
 
@@ -77,7 +83,7 @@ public class PlayerController : BaseManager<PlayerController>
         {
             return;
         }
-        if (m_Input.m_PlayerAction == PlayerAction.None)
+        if (m_Input.m_PlayerAction == PlayerStateID.None)
         {
             m_Animator.SetBool("Idle", true);
         }
@@ -85,7 +91,7 @@ public class PlayerController : BaseManager<PlayerController>
         {
             m_Animator.SetBool("Idle", false);
         }
-        if (m_Input.m_PlayerAction == PlayerAction.Jump)
+        if (m_Input.m_PlayerAction == PlayerStateID.Jump)
         {
             //m_Animator.SetBool("IsJumping", m_Input.jump);
             //m_Input.jump = false;
@@ -113,7 +119,7 @@ public class PlayerController : BaseManager<PlayerController>
         //{
         //
         //}
-        if (m_Input.m_PlayerAction == PlayerAction.Walk)
+        if (m_Input.m_PlayerAction == PlayerStateID.Walk)
         {
             m_Animator.SetBool("Walk", true);
         }
@@ -121,7 +127,7 @@ public class PlayerController : BaseManager<PlayerController>
         {
             m_Animator.SetBool("Walk", false);
         }
-        if (m_Input.m_PlayerAction == PlayerAction.Run)
+        if (m_Input.m_PlayerAction == PlayerStateID.Run)
         {
             m_Animator.SetBool("Run", true);
         }
@@ -131,7 +137,7 @@ public class PlayerController : BaseManager<PlayerController>
         }
         if(userInput == Vector2.zero)
         {
-            m_Input.m_PlayerAction = PlayerAction.None;
+            m_Input.m_PlayerAction = PlayerStateID.None;
         }
     }
 
