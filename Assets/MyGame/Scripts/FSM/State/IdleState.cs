@@ -23,6 +23,10 @@ public class IdleState<T> : State<T>
         // Nếu là Enemy, có thể tìm Player để chuyển sang Chasing
         if (character is Enemy enemy)
         {
+            if(Vector3.Distance(enemy.GetAttackPoint(), Player.Instance.transform.position) <= 0)
+            {
+                //Player.Instance.m
+            }
             if (Vector3.Distance(enemy.transform.position, Player.Instance.transform.position) < 5f)
             {
                 if (Player.Instance.m_AttackTime > 0)

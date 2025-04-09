@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     private Vector3 m_SpawnPoint = Vector3.zero;
     public float m_AttackColdown;
 
+    [SerializeField] private GameObject m_AttackPoint;
     private EnemyStateMachine m_StateMachine;
     private void Awake()
     {
@@ -19,7 +20,10 @@ public class Enemy : MonoBehaviour
         m_StateMachine = GetComponent<EnemyStateMachine>();
         m_Enemy = GetComponent<Enemy>();
     }
-
+    public Vector3 GetAttackPoint()
+    {
+        return m_AttackPoint.transform.position;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +44,9 @@ public class Enemy : MonoBehaviour
         {
             m_AttackColdown -= Time.deltaTime;
         }
-    }  
+    }
+    public void OnAttack()
+    {
 
+    }
 }

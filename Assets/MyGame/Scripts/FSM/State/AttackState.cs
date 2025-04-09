@@ -59,4 +59,5 @@ public class AttackState<T> : State<T>
             }
         }
     }
+
 }
