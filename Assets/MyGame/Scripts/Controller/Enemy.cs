@@ -3,17 +3,18 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    private NavMeshAgent agent;
-    private Enemy m_Enemy;
-    private Animator m_Animator;
+    public NavMeshAgent m_Agent;
+    public Enemy m_Enemy;
+    public Animator m_Animator;
     private const string PLAYER_TAG = "Player";
     private float m_EnemySpeed = 0f;
     private Vector3 m_SpawnPoint = Vector3.zero;
+    public float m_AttackColdown;
 
     private EnemyStateMachine m_StateMachine;
     private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
+        m_Agent = GetComponent<NavMeshAgent>();
         m_Animator = GetComponent<Animator>();
         m_StateMachine = GetComponent<EnemyStateMachine>();
         m_Enemy = GetComponent<Enemy>();
@@ -23,7 +24,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         m_Enemy = FindFirstObjectByType<Enemy>();
-        agent.stoppingDistance = 1f;
+        m_Agent.stoppingDistance = 2f;
         m_SpawnPoint = gameObject.transform.position;
         m_StateMachine.AddState(CharacterStateID.Idle, new IdleState<Enemy>(m_StateMachine, this));
         m_StateMachine.AddState(CharacterStateID.Chasing, new ChasingState<Enemy>(m_StateMachine, this));
@@ -35,82 +36,10 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        //if (agent == null || player == null)
-        //{
-        //    return;
-        //}
-        //SetMoveSpeed();
-        //if (Vector3.Distance(m_SpawnPoint, gameObject.transform.position) > 10 || !IsAimPlayer(player.transform.position))
-        //{
-        //    agent.SetDestination(m_SpawnPoint);
-        //    m_Animator.SetBool("swiping", false);
-        //}
-        //else
-        //{
-        //    agent.SetDestination(player.transform.position);
-        //    if (agent.remainingDistance <= agent.stoppingDistance || IsAnimationPlaying("swiping"))
-        //    {
-        //        m_Animator.SetBool("swiping", true);
-        //        agent.isStopped = true;
-        //    }
-        //    else
-        //    {
-        //        m_Animator.SetBool("swiping", false);
-        //        agent.isStopped = false;
-        //    }
-        //}    
-    }
-
-    private bool IsAimPlayer(Vector3 tager)
-    {
-        if (Vector3.Distance(tager, gameObject.transform.position) > 5)
+        if (m_AttackColdown > 0)
         {
-            //Debug.Log(Vector3.Dot(gameObject.transform.position, tager));
-            //if(Vector3.Dot(tager, gameObject.transform.position))
-            return false;
+            m_AttackColdown -= Time.deltaTime;
         }
-        else
-        {
-            return true;
-        }    
-    }      
-    private void SetMoveSpeed()
-    {
-        if (agent.remainingDistance > 4f)
-        {
-            m_EnemySpeed = Mathf.Lerp(m_EnemySpeed, 2f, 1f);
+    }  
 
-        }
-        else if (agent.remainingDistance > 2f)
-        {
-            m_EnemySpeed = Mathf.Lerp(m_EnemySpeed, 2f, 1f);
-        }
-        else
-        {
-            m_EnemySpeed = Mathf.Lerp(m_EnemySpeed, 0f, 1f);
-        }
-        m_Animator.SetFloat("Speed", m_EnemySpeed);
-    }
-    bool IsAnimationPlaying(string animationName)
-    {
-        // Kiểm tra trạng thái của animation hiện tại
-        AnimatorStateInfo stateInfo = m_Animator.GetCurrentAnimatorStateInfo(0); // Lấy thông tin trạng thái của layer 0
-
-        // So sánh tên animation hiện tại với tên animation bạn muốn kiểm tra
-        return stateInfo.IsName(animationName);
-    }
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    
-    //    Debug.Log(other.tag.ToString());
-    //    if (other.CompareTag(PLAYER_TAG))
-    //    {
-    //        m_Animator.SetBool("swiping", true);
-    //    }
-    //    //else
-    //    //{
-    //    //    m_Animator.SetBool("swiping", true);
-    //    //}
-    //}
 }

@@ -23,11 +23,13 @@ public class Player : BaseManager<Player>
     private bool isJumping;
     private int isSprintingParam = Animator.StringToHash("IsSprinting");
     private StarterAssetsInputs m_Input;
+    private float m_HP;
 
     public float m_AttackTime;
 
     void Start()
     {
+        m_HP = 100f;
         m_Animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
         m_Input = GetComponent<StarterAssetsInputs>();
@@ -35,18 +37,21 @@ public class Player : BaseManager<Player>
         {
             jumpHeight = DataManager.Instance.GlobalConfig.jumpHeight;
             gravity = DataManager.Instance.GlobalConfig.gravity;
-            //Debug.Log($"gravity : {gravity}");
             stepDown = DataManager.Instance.GlobalConfig.stepDown;
             airControl = DataManager.Instance.GlobalConfig.airControl;
             jumpDamp = DataManager.Instance.GlobalConfig.jumpDamp;
             groundSpeed = DataManager.Instance.GlobalConfig.groundSpeed;
             pushPower = DataManager.Instance.GlobalConfig.pushPower;
-            //Debug.Log($"groundSpeed : {groundSpeed}");
         }
     }
 
     void Update()
     {
+        SetDeath();
+        if(IsPlayerDeath())
+        {
+            return;
+        }
         if (m_AttackTime > 0)
         {
             m_AttackTime -= Time.deltaTime;
@@ -64,7 +69,17 @@ public class Player : BaseManager<Player>
             Jump();
         }
     }
-
+    private void SetDeath()
+    {
+        if (m_HP <= 0)
+        {
+            m_Animator.SetBool("IsDeath", true);
+        }
+    }
+    private bool IsPlayerDeath()
+    { 
+        return m_HP < 0f; 
+    }
     private void FixedUpdate()
     {
         if (isJumping)

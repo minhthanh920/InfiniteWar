@@ -2,22 +2,19 @@
 
 public class IdleState<T> : State<T>
 {
-    private Animator m_Animator;
     public IdleState(BaseStateMachine<T> stateMachine, T character) : base(stateMachine, character) 
     {
-        if (character is MonoBehaviour mb)
-        {
-            m_Animator = mb.GetComponent<Animator>();
-        }
     }
     
 
     public override void Enter()
     {
         Debug.Log($"{typeof(T).Name} vào trạng thái IDLE.");
-        if (m_Animator != null)
+        if (character is Enemy enemy)
         {
-            m_Animator.SetBool("Idle", true);
+            enemy.m_Agent.isStopped = true;
+            enemy.m_Agent.SetDestination(Vector3.zero);
+            enemy.m_Animator.SetBool("Idle", true);
         }
     }
 
@@ -48,9 +45,9 @@ public class IdleState<T> : State<T>
     public override void Exit()
     {
         Debug.Log($"{typeof(T).Name} rời khỏi trạng thái IDLE.");
-        if (m_Animator != null)
+        if (character is Enemy enemy)
         {
-            m_Animator.SetBool("Idle", false);
+            enemy.m_Animator.SetBool("Idle", false);
         }
     }
 }
