@@ -12389,6 +12389,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9089449667797441630, guid: ab80240f6a03a334fab4b09b2fa6f1e5, type: 3}
   m_PrefabInstance: {fileID: 735481050}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &739834706
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 739834707}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &739834707
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739834706}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &756640749 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1519188697402770169, guid: a90bc75212a7dce42b961e277b470f8e, type: 3}
@@ -13754,8 +13785,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cb46b5cd07e2a447a24ffc783dba0fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigController: {fileID: 0}
   postProcessVolume: {fileID: 0}
+  m_PlayerSO: {fileID: 11400000, guid: e1788f06ecb46f741be5d2595b93c99e, type: 2}
   m_AttackTime: 0
 --- !u!1001 &922597459
 PrefabInstance:
@@ -30212,6 +30243,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4407504094777641383, guid: cf2662440db9fd845a2a2943fe7ec3d7, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 43992d4f16e57574fa5d16ef485c0cbd, type: 3}
+    - target: {fileID: 4407504094777641383, guid: cf2662440db9fd845a2a2943fe7ec3d7, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 1e5e0d33cc842494c8c724e81a3b005c, type: 2}
     - target: {fileID: 8001622701488033419, guid: cf2662440db9fd845a2a2943fe7ec3d7, type: 3}
       propertyPath: m_Name
       value: Player
@@ -30250,3 +30289,4 @@ SceneRoots:
   - {fileID: 5034836344340732850}
   - {fileID: 1396574158}
   - {fileID: 1200545850}
+  - {fileID: 739834707}

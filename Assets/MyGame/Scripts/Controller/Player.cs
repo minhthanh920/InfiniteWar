@@ -5,14 +5,21 @@ using UnityEngine.Rendering;
 
 public class Player : BaseManager<Player>
 {
-    public Animator rigController;
     public Volume postProcessVolume;
-
+    [SerializeField]
+    private PlayerSO m_PlayerSO;
     private Animator m_Animator;
-    private CharacterController characterController;
+    private CharacterController m_CharacterController;
     private Vector2 userInput;
     private Vector3 rootMotion;
     private Vector3 velocity;
+    private float m_Heath;
+    private float m_Speed;
+    private float m_Stanima;
+    private float m_MeleeDamage;
+    private float m_RangedDamage;
+
+
     private float jumpHeight;
     private float gravity;
     private float stepDown;
@@ -23,15 +30,15 @@ public class Player : BaseManager<Player>
     private bool isJumping;
     private int isSprintingParam = Animator.StringToHash("IsSprinting");
     private StarterAssetsInputs m_Input;
-    private float m_HP;
 
     public float m_AttackTime;
 
     void Start()
     {
-        m_HP = 100f;
+
+        
         m_Animator = GetComponent<Animator>();
-        characterController = GetComponent<CharacterController>();
+        m_CharacterController = GetComponent<CharacterController>();
         m_Input = GetComponent<StarterAssetsInputs>();
         if (DataManager.HasInstance)
         {
@@ -43,6 +50,7 @@ public class Player : BaseManager<Player>
             groundSpeed = DataManager.Instance.GlobalConfig.groundSpeed;
             pushPower = DataManager.Instance.GlobalConfig.pushPower;
         }
+        SetupDefault();
     }
 
     void Update()
@@ -69,16 +77,31 @@ public class Player : BaseManager<Player>
             Jump();
         }
     }
+    private void SetupDefault()
+    {
+        if (m_PlayerSO != null)
+        {
+            m_Heath = m_PlayerSO.m_Heath;
+            m_Speed = m_PlayerSO.m_Speed;
+            m_Stanima = m_PlayerSO.m_Stamina;
+            m_MeleeDamage = m_PlayerSO.m_MeleeDamage;
+            m_RangedDamage = m_PlayerSO.m_RangeDamage;
+        }
+        else
+        {
+            Debug.Log("PlayerSO is null");
+        }
+    }
     private void SetDeath()
     {
-        if (m_HP <= 0)
+        if (m_Heath <= 0)
         {
             m_Animator.SetBool("IsDeath", true);
         }
     }
     private bool IsPlayerDeath()
     { 
-        return m_HP < 0f; 
+        return m_Heath < 0f; 
     }
     private void FixedUpdate()
     {
@@ -93,8 +116,8 @@ public class Player : BaseManager<Player>
     }
     private void UpdateAnimation()
     {
-        m_Animator.SetBool("Grounded", characterController.isGrounded);
-        if(!characterController.isGrounded)
+        m_Animator.SetBool("Grounded", m_CharacterController.isGrounded);
+        if(!m_CharacterController.isGrounded)
         {
             return;
         }
@@ -117,7 +140,7 @@ public class Player : BaseManager<Player>
         //{
         //    m_Animator.SetBool("IsJumping", false);
         //}
-        if(m_Input.attack && characterController.isGrounded)
+        if(m_Input.attack && m_CharacterController.isGrounded)
         {
             m_Animator.Play("Attack_3Combo_1");
             m_Input.attack = false;
@@ -184,10 +207,10 @@ public class Player : BaseManager<Player>
     {
         Vector3 stepForwardAmount = rootMotion * groundSpeed;
         Vector3 stepDownAmount = Vector3.down * stepDown;
-        characterController.Move(stepForwardAmount + stepDownAmount);
+        m_CharacterController.Move(stepForwardAmount + stepDownAmount);
         rootMotion = Vector3.zero;
         
-        if (!characterController.isGrounded)
+        if (!m_CharacterController.isGrounded)
         {
             SetInAir(0);
         }
@@ -198,8 +221,8 @@ public class Player : BaseManager<Player>
         Vector3 airDisplacement = velocity * Time.fixedDeltaTime;
         airDisplacement += CalculateAircontrol();
         //Debug.Log($"magnitude : {airDisplacement.magnitude}");
-        characterController.Move(airDisplacement);
-        isJumping = !characterController.isGrounded;
+        m_CharacterController.Move(airDisplacement);
+        isJumping = !m_CharacterController.isGrounded;
         rootMotion = Vector3.zero;
         m_Animator.SetBool("IsJumping", isJumping);
 
