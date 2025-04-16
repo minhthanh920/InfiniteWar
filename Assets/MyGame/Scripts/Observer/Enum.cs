@@ -15,6 +15,7 @@ public enum ListenType
     ON_ENEMY_DEATH,
     UPDATE_COUNT_TEXT,
     UPDATE_USER_INFO,
+    UPDATE_PLAYER_HEALTH,
     UPDATE_AMMO
 }
 

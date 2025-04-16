@@ -79,17 +79,17 @@ public class Player : BaseManager<Player>
     }
     public void TakeDamage(float damage)
     {
+        Debug.Log($"Player Nhan Damage : {damage}");
         if (damage > 0)
         {
-            if(damage - m_Heath > 0)
+            m_Heath -= damage;
+            if (m_Heath <= 0)
             {
-                Debug.Log($"Player Nhan Damage : {damage}");
-                m_Heath -= damage;
-            }
-            else
-            {
+                //Debug.Log($"Player Nhan Damage : {damage}");
+                //ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_HEALTH, m_Heath);
                 SetDeath();
             }
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_HEALTH, m_Heath);
         }
     }
     private void SetupDefault()
@@ -109,8 +109,9 @@ public class Player : BaseManager<Player>
     }
     private void SetDeath()
     {
-        if (m_Heath <= 0)
+        if (m_Heath <= 0f)
         {
+            m_Heath = 0f;
             m_Animator.SetBool("IsDeath", true);
         }
     }

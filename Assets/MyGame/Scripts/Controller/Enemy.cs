@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
@@ -6,6 +7,7 @@ public class Enemy : MonoBehaviour
     public NavMeshAgent m_Agent;
     public Enemy m_Enemy;
     public Animator m_Animator;
+    [SerializeField]
     private EnemySO m_EnemyS0;
     private const string PLAYER_TAG = "Player";
     private float m_EnemySpeed = 0f;
@@ -67,9 +69,17 @@ public class Enemy : MonoBehaviour
             {
                 if (all[i] != null && all[i].CompareTag("Player"))
                 {
-                    m_Player.TakeDamage(m_MeleeDamage + m_RangeDamage);
+                    Debug.Log($"m_MeleeDamage : {m_MeleeDamage}");
+                    m_Player.TakeDamage(m_MeleeDamage);
                 }
             }
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other != null && other.CompareTag("Player"))
+        {
+            OnAttack();
         }
     }
 }
