@@ -77,6 +77,21 @@ public class Player : BaseManager<Player>
             Jump();
         }
     }
+    public void TakeDamage(float damage)
+    {
+        if (damage > 0)
+        {
+            if(damage - m_Heath > 0)
+            {
+                Debug.Log($"Player Nhan Damage : {damage}");
+                m_Heath -= damage;
+            }
+            else
+            {
+                SetDeath();
+            }
+        }
+    }
     private void SetupDefault()
     {
         if (m_PlayerSO != null)
@@ -284,4 +299,8 @@ public class Player : BaseManager<Player>
     //        AudioManager.Instance.PlaySE(AUDIO.SE_JUMP);
     //    }
     //}
+    public void OnAttack()
+    {
+
+    }
 }
