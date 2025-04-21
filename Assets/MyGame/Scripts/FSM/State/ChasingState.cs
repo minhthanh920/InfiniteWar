@@ -34,6 +34,13 @@ public class ChasingState<T> : State<T>
     {
         if (character is Enemy enemy)
         {
+            if (enemy.IsDead())
+            {
+                enemy.m_Agent.isStopped = true;
+                enemy.m_Agent.SetDestination(Vector3.zero);
+                m_StateMachine.SetState(CharacterStateID.Death);
+                return;
+            }
             //Debug.Log(enemy.m_AttackColdown);
             if (enemy.m_AttackColdown > 0f)
             {

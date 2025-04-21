@@ -78,7 +78,7 @@ public class Enemy : MonoBehaviour
             m_AttackColdown -= Time.deltaTime;
         }
     }
-    bool IsDead()
+    public bool IsDead()
     {
         if (m_Heath <= 0f)
         {
@@ -132,6 +132,7 @@ public class Enemy : MonoBehaviour
             if (m_Heath <= 0)
             {
                 m_StateMachine.SetState(CharacterStateID.Death);
+                ListenerManager.Instance.BroadCast(ListenType.ON_ENEMY_DEATH, "Won !!!");
             }
         }
     }

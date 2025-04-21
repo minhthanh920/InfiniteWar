@@ -45,6 +45,13 @@ public class AttackState<T> : State<T>
         // Nếu là Enemy, có thể tìm Player để chuyển sang Chasing
         if (character is Enemy enemy)
         {
+            if (enemy.IsDead())
+            {
+                enemy.m_Agent.isStopped = true;
+                enemy.m_Agent.SetDestination(Vector3.zero);
+                m_StateMachine.SetState(CharacterStateID.Death);
+                return;
+            }
             if (Vector3.Distance(enemy.transform.position, enemy.GetPlayerPos()) > 1.5f)
             {
                 if (enemy.m_AttackColdown > 0)

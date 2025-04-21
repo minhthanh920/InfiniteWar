@@ -29,6 +29,7 @@ public class ScreenGame : BaseScreen
             ListenerManager.Instance.Register(ListenType.UPDATE_USER_INFO, OnUpdateUserInfoEvent);
             ListenerManager.Instance.Register(ListenType.UPDATE_PLAYER_HEALTH, OnUpdatePlayerHealthEvent);
             ListenerManager.Instance.Register(ListenType.ON_PLAYER_DEATH, OnPlayerDeathEvent);
+            ListenerManager.Instance.Register(ListenType.ON_ENEMY_DEATH, OnEnemyDeathEvent);
         }
     }
     private void OnDisable()
@@ -37,7 +38,7 @@ public class ScreenGame : BaseScreen
         {
             ListenerManager.Instance.Unregister(ListenType.UPDATE_USER_INFO, OnUpdateUserInfoEvent);
             ListenerManager.Instance.Unregister(ListenType.UPDATE_PLAYER_HEALTH, OnUpdatePlayerHealthEvent);
-            ListenerManager.Instance.Unregister(ListenType.ON_PLAYER_DEATH, OnPlayerDeathEvent);
+            ListenerManager.Instance.Unregister(ListenType.ON_PLAYER_DEATH, OnEnemyDeathEvent);
         }
     }
     private void OnUpdateUserInfoEvent(object value)
@@ -70,8 +71,20 @@ public class ScreenGame : BaseScreen
         {
             if (value is string text)
             {
-                Debug.Log($"text : {text}");
                 m_Text.text = text;
+                m_Text.color = Color.red;
+                m_GameOver.SetActive(true);
+            }
+        }
+    }
+    private void OnEnemyDeathEvent(object value)
+    {
+        if (value != null)
+        {
+            if (value is string text)
+            {
+                m_Text.text = text;
+                m_Text.color = Color.green;
                 m_GameOver.SetActive(true);
             }
         }
