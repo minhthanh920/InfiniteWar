@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     private PlayerSO m_PlayerSO;
     private CharacterController m_CharacterController;
 
-    
+    private string m_GameOver = "GameOver";
     private Vector3 rootMotion;
     private Vector3 velocity;
     private float m_Heath;
@@ -67,6 +67,7 @@ public class Player : MonoBehaviour
         //    Debug.Log("OK");
         //}
         SetupDefault();
+
         m_StateMachine.AddState(CharacterStateID.Idle, new IdleState<Player>(m_StateMachine, this));
         m_StateMachine.AddState(CharacterStateID.Walk, new WalkState<Player>(m_StateMachine, this));
         m_StateMachine.AddState(CharacterStateID.Run, new RunState<Player>(m_StateMachine, this));
@@ -80,17 +81,27 @@ public class Player : MonoBehaviour
         if(IsPlayerDeath())
         {
             m_StateMachine.SetState(CharacterStateID.Death);
+            if (GameManager.HasInstance)
+            {
+                GameManager.Instance.SetGameState(GameStateID.GameOver);
+            }
             return;
         }
-        InitTimer();
+        Init();
+
+
+
+        //UpdateIsSprinting();
+
+    }
+    private void Init()
+    {
         m_Animator.SetFloat("x", m_Input.move.x);
         m_Animator.SetFloat("y", m_Input.move.y);
-       // m_StateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
-        if (m_Input.attack && m_AttackTime <= 0f)
+        // m_StateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
+        if (m_Input.attack)
         {
             m_StateMachine.SetState(CharacterStateID.Attack);
-            m_AttackTime = 1f;
-
         }
         else
         {
@@ -114,25 +125,6 @@ public class Player : MonoBehaviour
                 m_StateMachine.SetState(CharacterStateID.Idle);
             }
         }
-
-
-        //UpdateIsSprinting();
-
-    }
-    private void InitTimer()
-    {
-        if (m_AttackTime > 0)
-        {
-            m_AttackTime -= Time.deltaTime;
-        }
-        else
-        {
-            m_Input.attack = false;
-        }
-        if (m_DecayHitTime > 0)
-        {
-            m_DecayHitTime -= Time.deltaTime;
-        }
     }
     public void SetDecayHitTime()
     {
@@ -144,13 +136,14 @@ public class Player : MonoBehaviour
         if (damage > 0)
         {
             m_Heath -= damage;
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_HEALTH, m_Heath / m_PlayerSO.m_Heath);
             if (m_Heath <= 0)
             {
                 //Debug.Log($"Player Nhan Damage : {damage}");
                 //ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_HEALTH, m_Heath);
                 SetDeath();
             }
-            ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_HEALTH, m_Heath);
+            
         }
     }
     private void SetupDefault()
@@ -163,6 +156,7 @@ public class Player : MonoBehaviour
             m_MeleeDamage = m_PlayerSO.m_MeleeDamage;
             m_RangedDamage = m_PlayerSO.m_RangeDamage;
             m_IsDead = false;
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_HEALTH, m_Heath);
         }
         else
         {
@@ -172,6 +166,12 @@ public class Player : MonoBehaviour
     private void SetDeath()
     {
         m_IsDead = true;
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.SetGameState(GameStateID.GameOver);
+        }
+        ListenerManager.Instance.BroadCast(ListenType.ON_PLAYER_DEATH, m_GameOver);
+
     }
     private bool IsPlayerDeath()
     {
@@ -266,10 +266,6 @@ public class Player : MonoBehaviour
     //        AudioManager.Instance.PlaySE(AUDIO.SE_JUMP);
     //    }
     //}
-    public void OnAttack()
-    {
-
-    }
     public float GetDamage()
     {
         return m_MeleeDamage + m_RangedDamage;

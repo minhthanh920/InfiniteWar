@@ -1,3 +1,11 @@
+public enum GameStateID
+{
+    Unknow,
+    Start,
+    End,
+    Pause,
+    GameOver,
+}
 public enum PlayerStateID
 {
     None,
@@ -16,7 +24,7 @@ public enum ListenType
     UPDATE_COUNT_TEXT,
     UPDATE_USER_INFO,
     UPDATE_PLAYER_HEALTH,
-    UPDATE_AMMO
+    UPDATE_AMMO,
 }
 
 public enum UIType

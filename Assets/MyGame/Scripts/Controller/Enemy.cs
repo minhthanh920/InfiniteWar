@@ -8,7 +8,8 @@ public class Enemy : MonoBehaviour
     public Enemy m_Enemy;
     public Animator m_Animator;
     [SerializeField]
-    private EnemySO m_EnemyS0;
+    public EnemySO m_EnemyS0;
+
     private const string PLAYER_TAG = "Player";
     private float m_EnemySpeed = 0f;
     private Vector3 m_SpawnPoint = Vector3.zero;
@@ -16,7 +17,7 @@ public class Enemy : MonoBehaviour
     private float m_Heath;
     private float m_MeleeDamage;
     private float m_RangeDamage;
-
+    private GameStateID m_GameState;
     private Player m_Player;
 
 
@@ -45,22 +46,33 @@ public class Enemy : MonoBehaviour
         m_StateMachine.AddState(CharacterStateID.Attack, new AttackState<Enemy>(m_StateMachine, this));
         m_StateMachine.AddState(CharacterStateID.Death, new DeathState<Enemy>(m_StateMachine, this));
         m_StateMachine.SetState(CharacterStateID.Idle);
+        if (GameManager.HasInstance)
+        {
+            m_GameState = GameManager.Instance.GetGameState();
+        }
 
     }
     private void Initialized()
     {
         m_Heath = m_EnemyS0.m_Heath;
+        m_AttackColdown = m_EnemyS0.m_AttackTime;
         m_MeleeDamage = m_EnemyS0.m_MeleeDamage;
         m_RangeDamage = m_EnemyS0.m_RangeDamage;
     }
     // Update is called once per frame
     void Update()
     {
-        if(IsDead())
+        if (GameManager.Instance.GetGameState() != GameStateID.Start)
+        {
+            m_StateMachine.SetState(CharacterStateID.Idle);
+            return;
+        }
+        if (IsDead())
         {
             m_StateMachine.SetState(CharacterStateID.Death);
             return;
         }
+
         if (m_AttackColdown > 0)
         {
             m_AttackColdown -= Time.deltaTime;
@@ -68,7 +80,7 @@ public class Enemy : MonoBehaviour
     }
     bool IsDead()
     {
-        if (m_Heath < 0)
+        if (m_Heath <= 0f)
         {
             return true;
         }
@@ -96,7 +108,7 @@ public class Enemy : MonoBehaviour
     {
         if (m_Player != null)
         {
-            m_Player.TakeDamage(1);
+            m_Player.TakeDamage(m_MeleeDamage);
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -112,11 +124,11 @@ public class Enemy : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
-        Debug.Log($"damage : {damage}");
+        //Debug.Log($"damage : {damage}");
         if (damage > 0)
         {
             m_Heath -= damage;
-            
+            //Debug.Log($"m_Heath : {m_Heath}");
             if (m_Heath <= 0)
             {
                 m_StateMachine.SetState(CharacterStateID.Death);

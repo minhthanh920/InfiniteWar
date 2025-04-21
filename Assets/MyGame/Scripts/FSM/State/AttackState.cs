@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Windows;
 
 public class AttackState<T> : State<T>
 {
@@ -20,9 +19,12 @@ public class AttackState<T> : State<T>
                 enemy.m_Agent.isStopped = true;
                 enemy.m_Agent.SetDestination(Vector3.zero);
                 enemy.m_Animator.SetBool("Attack", true);
-                enemy.m_AttackColdown = 2f;
-
-               // enemy.transform.position = 
+                enemy.m_AttackColdown = enemy.m_EnemyS0.m_AttackTime;
+                if (GameManager.Instance.GetGameState() != GameStateID.Start)
+                {
+                    m_StateMachine.SetState(CharacterStateID.Idle);
+                }
+                // enemy.transform.position = 
             }
         }
         if (character is Player player)
@@ -53,21 +55,20 @@ public class AttackState<T> : State<T>
             }
             else
             {
-                enemy.m_AttackColdown = 2f;
+                enemy.m_AttackColdown = enemy.m_EnemyS0.m_AttackTime;
             }
         }
-        if ( character is Player player )
+        if (character is Player player)
         {
-            //player.m_StateInfo = player.m_Animator.GetCurrentAnimatorStateInfo(0);
-            //if(player.m_StateInfo.IsName("Attack"))
-            //{
-            //    player.m_Animator.SetBool("Attack1", true);
-            //}
-            //else if (player.m_StateInfo.IsName("Attack1"))
-            //{
-            //    player.m_Animator.SetBool("Attack2", true);
-            //}
-        }    
+            // Kiểm tra animation kết thúc chưa → nếu xong thì về Idle
+            AnimatorStateInfo stateInfo = player.m_Animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.normalizedTime >= 1f)
+            {
+                m_StateMachine.SetState(CharacterStateID.Idle);
+                
+
+            }
+        }
     }
 
     public override void Exit()
@@ -91,6 +92,7 @@ public class AttackState<T> : State<T>
             {
                 player.m_Weapon.DisableWeapon();
             }
+            player.m_Input.attack = false;
         }
     }
 }

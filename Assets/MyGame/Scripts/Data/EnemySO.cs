@@ -13,4 +13,5 @@ public class EnemySO : ScriptableObject
     public float m_Stamina;
     public float m_MeleeDamage;
     public float m_RangeDamage;
+    public float m_AttackTime;
 }

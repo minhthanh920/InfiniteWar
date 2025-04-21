@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ae006308f4b0e349aefd41b1dc3b1a8, type: 3}
-  m_Name: SwordMan
+  m_Script: {fileID: 11500000, guid: 0a4f795f3415d81409af6214d6025891, type: 3}
+  m_Name: SheldSword
   m_EditorClassIdentifier: 
-  m_Speed: 5
+  m_Speed: 10
   m_Heath: 100
   m_Mana: 100
   m_Stamina: 100
-  m_MeleeDamage: 500
-  m_RangeDamage: 0
+  m_MeleeDamage: 10
+  m_RangeDamage: 10
+  m_AttackTime: 1
