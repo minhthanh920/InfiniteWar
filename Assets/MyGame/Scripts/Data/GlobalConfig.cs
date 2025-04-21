@@ -14,7 +14,7 @@ public class GlobalConfig : ScriptableObject
     public float pickupWeaponSpeed = 5f;
 
     [Header("Player")]
-    public float jumpHeight = 3f;
+    public float jumpHeight = 10f;
     public float gravity = 20f;
     public float stepDown = 0.1f;
     public float airControl = 2.5f;

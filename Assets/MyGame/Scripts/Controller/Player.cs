@@ -1,16 +1,22 @@
-using DG.Tweening.Core.Easing;
+﻿using DG.Tweening.Core.Easing;
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class Player : BaseManager<Player>
+public class Player : MonoBehaviour
 {
     public Volume postProcessVolume;
+    public Player m_Player;
+    public Animator m_Animator;
+    public Vector2 m_UserInput;
+    public AnimatorStateInfo m_StateInfo;
+    public int m_ClickAttackCount;
+    public PlayerWeapon m_Weapon;
     [SerializeField]
     private PlayerSO m_PlayerSO;
-    private Animator m_Animator;
     private CharacterController m_CharacterController;
-    private Vector2 userInput;
+
+    
     private Vector3 rootMotion;
     private Vector3 velocity;
     private float m_Heath;
@@ -18,7 +24,7 @@ public class Player : BaseManager<Player>
     private float m_Stanima;
     private float m_MeleeDamage;
     private float m_RangedDamage;
-
+    
 
     private float jumpHeight;
     private float gravity;
@@ -28,18 +34,24 @@ public class Player : BaseManager<Player>
     private float groundSpeed;
     private float pushPower;
     private bool isJumping;
-    private int isSprintingParam = Animator.StringToHash("IsSprinting");
-    private StarterAssetsInputs m_Input;
+    private bool m_IsDead;
+    public StarterAssetsInputs m_Input;
+    private PlayerStateMachine m_StateMachine;
 
     public float m_AttackTime;
+    public float m_DecayHitTime;
 
-    void Start()
+    
+    private void OnEnable()
     {
-
-        
         m_Animator = GetComponent<Animator>();
         m_CharacterController = GetComponent<CharacterController>();
+        m_StateMachine = GetComponent<PlayerStateMachine>();
         m_Input = GetComponent<StarterAssetsInputs>();
+        m_Weapon = GetComponentInChildren<PlayerWeapon>();
+    }
+    void Start()
+    {
         if (DataManager.HasInstance)
         {
             jumpHeight = DataManager.Instance.GlobalConfig.jumpHeight;
@@ -50,32 +62,81 @@ public class Player : BaseManager<Player>
             groundSpeed = DataManager.Instance.GlobalConfig.groundSpeed;
             pushPower = DataManager.Instance.GlobalConfig.pushPower;
         }
+        //if (m_Weapon != null)
+        //{
+        //    Debug.Log("OK");
+        //}
         SetupDefault();
+        m_StateMachine.AddState(CharacterStateID.Idle, new IdleState<Player>(m_StateMachine, this));
+        m_StateMachine.AddState(CharacterStateID.Walk, new WalkState<Player>(m_StateMachine, this));
+        m_StateMachine.AddState(CharacterStateID.Run, new RunState<Player>(m_StateMachine, this));
+        m_StateMachine.AddState(CharacterStateID.Attack, new AttackState<Player>(m_StateMachine, this));
+        m_StateMachine.AddState(CharacterStateID.Death, new DeathState<Player>(m_StateMachine, this));
+        m_StateMachine.SetState(CharacterStateID.Idle);
     }
 
     void Update()
-    {
-        SetDeath();
+    {   
         if(IsPlayerDeath())
         {
+            m_StateMachine.SetState(CharacterStateID.Death);
             return;
         }
+        InitTimer();
+        m_Animator.SetFloat("x", m_Input.move.x);
+        m_Animator.SetFloat("y", m_Input.move.y);
+       // m_StateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
+        if (m_Input.attack && m_AttackTime <= 0f)
+        {
+            m_StateMachine.SetState(CharacterStateID.Attack);
+            m_AttackTime = 1f;
+
+        }
+        else
+        {
+            if (m_Input.jump)
+            {
+                Jump();
+            }
+            if (m_Input.move != Vector2.zero)
+            {
+                if (m_Input.sprint)
+                {
+                    m_StateMachine.SetState(CharacterStateID.Run);
+                }
+                else
+                {
+                    m_StateMachine.SetState(CharacterStateID.Walk);
+                }
+            }
+            else
+            {
+                m_StateMachine.SetState(CharacterStateID.Idle);
+            }
+        }
+
+
+        //UpdateIsSprinting();
+
+    }
+    private void InitTimer()
+    {
         if (m_AttackTime > 0)
         {
             m_AttackTime -= Time.deltaTime;
         }
-        userInput.x = Input.GetAxis("Horizontal");
-        userInput.y = Input.GetAxis("Vertical");
-
-        m_Animator.SetFloat("x", userInput.x);
-        m_Animator.SetFloat("y", userInput.y);
-
-        //UpdateIsSprinting();
-        UpdateAnimation();
-        if (Input.GetKeyDown(KeyCode.Space))
+        else
         {
-            Jump();
+            m_Input.attack = false;
         }
+        if (m_DecayHitTime > 0)
+        {
+            m_DecayHitTime -= Time.deltaTime;
+        }
+    }
+    public void SetDecayHitTime()
+    {
+        m_DecayHitTime = 1f;
     }
     public void TakeDamage(float damage)
     {
@@ -101,6 +162,7 @@ public class Player : BaseManager<Player>
             m_Stanima = m_PlayerSO.m_Stamina;
             m_MeleeDamage = m_PlayerSO.m_MeleeDamage;
             m_RangedDamage = m_PlayerSO.m_RangeDamage;
+            m_IsDead = false;
         }
         else
         {
@@ -109,15 +171,11 @@ public class Player : BaseManager<Player>
     }
     private void SetDeath()
     {
-        if (m_Heath <= 0f)
-        {
-            m_Heath = 0f;
-            m_Animator.SetBool("IsDeath", true);
-        }
+        m_IsDead = true;
     }
     private bool IsPlayerDeath()
-    { 
-        return m_Heath < 0f; 
+    {
+        return m_IsDead;
     }
     private void FixedUpdate()
     {
@@ -130,95 +188,6 @@ public class Player : BaseManager<Player>
             UpdateOnGround();
         }
     }
-    private void UpdateAnimation()
-    {
-        m_Animator.SetBool("Grounded", m_CharacterController.isGrounded);
-        if(!m_CharacterController.isGrounded)
-        {
-            return;
-        }
-        if (m_Input.m_PlayerAction == PlayerStateID.None)
-        {
-            m_Animator.SetBool("Idle", true);
-        }
-        else
-        {
-            m_Animator.SetBool("Idle", false);
-        }
-        if (m_Input.m_PlayerAction == PlayerStateID.Jump)
-        {
-            //m_Animator.SetBool("IsJumping", m_Input.jump);
-            //m_Input.jump = false;
-            //m_Input.m_PlayerAction = PlayerAction.None;
-            //m_Animator.SetBool("FreeFall", m_Input.jump);
-        }
-        //else
-        //{
-        //    m_Animator.SetBool("IsJumping", false);
-        //}
-        if(m_Input.attack && m_CharacterController.isGrounded)
-        {
-            m_Animator.Play("Attack_3Combo_1");
-            m_Input.attack = false;
-        }
-        //if (m_Input.m_PlayerAction == PlayerAction.Attack)
-        //{
-        //    m_Animator.Play("Attack_3Combo_1");
-        //    m_Animator.SetBool("Idle", true);
-        //    m_Input.attack = false;
-        //    m_Input.m_PlayerAction = PlayerAction.None;
-        //    //m_Animator.SetBool("Attack", true);
-        //}
-        //else
-        //{
-        //
-        //}
-        if (m_Input.m_PlayerAction == PlayerStateID.Walk)
-        {
-            m_Animator.SetBool("Walk", true);
-        }
-        else
-        {
-            m_Animator.SetBool("Walk", false);
-        }
-        if (m_Input.m_PlayerAction == PlayerStateID.Run)
-        {
-            m_Animator.SetBool("Run", true);
-        }
-        else
-        {
-            m_Animator.SetBool("Run", false);
-        }
-        if(userInput == Vector2.zero)
-        {
-            m_Input.m_PlayerAction = PlayerStateID.None;
-        }
-    }
-
-    //private bool IsSprinting()
-    //{
-    //    bool isSprinting = Input.GetKey(KeyCode.LeftShift);
-    //    //bool isFiring = activeWeapon.IsFiring();
-    //    //bool isReloading = reloadWeapon.isReloading;
-    //    //bool isChangingWeapon = activeWeapon.isChangingWeapon;
-    //    //bool isAiming = characterAiming.isAiming;
-    //    //return isSprinting && !isFiring && !isReloading && !isChangingWeapon && !isAiming;
-    //}
-
-    //private void UpdateIsSprinting()
-    //{
-    //    bool isSprinting = IsSprinting();
-    //    animator.SetBool(isSprintingParam, isSprinting);
-    //    rigController.SetBool(isSprintingParam, isSprinting);
-    //    if (userInput.x != 0)
-    //    {
-    //        if (postProcessVolume.profile.TryGet(out ChromaticAberration chromaticAberration))
-    //        {
-    //            chromaticAberration.active = isSprinting;
-    //        }
-    //    }
-    //}
-
     private void UpdateOnGround()
     {
         Vector3 stepForwardAmount = rootMotion * groundSpeed;
@@ -236,11 +205,11 @@ public class Player : BaseManager<Player>
         velocity.y -= gravity * Time.fixedDeltaTime;
         Vector3 airDisplacement = velocity * Time.fixedDeltaTime;
         airDisplacement += CalculateAircontrol();
-        //Debug.Log($"magnitude : {airDisplacement.magnitude}");
         m_CharacterController.Move(airDisplacement);
         isJumping = !m_CharacterController.isGrounded;
         rootMotion = Vector3.zero;
         m_Animator.SetBool("IsJumping", isJumping);
+        m_Input.jump = isJumping;
 
     }
 
@@ -255,6 +224,7 @@ public class Player : BaseManager<Player>
         {
             float jumpVelocity = Mathf.Sqrt(2 * gravity * jumpHeight);
             SetInAir(jumpVelocity);
+            //m_Input.jump = false;
         }
     }
 
@@ -263,15 +233,11 @@ public class Player : BaseManager<Player>
         isJumping = true;
         velocity = m_Animator.velocity * jumpDamp * groundSpeed;
         velocity.y = jumpVelocity;
-        m_Animator.SetBool("Idle", false);
-        m_Animator.SetBool("Walk", false);
-        m_Animator.SetBool("Run", false);
-        m_Animator.SetBool("IsJumping", true);
     }
 
     private Vector3 CalculateAircontrol()
     {
-        return ((transform.forward * userInput.y) + (transform.right * userInput.x)) * (airControl / 100);
+        return ((transform.forward * m_Input.move.y) + (transform.right * m_Input.move.x)) * (airControl / 100);
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
@@ -304,4 +270,8 @@ public class Player : BaseManager<Player>
     {
 
     }
+    public float GetDamage()
+    {
+        return m_MeleeDamage + m_RangedDamage;
+    }    
 }

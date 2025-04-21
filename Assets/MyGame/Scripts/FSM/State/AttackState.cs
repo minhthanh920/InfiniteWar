@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.Windows;
 
 public class AttackState<T> : State<T>
 {
-    //private Animator m_Animator;
     public AttackState(BaseStateMachine<T> stateMachine, T character) : base(stateMachine, character)
     {
         //if (character is MonoBehaviour mb)
@@ -25,6 +25,17 @@ public class AttackState<T> : State<T>
                // enemy.transform.position = 
             }
         }
+        if (character is Player player)
+        {
+            if (player.m_Animator != null)
+            {
+                player.m_Animator.SetBool("Attack", true);
+                if(player.m_Weapon != null)
+                {
+                    player.m_Weapon.EnableWeapon();
+                }    
+            }
+        }
     }
 
     public override void Update()
@@ -32,7 +43,7 @@ public class AttackState<T> : State<T>
         // Nếu là Enemy, có thể tìm Player để chuyển sang Chasing
         if (character is Enemy enemy)
         {
-            if (Vector3.Distance(enemy.transform.position, Player.Instance.transform.position) > 1f)
+            if (Vector3.Distance(enemy.transform.position, enemy.GetPlayerPos()) > 1.5f)
             {
                 if (enemy.m_AttackColdown > 0)
                 {
@@ -45,6 +56,18 @@ public class AttackState<T> : State<T>
                 enemy.m_AttackColdown = 2f;
             }
         }
+        if ( character is Player player )
+        {
+            //player.m_StateInfo = player.m_Animator.GetCurrentAnimatorStateInfo(0);
+            //if(player.m_StateInfo.IsName("Attack"))
+            //{
+            //    player.m_Animator.SetBool("Attack1", true);
+            //}
+            //else if (player.m_StateInfo.IsName("Attack1"))
+            //{
+            //    player.m_Animator.SetBool("Attack2", true);
+            //}
+        }    
     }
 
     public override void Exit()
@@ -58,6 +81,16 @@ public class AttackState<T> : State<T>
                 enemy.m_Animator.SetBool("Attack", false);
             }
         }
+        if (character is Player player)
+        {
+            if (player.m_Animator != null)
+            {
+                player.m_Animator.SetBool("Attack", false);
+            }
+            if (player.m_Weapon != null)
+            {
+                player.m_Weapon.DisableWeapon();
+            }
+        }
     }
-
 }

@@ -53,7 +53,7 @@ public class ScreenGame : BaseScreen
         {
             if (value is float currentHealth)
             {
-                Debug.Log($"currentHealth : {currentHealth}");
+                //Debug.Log($"currentHealth : {currentHealth}");
                 m_HPText.text = currentHealth.ToString();
             }
         }

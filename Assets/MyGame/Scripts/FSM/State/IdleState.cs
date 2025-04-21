@@ -9,12 +9,19 @@ public class IdleState<T> : State<T>
 
     public override void Enter()
     {
-        Debug.Log($"{typeof(T).Name} vào trạng thái IDLE.");
+        
         if (character is Enemy enemy)
         {
             enemy.m_Agent.isStopped = true;
             enemy.m_Agent.SetDestination(Vector3.zero);
             enemy.m_Animator.SetBool("Idle", true);
+            //Debug.Log($"{typeof(T).Name} vào trạng thái IDLE.");
+        }
+        if (character is Player player)
+        {
+
+            player.m_Animator.SetBool("Idle", true);
+            //Debug.Log($"{typeof(T).Name} vào trạng thái IDLE.");
         }
     }
 
@@ -23,35 +30,32 @@ public class IdleState<T> : State<T>
         // Nếu là Enemy, có thể tìm Player để chuyển sang Chasing
         if (character is Enemy enemy)
         {
-            if(Vector3.Distance(enemy.GetAttackPoint(), Player.Instance.transform.position) <= 0)
+
+            if (Vector3.Distance(enemy.transform.position, enemy.GetPlayerPos()) <= 1.5f)
             {
-                //Player.Instance.m
+                m_StateMachine.SetState(CharacterStateID.Attack);
             }
-            if (Vector3.Distance(enemy.transform.position, Player.Instance.transform.position) < 5f)
+            else
             {
-                if (Player.Instance.m_AttackTime > 0)
+                if (enemy.m_AttackColdown > 0)
                 {
                     return;
                 }
                 m_StateMachine.SetState(CharacterStateID.Chasing);
             }
-            else if (Vector3.Distance(enemy.transform.position, Player.Instance.transform.position) <= 2f)
-            {
-                m_StateMachine.SetState(CharacterStateID.Attack);
-            }
-            //else
-            //{
-            //    m_Agent.SetDestination(Player.Instance.transform.position);
-            //}
         }
     }
 
     public override void Exit()
     {
-        Debug.Log($"{typeof(T).Name} rời khỏi trạng thái IDLE.");
+        //Debug.Log($"{typeof(T).Name} rời khỏi trạng thái IDLE.");
         if (character is Enemy enemy)
         {
             enemy.m_Animator.SetBool("Idle", false);
+        }
+        if (character is Player player)
+        {
+            player.m_Animator.SetBool("Idle", false);
         }
     }
 }

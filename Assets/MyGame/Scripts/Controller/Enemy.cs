@@ -43,6 +43,7 @@ public class Enemy : MonoBehaviour
         m_StateMachine.AddState(CharacterStateID.Idle, new IdleState<Enemy>(m_StateMachine, this));
         m_StateMachine.AddState(CharacterStateID.Chasing, new ChasingState<Enemy>(m_StateMachine, this));
         m_StateMachine.AddState(CharacterStateID.Attack, new AttackState<Enemy>(m_StateMachine, this));
+        m_StateMachine.AddState(CharacterStateID.Death, new DeathState<Enemy>(m_StateMachine, this));
         m_StateMachine.SetState(CharacterStateID.Idle);
 
     }
@@ -55,9 +56,25 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(IsDead())
+        {
+            m_StateMachine.SetState(CharacterStateID.Death);
+            return;
+        }
         if (m_AttackColdown > 0)
         {
             m_AttackColdown -= Time.deltaTime;
+        }
+    }
+    bool IsDead()
+    {
+        if (m_Heath < 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
     public void OnAttack()
@@ -75,11 +92,35 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+    public void OnHit()
+    {
+        if (m_Player != null)
+        {
+            m_Player.TakeDamage(1);
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other != null && other.CompareTag("Player"))
         {
-            OnAttack();
+            OnHit();
+        }
+    }
+    public Vector3 GetPlayerPos()
+    {
+        return m_Player.transform.position;
+    }
+    public void TakeDamage(float damage)
+    {
+        Debug.Log($"damage : {damage}");
+        if (damage > 0)
+        {
+            m_Heath -= damage;
+            
+            if (m_Heath <= 0)
+            {
+                m_StateMachine.SetState(CharacterStateID.Death);
+            }
         }
     }
 }
