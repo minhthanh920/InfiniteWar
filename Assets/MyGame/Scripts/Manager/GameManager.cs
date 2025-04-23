@@ -1,37 +1,141 @@
+using System.Collections;
+using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : BaseManager<GameManager>
 {
-    private GameStateID m_GameStateID = GameStateID.Unknow;
-    private void Start()
+    void Start()
     {
-        m_GameStateID = GameStateID.Start;
         if (UIManager.HasInstance)
         {
-            //UIManager.Instance.ShowNotify<NotifyLoading>();
-            //NotifyLoading scr = UIManager.Instance.GetExistNotify<NotifyLoading>();
-            //if (scr != null)
-            //{
-            //    scr.AnimationLoaddingText();
-            //    scr.DoAnimationLoadingProgress(5, () =>
-            //    {
-            //        UIManager.Instance.ShowScreen<ScreenHome>();
-            //        scr.Hide();
-            //    });
-            //}
+            UIManager.Instance.ShowNotify<NotifyLoading>();
+            NotifyLoading scr = UIManager.Instance.GetExistNotify<NotifyLoading>();
+            if (scr != null)
+            {
+                scr.AnimationLoaddingText();
+                scr.DoAnimationLoadingProgress(DataManager.Instance.GetLoadingTime(), () =>
+                {
+                    UIManager.Instance.ShowScreen<ScreenHome>();
+                    scr.Hide();
+                });
+            }
         }
     }
 
-    public void LoadScene(string sceneName)
+    public void StartGame()
     {
-        SceneManager.LoadScene(sceneName);
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlayBGM(AUDIO.BGM_BMG_4);
+        }
+
+        Cursor.lockState = CursorLockMode.Locked;
+
+        //if (MissionManager.HasInstance)
+        //{
+        //    MissionManager.Instance.ResetMission();
+        //}
     }
-    public GameStateID GetGameState()
+
+    public void PauseGame()
     {
-        return m_GameStateID;
+
     }
-    public void SetGameState(GameStateID gameStateID)
+
+    public void ResumeGame()
     {
-        m_GameStateID = gameStateID;
+
+    }
+
+    public void RestartGame()
+    {
+
+    }
+
+    public void EndGame()
+    {
+
+    }
+
+    public void GameOver()
+    {
+        Time.timeScale = 0;
+        if (UIManager.HasInstance)
+        {
+            string txtMessage = "You Loose \n<size=50><#667986>Try again later";
+
+            PopupShowMessageData data = new PopupShowMessageData(txtMessage, () =>
+            {
+                Time.timeScale = 1;
+                ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+                screenGame.Hide();
+
+                UIManager.Instance.ShowNotify<NotifyFade>();
+                NotifyFade notifyFade = UIManager.Instance.GetExistNotify<NotifyFade>();
+                if (notifyFade != null)
+                {
+                    notifyFade.Fade(DataManager.Instance.GetFadeTime(),
+                        onDuringFade: () =>
+                        {
+                            SceneManager.UnloadSceneAsync("Main");
+                        },
+                        onFinish: () =>
+                        {
+                            UIManager.Instance.ShowScreen<ScreenHome>();
+                        });
+                }
+            });
+
+            UIManager.Instance.ShowPopup<PopupShowMessage>(data, forceShowData: true);
+        }
+
+        //if (MissionManager.HasInstance)
+        //{
+        //    MissionManager.Instance.ResetMission();
+        //}
+    }
+
+    public void WinGame()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.ON_WIN_GAME);
+        }
+
+        Time.timeScale = 0;
+        if (UIManager.HasInstance)
+        {
+            string txtMessage = "Congratulation\n<size=50><#667986>You win!!!";
+
+            PopupShowMessageData data = new PopupShowMessageData(txtMessage, () =>
+            {
+                Time.timeScale = 1;
+                ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+                screenGame.Hide();
+
+                UIManager.Instance.ShowNotify<NotifyFade>();
+                NotifyFade notifyFade = UIManager.Instance.GetExistNotify<NotifyFade>();
+                if (notifyFade != null)
+                {
+                    notifyFade.Fade(DataManager.Instance.GetFadeTime(),
+                        onDuringFade: () =>
+                        {
+                            SceneManager.UnloadSceneAsync("Main");
+                        },
+                        onFinish: () =>
+                        {
+                            UIManager.Instance.ShowScreen<ScreenHome>();
+                        });
+                }
+            });
+
+            UIManager.Instance.ShowPopup<PopupShowMessage>(data, forceShowData: true);
+        }
+
+        //if (MissionManager.HasInstance)
+        //{
+        //    MissionManager.Instance.ResetMission();
+        //}
     }
 }

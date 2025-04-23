@@ -22,13 +22,13 @@ public class GlobalConfig : ScriptableObject
     public float groundSpeed = 1.2f;
     public float pushPower = 2f;
     public float turnSpeed = 15f;
-    public float defaultRecoil = 1f;
-    public float aimRecoil = 0.3f;
-    public float timeDestroyDroppedMagazine = 5f;
-    public float maxCroissHairTargetDistance = 100f;
-    public int maxBulletPoolSize = 30;
-    public float playerMaxHealth = 100f;
 
     [Header("UI")]
-    public float loadingOverLapTime = 1f;
+    public float LoadingTime;
+    public float FadeTime;
+
+    [Header("Camera")]
+    public int DeathCameraPriority;
+    [Header("Enemy")]
+    public float EnemySpawnTime = 5f;
 }

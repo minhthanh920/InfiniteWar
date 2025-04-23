@@ -20,10 +20,6 @@ public class AttackState<T> : State<T>
                 enemy.m_Agent.SetDestination(Vector3.zero);
                 enemy.m_Animator.SetBool("Attack", true);
                 enemy.m_AttackColdown = enemy.m_EnemyS0.m_AttackTime;
-                if (GameManager.Instance.GetGameState() != GameStateID.Start)
-                {
-                    m_StateMachine.SetState(CharacterStateID.Idle);
-                }
                 // enemy.transform.position = 
             }
         }

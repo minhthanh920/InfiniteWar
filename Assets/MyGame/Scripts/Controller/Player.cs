@@ -81,10 +81,6 @@ public class Player : MonoBehaviour
         if(IsPlayerDeath())
         {
             m_StateMachine.SetState(CharacterStateID.Death);
-            if (GameManager.HasInstance)
-            {
-                GameManager.Instance.SetGameState(GameStateID.GameOver);
-            }
             return;
         }
         Init();
@@ -166,10 +162,6 @@ public class Player : MonoBehaviour
     private void SetDeath()
     {
         m_IsDead = true;
-        if (GameManager.HasInstance)
-        {
-            GameManager.Instance.SetGameState(GameStateID.GameOver);
-        }
         ListenerManager.Instance.BroadCast(ListenType.ON_PLAYER_DEATH, m_GameOver);
 
     }

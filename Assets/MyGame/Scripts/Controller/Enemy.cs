@@ -46,10 +46,6 @@ public class Enemy : MonoBehaviour
         m_StateMachine.AddState(CharacterStateID.Attack, new AttackState<Enemy>(m_StateMachine, this));
         m_StateMachine.AddState(CharacterStateID.Death, new DeathState<Enemy>(m_StateMachine, this));
         m_StateMachine.SetState(CharacterStateID.Idle);
-        if (GameManager.HasInstance)
-        {
-            m_GameState = GameManager.Instance.GetGameState();
-        }
 
     }
     private void Initialized()
@@ -62,11 +58,6 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.GetGameState() != GameStateID.Start)
-        {
-            m_StateMachine.SetState(CharacterStateID.Idle);
-            return;
-        }
         if (IsDead())
         {
             m_StateMachine.SetState(CharacterStateID.Death);
