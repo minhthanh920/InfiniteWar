@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
         //{
         //    Debug.Log("OK");
         //}
-        SetupDefault();
+        //SetupDefault();
 
         m_StateMachine.AddState(CharacterStateID.Idle, new IdleState<Player>(m_StateMachine, this));
         m_StateMachine.AddState(CharacterStateID.Walk, new WalkState<Player>(m_StateMachine, this));
@@ -142,7 +142,7 @@ public class Player : MonoBehaviour
             
         }
     }
-    private void SetupDefault()
+    public void SetupDefault()
     {
         if (m_PlayerSO != null)
         {

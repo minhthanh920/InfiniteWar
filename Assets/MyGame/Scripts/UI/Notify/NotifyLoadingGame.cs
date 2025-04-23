@@ -42,7 +42,6 @@ public class NotifyLoadingGame : BaseNotify
                 loadingPercentText.SetText("Press the space bar to continue");
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    this.Hide();
                     if (UIManager.HasInstance)
                     {
                         UIManager.Instance.ShowNotify<NotifyFade>();
@@ -53,6 +52,7 @@ public class NotifyLoadingGame : BaseNotify
                                 onDuringFade: () =>
                                 {
                                     asyncOperation.allowSceneActivation = true;
+                                    this.Hide();
                                 },
                                 onFinish: () =>
                                 {
@@ -60,6 +60,7 @@ public class NotifyLoadingGame : BaseNotify
                                     {
                                         UIManager.Instance.ShowScreen<ScreenGame>();
                                         GameManager.Instance.StartGame();
+
                                     }
                                 });
                         }

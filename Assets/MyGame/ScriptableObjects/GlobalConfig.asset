@@ -28,10 +28,7 @@ MonoBehaviour:
   groundSpeed: 1.2
   pushPower: 2
   turnSpeed: 15
-  defaultRecoil: 1
-  aimRecoil: 0.3
-  timeDestroyDroppedMagazine: 5
-  maxCroissHairTargetDistance: 100
-  maxBulletPoolSize: 30
-  playerMaxHealth: 100
-  loadingOverLapTime: 1
+  LoadingTime: 2
+  FadeTime: 1
+  DeathCameraPriority: 0
+  EnemySpawnTime: 5

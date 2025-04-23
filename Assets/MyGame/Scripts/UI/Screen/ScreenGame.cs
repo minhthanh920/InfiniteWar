@@ -5,6 +5,8 @@ using UnityEngine.UI;
 public class ScreenGame : BaseScreen
 {
     [SerializeField] Slider m_HPSlider;
+    [SerializeField] Slider m_MPSlider;
+    [SerializeField] Slider m_StaminaSlider;
     public override void Init()
     {
         base.Init();
@@ -12,6 +14,7 @@ public class ScreenGame : BaseScreen
     }
     public override void Hide()
     {
+
         base.Hide();
 
     }
@@ -21,6 +24,9 @@ public class ScreenGame : BaseScreen
     }
     private void Start()
     {
+        m_HPSlider.value = 1f;
+        m_MPSlider.value = 1f;
+        m_StaminaSlider.value = 1f;
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.UPDATE_USER_INFO, OnUpdateUserInfoEvent);
