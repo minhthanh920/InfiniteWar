@@ -14,8 +14,9 @@ public class GameManager : BaseManager<GameManager>
                 scr.AnimationLoaddingText();
                 scr.DoAnimationLoadingProgress(DataManager.Instance.GetLoadingTime(), () =>
                 {
-                    UIManager.Instance.ShowScreen<ScreenHome>();
                     scr.Hide();
+                    UIManager.Instance.ShowScreen<ScreenHome>();
+                    
                 });
             }
         }

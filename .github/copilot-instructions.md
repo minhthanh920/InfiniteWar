@@ -2,7 +2,7 @@
 - Project name: InfiniteWar
 - Unity version: Unity 6000.0.40f1
 - Active game object:
-  - Name: FX_FantasyWarrior_PoisonVignette01
+  - Name: UIManager
   - Tag: Untagged
-  - Layer: UI
+  - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

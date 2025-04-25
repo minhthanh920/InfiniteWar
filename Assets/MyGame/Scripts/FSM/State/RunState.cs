@@ -18,16 +18,16 @@ public class RunState<T> : State<T>
 
     public override void Update()
     {
-        if (character is Player player)
-        {
-            if (player.m_Animator != null)
-            {
-                player.m_UserInput.x = Input.GetAxis("Horizontal");
-                player.m_UserInput.y = Input.GetAxis("Vertical");
-                player.m_Animator.SetFloat("x", player.m_UserInput.x);
-                player.m_Animator.SetFloat("y", player.m_UserInput.y);
-            }
-        }
+       //if (character is Player player)
+       //{
+       //    if (player.m_Animator != null)
+       //    {
+       //        player.m_UserInput.x = Input.GetAxis("Horizontal");
+       //        player.m_UserInput.y = Input.GetAxis("Vertical");
+       //        player.m_Animator.SetFloat("x", player.m_UserInput.x);
+       //        player.m_Animator.SetFloat("y", player.m_UserInput.y);
+       //    }
+       //}
 
     }
 

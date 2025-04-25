@@ -158,12 +158,12 @@ namespace StarterAssets
         {
             _hasAnimator = TryGetComponent(out _animator);
 
-            JumpAndGravity();
-            GroundedCheck();
-            Move();
+            //JumpAndGravity();
+            //GroundedCheck();
+            //Move();
             
-            AttackCheck();
-            _AttackTime -= Time.deltaTime;
+            //AttackCheck();
+            //_AttackTime -= Time.deltaTime;
             //Debug.Log(_AttackTime);
         }
 
@@ -187,8 +187,6 @@ namespace StarterAssets
                 if (_hasAnimator && _AttackTime <= 0f)
                 {
                     _AttackTime = 1f;
-                    _animator.Play("Attack_3Combo_1");
-                    //_animator.SetTrigger("Attack");
                     _input.AttackInput(false);
                 }
             }

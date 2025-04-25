@@ -30,7 +30,7 @@ public class NotifyLoadingGame : BaseNotify
     {
         yield return null;
 
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("Main", LoadSceneMode.Additive);
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("DesertTown", LoadSceneMode.Additive);
         asyncOperation.allowSceneActivation = false;
         while (!asyncOperation.isDone)
         {
@@ -48,19 +48,20 @@ public class NotifyLoadingGame : BaseNotify
                         NotifyFade notifyFade = UIManager.Instance.GetExistNotify<NotifyFade>();
                         if (notifyFade != null)
                         {
+                           
                             notifyFade.Fade(DataManager.Instance.GetFadeTime(),
                                 onDuringFade: () =>
                                 {
                                     asyncOperation.allowSceneActivation = true;
-                                    this.Hide();
                                 },
                                 onFinish: () =>
                                 {
                                     if (GameManager.HasInstance)
                                     {
+                                        this.Hide();
                                         UIManager.Instance.ShowScreen<ScreenGame>();
                                         GameManager.Instance.StartGame();
-
+                                        
                                     }
                                 });
                         }
