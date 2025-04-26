@@ -16,7 +16,11 @@ public class PopupSetting : BasePopup
         sliderBGM.value = bgmVolume;
         sliderEffect.value = effectVolume;
     }
-
+    private void Update()
+    {
+        AudioManager.Instance.ChangeSEVolume(sliderEffect.value);
+        AudioManager.Instance.ChangeBGMVolume(sliderBGM.value);
+    }
     public override void Hide()
     {
         base.Hide();
@@ -41,8 +45,8 @@ public class PopupSetting : BasePopup
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.ChangeSEVolume(effectVolume);
-            AudioManager.Instance.ChangeBGMVolume(bgmVolume);
+            AudioManager.Instance.ChangeSEVolume(sliderEffect.value);
+            AudioManager.Instance.ChangeBGMVolume(sliderBGM.value);
         }
         this.Hide();
     }

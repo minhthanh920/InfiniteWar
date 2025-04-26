@@ -27,6 +27,8 @@ public enum ListenType
     ON_WIN_GAME,
     UPDATE_MISSION,
     UPDATE_COUNT_ENEMY,
+    ON_PAUSE_GAME,
+    ON_RESUME_GAME,
 }
 
 public enum UIType

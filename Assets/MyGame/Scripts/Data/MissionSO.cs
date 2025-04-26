@@ -6,6 +6,7 @@ using UnityEngine;
 public class MissionSO : ScriptableObject
 {
     public string MissionName;
+    public string MissionDes;
     public bool IsComplete;
     public int TotalEnemy;
     public float SpawnTime;

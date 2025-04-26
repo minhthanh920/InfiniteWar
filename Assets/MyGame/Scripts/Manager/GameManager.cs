@@ -28,7 +28,10 @@ public class GameManager : BaseManager<GameManager>
         {
             AudioManager.Instance.PlayBGM(AUDIO.BGM_BMG_4);
         }
-
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_HEALTH);
+        }
         Cursor.lockState = CursorLockMode.Locked;
 
         //if (MissionManager.HasInstance)
@@ -39,7 +42,10 @@ public class GameManager : BaseManager<GameManager>
 
     public void PauseGame()
     {
-
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<PopupSetting>();
+        }
     }
 
     public void ResumeGame()
@@ -56,7 +62,6 @@ public class GameManager : BaseManager<GameManager>
     {
 
     }
-
     public void GameOver()
     {
         Time.timeScale = 0;

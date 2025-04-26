@@ -29,7 +29,6 @@ public class ScreenHome : BaseScreen
         }
         this.Hide();
     }
-
     public override void OnPlaySoundClickButton()
     {
         base.OnPlaySoundClickButton();

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Mission1SO
   m_EditorClassIdentifier: 
   MissionName: "Nhi\u1EC7m v\u1EE5 1"
+  MissionDes: "M\u1EE5c Ti\xEAu : Ti\xEAu di\u1EC7t t\u1EA5t c\u1EA3 qu\xE1i v\u1EADt"
   IsComplete: 0
   TotalEnemy: 10
   SpawnTime: 2
