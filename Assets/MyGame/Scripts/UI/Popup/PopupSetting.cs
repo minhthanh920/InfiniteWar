@@ -20,6 +20,10 @@ public class PopupSetting : BasePopup
     {
         AudioManager.Instance.ChangeSEVolume(sliderEffect.value);
         AudioManager.Instance.ChangeBGMVolume(sliderBGM.value);
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            this.Hide();
+        }
     }
     public override void Hide()
     {

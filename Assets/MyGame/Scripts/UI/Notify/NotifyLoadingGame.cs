@@ -56,9 +56,10 @@ public class NotifyLoadingGame : BaseNotify
                                 },
                                 onFinish: () =>
                                 {
+                                    this.Hide();
                                     if (GameManager.HasInstance)
                                     {
-                                        this.Hide();
+                                        
                                         UIManager.Instance.ShowScreen<ScreenGame>();
                                         GameManager.Instance.StartGame();
                                         

@@ -23,7 +23,9 @@ public class Player : MonoBehaviour
     private float m_Stanima;
     private float m_MeleeDamage;
     private float m_RangedDamage;
-    
+    private float m_AttackTime = 1f;
+    private CharacterStateID CurrentStateID = CharacterStateID.Idle;
+
 
     private float jumpHeight;
     private float gravity;
@@ -36,13 +38,14 @@ public class Player : MonoBehaviour
     private bool m_IsDead;
     public StarterAssetsInputs m_Input;
     private PlayerStateMachine m_StateMachine;
-    private void OnEnable()
+    private void Awake()
     {
         m_Animator = GetComponent<Animator>();
         m_CharacterController = GetComponent<CharacterController>();
         m_StateMachine = GetComponent<PlayerStateMachine>();
         m_Input = GetComponent<StarterAssetsInputs>();
         m_Weapon = GetComponentInChildren<PlayerWeapon>();
+
     }
     void Start()
     {
@@ -55,6 +58,14 @@ public class Player : MonoBehaviour
             m_StateMachine.SetState(CharacterStateID.Death);
             return;
         }
+        //if(UIManager.Instance.GetExistPopup<PopupSetting>())
+        //{
+        //    return;
+        //}
+        //if(Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    GameManager.Instance.PauseGame();
+        //}
         m_UserInput.x = Input.GetAxis("Horizontal");
         m_UserInput.y = Input.GetAxis("Vertical");
         UpdateState();
@@ -75,13 +86,13 @@ public class Player : MonoBehaviour
     }
     public void SetupDefault()
     {
-        m_StateMachine.AddState(CharacterStateID.Idle, new IdleState<Player>(m_StateMachine, this));
-        m_StateMachine.AddState(CharacterStateID.Walk, new WalkState<Player>(m_StateMachine, this));
-        m_StateMachine.AddState(CharacterStateID.Run, new RunState<Player>(m_StateMachine, this));
-        m_StateMachine.AddState(CharacterStateID.Attack, new AttackState<Player>(m_StateMachine, this));
-        m_StateMachine.AddState(CharacterStateID.Death, new DeathState<Player>(m_StateMachine, this));
-        m_StateMachine.AddState(CharacterStateID.Jump, new JumpState<Player>(m_StateMachine, this));
-        m_StateMachine.SetState(CharacterStateID.Idle);
+        //m_StateMachine.AddState(CharacterStateID.Idle, new EnemyIdleState<Player>(m_StateMachine, this));
+        //m_StateMachine.AddState(CharacterStateID.Walk, new EnemyWalkState<Player>(m_StateMachine, this));
+        //m_StateMachine.AddState(CharacterStateID.Run, new EnemyRunState<Player>(m_StateMachine, this));
+        //m_StateMachine.AddState(CharacterStateID.Attack, new EnemyAttackState<Player>(m_StateMachine, this));
+        //m_StateMachine.AddState(CharacterStateID.Death, new EnemyDeathState<Player>(m_StateMachine, this));
+        //m_StateMachine.AddState(CharacterStateID.Jump, new JumpState<Player>(m_StateMachine, this));
+        //m_StateMachine.SetState(CharacterStateID.Idle);
         if (DataManager.HasInstance)
         {
             jumpHeight = DataManager.Instance.GlobalConfig.jumpHeight;
@@ -116,9 +127,26 @@ public class Player : MonoBehaviour
             return;
         }
 
+        // Kiểm tra trạng thái tấn công
         if (m_Input.attack)
         {
-            m_StateMachine.SetState(CharacterStateID.Attack);
+            // Nếu nhân vật chưa vào trạng thái tấn công, vào trạng thái Attack
+            if (m_StateMachine.CurrentStateID != CharacterStateID.Attack)
+            {
+                m_StateMachine.SetState(CharacterStateID.Attack);
+            }
+            return;
+        }
+
+        // Kiểm tra animation tấn công đã hoàn thành chưa
+        if (m_StateMachine.CurrentStateID == CharacterStateID.Attack)
+        {
+            AnimatorStateInfo stateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.normalizedTime >= 1f)  // Animation đã hoàn thành
+            {
+                // Sau khi hoàn thành animation Attack, chuyển sang trạng thái Idle hoặc các trạng thái khác
+                m_StateMachine.SetState(CharacterStateID.Idle);
+            }
             return;
         }
         m_Animator.SetFloat("x", m_UserInput.x);

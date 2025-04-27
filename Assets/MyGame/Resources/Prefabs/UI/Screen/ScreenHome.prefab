@@ -995,7 +995,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8584974460225419842
 Transform:
   m_ObjectHideFlags: 0
@@ -4668,6 +4668,10 @@ PrefabInstance:
       propertyPath: lengthInSec
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5520959523259550765, guid: c1937f972ff9beb43a6c954f5a39a304, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7148132628568219385, guid: c1937f972ff9beb43a6c954f5a39a304, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -4752,6 +4756,10 @@ PrefabInstance:
       propertyPath: InitialModule.startRotation.scalar
       value: -0.43633232
       objectReference: {fileID: 0}
+    - target: {fileID: 8574191567208026303, guid: c1937f972ff9beb43a6c954f5a39a304, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4816,6 +4824,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 773550ffebe71e544b282de67edaee87, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 773550ffebe71e544b282de67edaee87, type: 3}
+      propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3300000, guid: 773550ffebe71e544b282de67edaee87, type: 3}
@@ -4903,6 +4915,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c7f216f07f9cf47809f9e528a01407, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_EffectWall: Impact_Wall
+  m_EffectEnemy: Impact_Enemy
+  m_EnemyTag: Enemy
+  m_EffectLifetime: 0.1
+  effectTag: Ground
+  spawnRate: 0.1
 --- !u!4 &7896975285751183748 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 773550ffebe71e544b282de67edaee87, type: 3}

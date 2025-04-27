@@ -40,11 +40,12 @@ public class Enemy : MonoBehaviour
         Initialized();
         m_Player = FindFirstObjectByType<Player>();
         m_Agent.stoppingDistance = 2f;
+        m_Agent.speed = m_EnemySpeed;
         m_SpawnPoint = gameObject.transform.position;
-        m_StateMachine.AddState(CharacterStateID.Idle, new IdleState<Enemy>(m_StateMachine, this));
-        m_StateMachine.AddState(CharacterStateID.Chasing, new ChasingState<Enemy>(m_StateMachine, this));
-        m_StateMachine.AddState(CharacterStateID.Attack, new AttackState<Enemy>(m_StateMachine, this));
-        m_StateMachine.AddState(CharacterStateID.Death, new DeathState<Enemy>(m_StateMachine, this));
+        m_StateMachine.AddState(CharacterStateID.Idle, new EnemyIdleState<Enemy>(m_StateMachine, this));
+        m_StateMachine.AddState(CharacterStateID.Chasing, new EnemyChasingState<Enemy>(m_StateMachine, this));
+        m_StateMachine.AddState(CharacterStateID.Attack, new EnemyAttackState<Enemy>(m_StateMachine, this));
+        m_StateMachine.AddState(CharacterStateID.Death, new EnemyDeathState<Enemy>(m_StateMachine, this));
         m_StateMachine.SetState(CharacterStateID.Idle);
 
     }
@@ -54,6 +55,7 @@ public class Enemy : MonoBehaviour
         m_AttackColdown = m_EnemyS0.m_AttackTime;
         m_MeleeDamage = m_EnemyS0.m_MeleeDamage;
         m_RangeDamage = m_EnemyS0.m_RangeDamage;
+        m_EnemySpeed = m_EnemyS0.m_Speed;
     }
     // Update is called once per frame
     void Update()

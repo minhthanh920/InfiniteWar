@@ -21,7 +21,6 @@ public class GameManager : BaseManager<GameManager>
             }
         }
     }
-
     public void StartGame()
     {
         if (AudioManager.HasInstance)
@@ -32,12 +31,11 @@ public class GameManager : BaseManager<GameManager>
         {
             ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_HEALTH);
         }
+        if (MissionManager.HasInstance)
+        {
+            MissionManager.Instance.ResetMission();
+        }
         Cursor.lockState = CursorLockMode.Locked;
-
-        //if (MissionManager.HasInstance)
-        //{
-        //    MissionManager.Instance.ResetMission();
-        //}
     }
 
     public void PauseGame()
@@ -46,11 +44,15 @@ public class GameManager : BaseManager<GameManager>
         {
             UIManager.Instance.ShowPopup<PopupSetting>();
         }
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     public void ResumeGame()
     {
-
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.ON_RESUME_GAME);
+        }
     }
 
     public void RestartGame()

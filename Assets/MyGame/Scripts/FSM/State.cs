@@ -1,12 +1,14 @@
-public abstract class State<T>
+using UnityEngine;
+
+public abstract class State<T> where T : MonoBehaviour
 {
     protected BaseStateMachine<T> m_StateMachine;
-    protected T character;
+    protected T m_Character;
 
-    public State(BaseStateMachine<T> stateMachine, T character)
+    protected State(BaseStateMachine<T> stateMachine, T character)
     {
-        this.m_StateMachine = stateMachine;
-        this.character = character;
+        m_StateMachine = stateMachine;
+        m_Character = character;
     }
 
     public virtual void Enter() { }
