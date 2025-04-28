@@ -56,12 +56,14 @@ public class ScreenGame : BaseScreen
         {
             if (value is Player currentPlayer)
             {
-                m_Heathtxt.text = currentPlayer.GetPlayerCurrentHeath().ToString();
-                m_Manatxt.text = currentPlayer.GetPlayerCurrentMana().ToString();
-                m_Staminatxt.text = currentPlayer.GetPlayerCurrentStamina().ToString();
+                m_Heathtxt.text = $"{currentPlayer.GetPlayerCurrentHeath().ToString()}/{currentPlayer.GetPlayerMaxHeath().ToString()}";
+                m_Manatxt.text = $"{currentPlayer.GetPlayerCurrentMana().ToString()}/{currentPlayer.GetPlayerMaxMana().ToString()}";
+                m_Staminatxt.text = $"{currentPlayer.GetPlayerCurrentStamina().ToString()}/{currentPlayer.GetPlayerMaxStamina().ToString()}";
+                m_HPSlider.value = currentPlayer.GetPlayerCurrentHeath() / currentPlayer.GetPlayerMaxHeath();
+                m_MPSlider.value = currentPlayer.GetPlayerCurrentMana() / currentPlayer.GetPlayerMaxMana();
+                m_StaminaSlider.value = currentPlayer.GetPlayerCurrentStamina() / currentPlayer.GetPlayerMaxStamina();
             }
         }
-
     }
     private void OnUpdatePlayerHealthEvent(object value)
     {

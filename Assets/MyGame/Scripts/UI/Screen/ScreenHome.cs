@@ -25,9 +25,10 @@ public class ScreenHome : BaseScreen
         Debug.Log("Click start game");
         if (UIManager.HasInstance)
         {
+            this.Hide();
             UIManager.Instance.ShowNotify<NotifyLoadingGame>();
         }
-        this.Hide();
+        
     }
     public override void OnPlaySoundClickButton()
     {

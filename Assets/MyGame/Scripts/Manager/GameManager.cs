@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : BaseManager<GameManager>
 {
+    private Player m_Player;
     void Start()
     {
         if (UIManager.HasInstance)
@@ -29,7 +30,7 @@ public class GameManager : BaseManager<GameManager>
         }
         if(ListenerManager.HasInstance)
         {
-            ListenerManager.Instance.BroadCast(ListenType.UPDATE_USER_INFO);
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_USER_INFO, m_Player);
         }
         if (MissionManager.HasInstance)
         {
@@ -143,5 +144,14 @@ public class GameManager : BaseManager<GameManager>
         {
             MissionManager.Instance.ResetMission();
         }
+    }
+    public void SetPlayer(Player player)
+    {
+        m_Player = player;
+    }
+
+    public Player GetPlayer()
+    {
+        return m_Player;
     }
 }

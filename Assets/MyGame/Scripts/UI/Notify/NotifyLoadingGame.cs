@@ -48,7 +48,6 @@ public class NotifyLoadingGame : BaseNotify
                         NotifyFade notifyFade = UIManager.Instance.GetExistNotify<NotifyFade>();
                         if (notifyFade != null)
                         {
-                           
                             notifyFade.Fade(DataManager.Instance.GetFadeTime(),
                                 onDuringFade: () =>
                                 {
@@ -56,10 +55,10 @@ public class NotifyLoadingGame : BaseNotify
                                 },
                                 onFinish: () =>
                                 {
-                                    this.Hide();
+                                    
                                     if (GameManager.HasInstance)
                                     {
-                                        
+                                        this.Hide();
                                         UIManager.Instance.ShowScreen<ScreenGame>();
                                         GameManager.Instance.StartGame();
                                         

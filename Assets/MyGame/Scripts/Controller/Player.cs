@@ -21,7 +21,11 @@ public class Player : MonoBehaviour
     private float m_Heath;
     private float m_Speed;
     private float m_Mana;
+    private float m_MaxHeath;
+    private float m_MaxSpeed;
+    private float m_MaxMana;
     private float m_Stanima;
+    private float m_MaxStanima;
     private float m_MeleeDamage;
     private float m_RangedDamage;
     private float m_AttackTime = 1f;
@@ -51,6 +55,11 @@ public class Player : MonoBehaviour
     void Start()
     {
         SetupDefault();
+        if(GameManager.HasInstance)
+        {
+            GameManager.Instance.SetPlayer(this);
+        }    
+        
     }
     void Update()
     {
@@ -101,10 +110,14 @@ public class Player : MonoBehaviour
         }
         if (m_PlayerSO != null)
         {
-            m_Heath = m_PlayerSO.m_Heath;
-            m_Speed = m_PlayerSO.m_Speed;
-            m_Stanima = m_PlayerSO.m_Stamina;
-            m_Mana = m_PlayerSO.m_Mana;
+            m_MaxHeath = m_PlayerSO.m_Heath;
+            m_MaxSpeed = m_PlayerSO.m_Speed;
+            m_MaxStanima = m_PlayerSO.m_Stamina;
+            m_MaxMana = m_PlayerSO.m_Mana;
+            m_Heath = m_MaxHeath;
+            m_Speed = m_MaxSpeed;
+            m_Stanima = m_MaxStanima;
+            m_Mana = m_MaxMana;
             m_MeleeDamage = m_PlayerSO.m_MeleeDamage;
             m_RangedDamage = m_PlayerSO.m_RangeDamage;
             m_IsDead = false;
@@ -189,6 +202,18 @@ public class Player : MonoBehaviour
     public float GetPlayerCurrentStamina()
     {
         return m_Stanima;
+    }
+    public float GetPlayerMaxHeath()
+    {
+        return m_MaxHeath;
+    }
+    public float GetPlayerMaxMana()
+    {
+        return m_MaxMana;
+    }
+    public float GetPlayerMaxStamina()
+    {
+        return m_MaxStanima;
     }
     private void FixedUpdate()
     {
