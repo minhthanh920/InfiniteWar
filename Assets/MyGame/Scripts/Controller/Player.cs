@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     private Vector3 m_Velocity;
     private float m_Heath;
     private float m_Speed;
+    private float m_Mana;
     private float m_Stanima;
     private float m_MeleeDamage;
     private float m_RangedDamage;
@@ -52,12 +53,14 @@ public class Player : MonoBehaviour
         SetupDefault();
     }
     void Update()
-    {   
-        if(IsPlayerDeath())
+    {
+
+        if (IsPlayerDeath())
         {
             m_StateMachine.SetState(CharacterStateID.Death);
             return;
         }
+
         //if(UIManager.Instance.GetExistPopup<PopupSetting>())
         //{
         //    return;
@@ -86,13 +89,6 @@ public class Player : MonoBehaviour
     }
     public void SetupDefault()
     {
-        //m_StateMachine.AddState(CharacterStateID.Idle, new EnemyIdleState<Player>(m_StateMachine, this));
-        //m_StateMachine.AddState(CharacterStateID.Walk, new EnemyWalkState<Player>(m_StateMachine, this));
-        //m_StateMachine.AddState(CharacterStateID.Run, new EnemyRunState<Player>(m_StateMachine, this));
-        //m_StateMachine.AddState(CharacterStateID.Attack, new EnemyAttackState<Player>(m_StateMachine, this));
-        //m_StateMachine.AddState(CharacterStateID.Death, new EnemyDeathState<Player>(m_StateMachine, this));
-        //m_StateMachine.AddState(CharacterStateID.Jump, new JumpState<Player>(m_StateMachine, this));
-        //m_StateMachine.SetState(CharacterStateID.Idle);
         if (DataManager.HasInstance)
         {
             jumpHeight = DataManager.Instance.GlobalConfig.jumpHeight;
@@ -108,10 +104,11 @@ public class Player : MonoBehaviour
             m_Heath = m_PlayerSO.m_Heath;
             m_Speed = m_PlayerSO.m_Speed;
             m_Stanima = m_PlayerSO.m_Stamina;
+            m_Mana = m_PlayerSO.m_Mana;
             m_MeleeDamage = m_PlayerSO.m_MeleeDamage;
             m_RangedDamage = m_PlayerSO.m_RangeDamage;
             m_IsDead = false;
-            ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_HEALTH, m_Heath);
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_USER_INFO, this);
         }
         else
         {
@@ -177,9 +174,21 @@ public class Player : MonoBehaviour
         ListenerManager.Instance.BroadCast(ListenType.ON_PLAYER_DEATH, m_GameOver);
 
     }
-    private bool IsPlayerDeath()
+    public bool IsPlayerDeath()
     {
         return m_IsDead;
+    }
+    public float GetPlayerCurrentHeath()
+    {
+        return m_Heath;
+    }
+    public float GetPlayerCurrentMana()
+    {
+        return m_Mana;
+    }
+    public float GetPlayerCurrentStamina()
+    {
+        return m_Stanima;
     }
     private void FixedUpdate()
     {

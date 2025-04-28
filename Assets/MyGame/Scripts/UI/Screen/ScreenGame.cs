@@ -8,6 +8,10 @@ public class ScreenGame : BaseScreen
     [SerializeField] Slider m_HPSlider;
     [SerializeField] Slider m_MPSlider;
     [SerializeField] Slider m_StaminaSlider;
+    [SerializeField] TextMeshProUGUI m_Heathtxt;
+    [SerializeField] TextMeshProUGUI m_Manatxt;
+    [SerializeField] TextMeshProUGUI m_Staminatxt;
+
     [SerializeField] TextMeshProUGUI m_MissionName;
     [SerializeField] TextMeshProUGUI m_MisstionDes;
     [SerializeField] GameObject m_MisionProgress;
@@ -15,9 +19,6 @@ public class ScreenGame : BaseScreen
     public override void Init()
     {
         base.Init();
-        //m_HPSlider.value = 1f;
-        //m_MPSlider.value = 1f;
-        //m_StaminaSlider.value = 1f;
         
         if (ListenerManager.HasInstance)
         {
@@ -51,14 +52,15 @@ public class ScreenGame : BaseScreen
     }
     private void OnUpdateUserInfoEvent(object value)
     {
-        //if (value != null)
-        //{
-        //    if (value is float currentHealth)
-        //    {
-        //        Debug.Log($"currentHealth : {currentHealth}");
-        //        m_HPText.text = currentHealth.ToString();
-        //    }
-        //}
+        if (value != null)
+        {
+            if (value is Player currentPlayer)
+            {
+                m_Heathtxt.text = currentPlayer.GetPlayerCurrentHeath().ToString();
+                m_Manatxt.text = currentPlayer.GetPlayerCurrentMana().ToString();
+                m_Staminatxt.text = currentPlayer.GetPlayerCurrentStamina().ToString();
+            }
+        }
 
     }
     private void OnUpdatePlayerHealthEvent(object value)

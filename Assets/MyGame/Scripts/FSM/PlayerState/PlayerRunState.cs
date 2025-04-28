@@ -1,4 +1,6 @@
-﻿public class PlayerRunState : State<Player>
+﻿using UnityEngine;
+
+public class PlayerRunState : State<Player>
 {
     public PlayerRunState(BaseStateMachine<Player> stateMachine, Player character) : base(stateMachine, character) { }
     public override void Enter()
@@ -11,7 +13,11 @@
 
     public override void Update()
     {
-
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            m_Character.m_Input.sprint = false;
+        }
+        
     }
 
     public override void Exit()

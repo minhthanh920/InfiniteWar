@@ -29,7 +29,7 @@ public class GameManager : BaseManager<GameManager>
         }
         if(ListenerManager.HasInstance)
         {
-            ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_HEALTH);
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_USER_INFO);
         }
         if (MissionManager.HasInstance)
         {
@@ -84,7 +84,7 @@ public class GameManager : BaseManager<GameManager>
                     notifyFade.Fade(DataManager.Instance.GetFadeTime(),
                         onDuringFade: () =>
                         {
-                            SceneManager.UnloadSceneAsync("Main");
+                            SceneManager.UnloadSceneAsync("DesertTown");
                         },
                         onFinish: () =>
                         {
@@ -96,10 +96,10 @@ public class GameManager : BaseManager<GameManager>
             UIManager.Instance.ShowPopup<PopupShowMessage>(data, forceShowData: true);
         }
 
-        //if (MissionManager.HasInstance)
-        //{
-        //    MissionManager.Instance.ResetMission();
-        //}
+        if (MissionManager.HasInstance)
+        {
+            MissionManager.Instance.ResetMission();
+        }
     }
 
     public void WinGame()
@@ -139,9 +139,9 @@ public class GameManager : BaseManager<GameManager>
             UIManager.Instance.ShowPopup<PopupShowMessage>(data, forceShowData: true);
         }
 
-        //if (MissionManager.HasInstance)
-        //{
-        //    MissionManager.Instance.ResetMission();
-        //}
+        if (MissionManager.HasInstance)
+        {
+            MissionManager.Instance.ResetMission();
+        }
     }
 }
