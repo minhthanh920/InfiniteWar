@@ -47,6 +47,7 @@ public class PoolManager : MonoBehaviour
             for (int i = 0; i < pool.m_Size; i++)
             {
                 GameObject obj = Instantiate(pool.m_Prefab);
+                obj.transform.SetParent(this.transform);
                 obj.SetActive(false);
                 objectPool.Enqueue(obj);
             }
@@ -72,6 +73,7 @@ public class PoolManager : MonoBehaviour
             if (m_PoolSettings.ContainsKey(tag) && m_PoolSettings[tag].m_CanExpand)
             {
                 GameObject newObj = Instantiate(m_PoolSettings[tag].m_Prefab);
+                newObj.transform.SetParent(this.transform);
                 newObj.SetActive(false);
                 poolQueue.Enqueue(newObj);
             }
@@ -83,7 +85,6 @@ public class PoolManager : MonoBehaviour
         }
 
         GameObject objectToSpawn = poolQueue.Dequeue();
-
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;

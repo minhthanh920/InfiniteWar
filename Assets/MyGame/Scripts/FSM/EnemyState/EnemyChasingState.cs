@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-public class EnemyChasingState<T> : State<Enemy>
+public class EnemyChasingState : State<Enemy>
 {
     public EnemyChasingState(BaseStateMachine<Enemy> stateMachine, Enemy enemy) : base(stateMachine, enemy) { }
 
@@ -7,7 +7,7 @@ public class EnemyChasingState<T> : State<Enemy>
     {
         if (m_Character.m_Animator != null)
         {
-            m_Character.m_Agent.isStopped = false;
+            //m_Character.m_Agent.isStopped = false;
             m_Character.m_Animator.SetBool("Run", true);
         }
     }
@@ -16,10 +16,14 @@ public class EnemyChasingState<T> : State<Enemy>
     {
         if (m_Character.IsDead())
         {
-            m_Character.m_Agent.isStopped = true;
-            m_Character.m_Agent.SetDestination(Vector3.zero);
-            m_StateMachine.SetState(CharacterStateID.Death);
-            return;
+            if(m_Character.m_Agent)
+            {
+                m_Character.m_Agent.isStopped = true;
+                m_Character.m_Agent.SetDestination(Vector3.zero);
+                m_StateMachine.SetState(CharacterStateID.Death);
+                return;
+            }
+
         }
         if (m_Character.m_AttackColdown > 0f)
         {
@@ -33,7 +37,7 @@ public class EnemyChasingState<T> : State<Enemy>
         }
         else
         {
-           m_Character.m_Agent.SetDestination(m_Character.GetPlayerPos());
+            m_Character.m_Agent.SetDestination(m_Character.GetPlayerPos());
         }
     }
 
@@ -42,9 +46,6 @@ public class EnemyChasingState<T> : State<Enemy>
         if (m_Character.m_Animator != null)
         {
             m_Character.m_Animator.SetBool("Run", false);
-            m_Character.m_Agent.isStopped = true;
-            m_Character.m_Agent.SetDestination(Vector3.zero);
-
         }
     }
 }

@@ -72,6 +72,93 @@ ModelImporter:
     100132: upperarm_twist_01_l
     100134: upperarm_twist_01_r
     100136: root
+    100138: Bip01
+    100140: Bip01 Footsteps
+    100142: Bip01 Head
+    100144: Bip01 HeadNub
+    100146: Bip01 L Calf
+    100148: Bip01 L Clavicle
+    100150: Bip01 L Finger0
+    100152: Bip01 L Finger01
+    100154: Bip01 L Finger02
+    100156: Bip01 L Finger0Nub
+    100158: Bip01 L Finger1
+    100160: Bip01 L Finger11
+    100162: Bip01 L Finger12
+    100164: Bip01 L Finger1Nub
+    100166: Bip01 L Finger2
+    100168: Bip01 L Finger21
+    100170: Bip01 L Finger22
+    100172: Bip01 L Finger2Nub
+    100174: Bip01 L Finger3
+    100176: Bip01 L Finger31
+    100178: Bip01 L Finger32
+    100180: Bip01 L Finger3Nub
+    100182: Bip01 L Finger4
+    100184: Bip01 L Finger41
+    100186: Bip01 L Finger42
+    100188: Bip01 L Finger4Nub
+    100190: Bip01 L Foot
+    100192: Bip01 L Forearm
+    100194: Bip01 L ForeTwist
+    100196: Bip01 L ForeTwist1
+    100198: Bip01 L Hand
+    100200: Bip01 L Thigh
+    100202: Bip01 L Toe0
+    100204: Bip01 L Toe0Nub
+    100206: Bip01 L UpperArm
+    100208: Bip01 LCalfTwist
+    100210: Bip01 LCalfTwist1
+    100212: Bip01 LThighTwist
+    100214: Bip01 LThighTwist1
+    100216: Bip01 LUpArmTwist
+    100218: Bip01 LUpArmTwist1
+    100220: Bip01 Neck
+    100222: Bip01 Pelvis
+    100224: Bip01 Prop1
+    100226: Bip01 R Calf
+    100228: Bip01 R Clavicle
+    100230: Bip01 R Finger0
+    100232: Bip01 R Finger01
+    100234: Bip01 R Finger02
+    100236: Bip01 R Finger0Nub
+    100238: Bip01 R Finger1
+    100240: Bip01 R Finger11
+    100242: Bip01 R Finger12
+    100244: Bip01 R Finger1Nub
+    100246: Bip01 R Finger2
+    100248: Bip01 R Finger21
+    100250: Bip01 R Finger22
+    100252: Bip01 R Finger2Nub
+    100254: Bip01 R Finger3
+    100256: Bip01 R Finger31
+    100258: Bip01 R Finger32
+    100260: Bip01 R Finger3Nub
+    100262: Bip01 R Finger4
+    100264: Bip01 R Finger41
+    100266: Bip01 R Finger42
+    100268: Bip01 R Finger4Nub
+    100270: Bip01 R Foot
+    100272: Bip01 R Forearm
+    100274: Bip01 R ForeTwist
+    100276: Bip01 R ForeTwist1
+    100278: Bip01 R Hand
+    100280: Bip01 R Thigh
+    100282: Bip01 R Toe0
+    100284: Bip01 R Toe0Nub
+    100286: Bip01 R UpperArm
+    100288: Bip01 RCalfTwist
+    100290: Bip01 RCalfTwist1
+    100292: Bip01 RThighTwist
+    100294: Bip01 RThighTwist1
+    100296: Bip01 RUpArmTwist
+    100298: Bip01 RUpArmTwist1
+    100300: Bip01 Spine
+    100302: Bip01 Spine1
+    100304: Bip01 Spine2
+    100306: Dummy01
+    100308: Dummy02
+    100310: IK_Weapon_R_Bone
     400000: ball_l
     400002: ball_r
     400004: calf_l
@@ -141,6 +228,93 @@ ModelImporter:
     400132: upperarm_twist_01_l
     400134: upperarm_twist_01_r
     400136: root
+    400138: Bip01
+    400140: Bip01 Footsteps
+    400142: Bip01 Head
+    400144: Bip01 HeadNub
+    400146: Bip01 L Calf
+    400148: Bip01 L Clavicle
+    400150: Bip01 L Finger0
+    400152: Bip01 L Finger01
+    400154: Bip01 L Finger02
+    400156: Bip01 L Finger0Nub
+    400158: Bip01 L Finger1
+    400160: Bip01 L Finger11
+    400162: Bip01 L Finger12
+    400164: Bip01 L Finger1Nub
+    400166: Bip01 L Finger2
+    400168: Bip01 L Finger21
+    400170: Bip01 L Finger22
+    400172: Bip01 L Finger2Nub
+    400174: Bip01 L Finger3
+    400176: Bip01 L Finger31
+    400178: Bip01 L Finger32
+    400180: Bip01 L Finger3Nub
+    400182: Bip01 L Finger4
+    400184: Bip01 L Finger41
+    400186: Bip01 L Finger42
+    400188: Bip01 L Finger4Nub
+    400190: Bip01 L Foot
+    400192: Bip01 L Forearm
+    400194: Bip01 L ForeTwist
+    400196: Bip01 L ForeTwist1
+    400198: Bip01 L Hand
+    400200: Bip01 L Thigh
+    400202: Bip01 L Toe0
+    400204: Bip01 L Toe0Nub
+    400206: Bip01 L UpperArm
+    400208: Bip01 LCalfTwist
+    400210: Bip01 LCalfTwist1
+    400212: Bip01 LThighTwist
+    400214: Bip01 LThighTwist1
+    400216: Bip01 LUpArmTwist
+    400218: Bip01 LUpArmTwist1
+    400220: Bip01 Neck
+    400222: Bip01 Pelvis
+    400224: Bip01 Prop1
+    400226: Bip01 R Calf
+    400228: Bip01 R Clavicle
+    400230: Bip01 R Finger0
+    400232: Bip01 R Finger01
+    400234: Bip01 R Finger02
+    400236: Bip01 R Finger0Nub
+    400238: Bip01 R Finger1
+    400240: Bip01 R Finger11
+    400242: Bip01 R Finger12
+    400244: Bip01 R Finger1Nub
+    400246: Bip01 R Finger2
+    400248: Bip01 R Finger21
+    400250: Bip01 R Finger22
+    400252: Bip01 R Finger2Nub
+    400254: Bip01 R Finger3
+    400256: Bip01 R Finger31
+    400258: Bip01 R Finger32
+    400260: Bip01 R Finger3Nub
+    400262: Bip01 R Finger4
+    400264: Bip01 R Finger41
+    400266: Bip01 R Finger42
+    400268: Bip01 R Finger4Nub
+    400270: Bip01 R Foot
+    400272: Bip01 R Forearm
+    400274: Bip01 R ForeTwist
+    400276: Bip01 R ForeTwist1
+    400278: Bip01 R Hand
+    400280: Bip01 R Thigh
+    400282: Bip01 R Toe0
+    400284: Bip01 R Toe0Nub
+    400286: Bip01 R UpperArm
+    400288: Bip01 RCalfTwist
+    400290: Bip01 RCalfTwist1
+    400292: Bip01 RThighTwist
+    400294: Bip01 RThighTwist1
+    400296: Bip01 RUpArmTwist
+    400298: Bip01 RUpArmTwist1
+    400300: Bip01 Spine
+    400302: Bip01 Spine1
+    400304: Bip01 Spine2
+    400306: Dummy01
+    400308: Dummy02
+    400310: IK_Weapon_R_Bone
     7400000: Walk_ver_B_Back_Root
     9500000: //RootNode
     2186277476908879412: ImportLogs
@@ -159,16 +333,11 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
       copied configuration does not match position in animation file:\n\t'thigh_l'
-      : position error = 3.938527 mm\n\t'calf_l' : position error = 4.344368 mm\n\t'foot_l'
-      : position error = 2.299761 mm\n\t'thigh_r' : position error = 4.064193 mm\n\t'calf_r'
-      : position error = 7.580945 mm\n\t'foot_r' : position error = 2.867642 mm\n\t'ball_r'
-      : position error = 2.195657 mm\n"
+      : position error = 3.256765 mm\n\t'calf_l' : position error = 1.770865 mm\n\t'thigh_r'
+      : position error = 3.157213 mm\n\t'calf_r' : position error = 9.648645 mm\n\t'foot_r'
+      : position error = 2.334790 mm\n\t'ball_r' : position error = 1.607211 mm\n"
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
-      might lower retargeting quality:\nNote: Activate translation DOF on avatar to
-      improve retargeting quality.\n\t'calf_r' has translation animation that will
-      be discarded.\n\t'foot_r' has translation animation that will be discarded.\n\t'ball_r'
-      has translation animation that will be discarded.\n"
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -1174,3 +1343,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 183324
+  packageName: Powerful Sword Pack(Great Sword + Katana)
+  packageVersion: 2.1.1
+  assetPath: Assets/Grruzam Powerful Sword Animation(Great Sword, Katana)/Animation/M_Katana_Blade/1_Movements/2__Walk/B/M_katana_Blade@Walk_ver_B_Back_Root.FBX
+  uploadId: 737837

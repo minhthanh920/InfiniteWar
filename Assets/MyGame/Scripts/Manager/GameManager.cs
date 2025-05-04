@@ -17,7 +17,9 @@ public class GameManager : BaseManager<GameManager>
                 {
                     scr.Hide();
                     UIManager.Instance.ShowScreen<ScreenHome>();
-                    
+                    UIManager.Instance.ShowPopup<PopupStartGame>();
+
+
                 });
             }
         }

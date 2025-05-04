@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-public class EnemyDeathState<T> : State<Enemy>
+public class EnemyDeathState : State<Enemy>
 {
     public EnemyDeathState(BaseStateMachine<Enemy> stateMachine, Enemy enemy) : base(stateMachine, enemy) { }
 

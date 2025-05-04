@@ -123,7 +123,17 @@ public class UIManager : BaseManager<UIManager>
                 break;
         }
     }
-
+    public void HideScreen<T>() where T : BaseScreen
+    {
+        BaseScreen screenScr = null;
+        string nameScreen = typeof(T).Name;
+        if (screens.ContainsKey(nameScreen))
+        {
+            screenScr = screens[nameScreen];
+            Debug.Log(screenScr);
+            screenScr.Hide();
+        }
+    }
     public T GetExistScreen<T>() where T : BaseScreen
     {
         string nameScreen = typeof(T).Name;

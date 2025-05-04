@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour , IPoolable
 {
     public NavMeshAgent m_Agent;
     public Enemy m_Enemy;
@@ -38,16 +38,9 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         Initialized();
-        m_Player = FindFirstObjectByType<Player>();
         m_Agent.stoppingDistance = 2f;
         m_Agent.speed = m_EnemySpeed;
         m_SpawnPoint = gameObject.transform.position;
-        m_StateMachine.AddState(CharacterStateID.Idle, new EnemyIdleState<Enemy>(m_StateMachine, this));
-        m_StateMachine.AddState(CharacterStateID.Chasing, new EnemyChasingState<Enemy>(m_StateMachine, this));
-        m_StateMachine.AddState(CharacterStateID.Attack, new EnemyAttackState<Enemy>(m_StateMachine, this));
-        m_StateMachine.AddState(CharacterStateID.Death, new EnemyDeathState<Enemy>(m_StateMachine, this));
-        m_StateMachine.SetState(CharacterStateID.Idle);
-
     }
     private void Initialized()
     {
@@ -113,6 +106,7 @@ public class Enemy : MonoBehaviour
     }
     public Vector3 GetPlayerPos()
     {
+        m_Player = FindFirstObjectByType<Player>();
         return m_Player.transform.position;
     }
     public void TakeDamage(float damage)
@@ -128,5 +122,10 @@ public class Enemy : MonoBehaviour
                 ListenerManager.Instance.BroadCast(ListenType.ON_ENEMY_DEATH, "Won !!!");
             }
         }
+    }
+
+    public void OnSpawned()
+    {
+        m_StateMachine.ResetState();
     }
 }

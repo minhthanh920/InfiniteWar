@@ -158,11 +158,19 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
-    rigImportErrors: "Copied Avatar Rig Configuration mis-match. Transform hierarchy
-      does not match:\n\tTransform 'pelvis' for human bone 'Hips' not found\n"
-    rigImportWarnings: 
+    rigImportErrors: 
+    rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
+      copied configuration does not match position in animation file:\n\t'thigh_l'
+      : position error = 19.810369 mm\n\t'calf_l' : position error = 5.017269 mm\n\t'foot_l'
+      : position error = 9.396423 mm\n\t'ball_l' : position error = 6.786940 mm\n\t'thigh_r'
+      : position error = 19.440441 mm\n\t'calf_r' : position error = 15.769260 mm\n\t'foot_r'
+      : position error = 13.160166 mm\n\t'ball_r' : position error = 8.922357 mm\n"
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'calf_r' has translation animation that
+      will be discarded.\n\t'foot_r' has translation animation that will be discarded.\n\t'ball_r'
+      has translation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -1168,3 +1176,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 183324
+  packageName: Powerful Sword Pack(Great Sword + Katana)
+  packageVersion: 2.1.1
+  assetPath: Assets/Grruzam Powerful Sword Animation(Great Sword, Katana)/Animation/M_Katana_Blade/2_Attacks/0__3Combos/M_katana_Blade@Attack_3Combo_ALL_Inplace.FBX
+  uploadId: 737837

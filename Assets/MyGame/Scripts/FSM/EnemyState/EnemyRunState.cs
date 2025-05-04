@@ -1,4 +1,4 @@
-﻿public class EnemyRunState<T> : State<Enemy>
+﻿public class EnemyRunState : State<Enemy>
 {
     public EnemyRunState(BaseStateMachine<Enemy> stateMachine, Enemy enemy) : base(stateMachine, enemy) { }
 

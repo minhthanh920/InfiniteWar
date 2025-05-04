@@ -1,14 +1,22 @@
 ﻿public class EnemyStateMachine : BaseStateMachine<Enemy>
 {
-
-    private void Awake()
+    protected override void Awake()
     {
-        // Thêm các trạng thái vào máy trạng thái
-        //AddState(CharacterStateID.Idle, new EnemyIdleState(this, enemy));
-        //AddState(CharacterStateID.Walk, new EnemyIdleState(this, enemy));
-        //AddState(CharacterStateID.Run, new EnemyIdleState(this, enemy));
-        //AddState(CharacterStateID.Jump, new EnemyIdleState(this, enemy));
-        //AddState(CharacterStateID.Attack, new EnemyIdleState(this, enemy));
-        //AddState(CharacterStateID.Death, new EnemyIdleState(this, enemy));
+        base.Awake();
+        AddStates();
+        SetState(CharacterStateID.Idle);
+    }
+    private void AddStates()
+    {
+        AddState(CharacterStateID.Idle, new EnemyIdleState(this, m_Character));
+        AddState(CharacterStateID.Attack, new EnemyAttackState(this, m_Character));
+        AddState(CharacterStateID.Walk, new EnemyWalkState(this, m_Character));
+        AddState(CharacterStateID.Run, new EnemyRunState(this, m_Character));
+        AddState(CharacterStateID.Death, new EnemyDeathState(this, m_Character));
+        AddState(CharacterStateID.Chasing, new EnemyChasingState(this, m_Character));
+    }
+    public void ResetState()
+    {
+        SetState(CharacterStateID.Idle);
     }
 }

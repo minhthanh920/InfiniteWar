@@ -351,17 +351,17 @@ ModelImporter:
       : position error = 10.484472 mm\n"
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
-      might lower retargeting quality:\nNote: Activate translation DOF on avatar to
-      improve retargeting quality.\n\t'spine_01' has translation animation that will
-      be discarded.\n\t'clavicle_l' has translation animation that will be discarded.\n\t'lowerarm_l'
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'spine_01' has translation animation that
+      will be discarded.\n\t'clavicle_l' has translation animation that will be discarded.\n\t'lowerarm_l'
       has translation animation that will be discarded.\n\t'hand_l' has translation
       animation that will be discarded.\n\t'index_01_l' has translation animation
       that will be discarded.\n\t'index_03_l' has translation animation that will
       be discarded.\n\t'middle_01_l' has translation animation that will be discarded.\n\t'middle_03_l'
       has translation animation that will be discarded.\n\t'pinky_01_l' has translation
       animation that will be discarded.\n\t'pinky_02_l' has translation animation
-      that will be discarded.\n\t'ring_01_l' has translation animation that will be
-      discarded.\n\t'ring_03_l' has translation animation that will be discarded.\n\t'thumb_01_l'
+      that will be discarded.\n\t'ring_01_l' has translation animation that will
+      be discarded.\n\t'ring_03_l' has translation animation that will be discarded.\n\t'thumb_01_l'
       has translation animation that will be discarded.\n\t'thumb_02_l' has translation
       animation that will be discarded.\n\t'thumb_03_l' has translation animation
       that will be discarded.\n\t'clavicle_r' has translation animation that will
@@ -1377,3 +1377,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 183324
+  packageName: Powerful Sword Pack(Great Sword + Katana)
+  packageVersion: 2.1.1
+  assetPath: Assets/Grruzam Powerful Sword Animation(Great Sword, Katana)/Animation/M_Big_Sword/5_Revenges/Guard_Revenges/M_Big_Sword@Revenge_Guard_Loop.FBX
+  uploadId: 737837

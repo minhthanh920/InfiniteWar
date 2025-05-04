@@ -32,8 +32,8 @@ public class Player : MonoBehaviour
     private CharacterStateID CurrentStateID = CharacterStateID.Idle;
 
 
-    private float jumpHeight;
-    private float gravity;
+    private float m_JumpHeight;
+    private float m_Gravity;
     private float stepDown;
     private float airControl;
     private float jumpDamp;
@@ -100,8 +100,8 @@ public class Player : MonoBehaviour
     {
         if (DataManager.HasInstance)
         {
-            jumpHeight = DataManager.Instance.GlobalConfig.jumpHeight;
-            gravity = DataManager.Instance.GlobalConfig.gravity;
+            m_JumpHeight = DataManager.Instance.GlobalConfig.jumpHeight;
+            m_Gravity = DataManager.Instance.GlobalConfig.gravity;
             stepDown = DataManager.Instance.GlobalConfig.stepDown;
             airControl = DataManager.Instance.GlobalConfig.airControl;
             jumpDamp = DataManager.Instance.GlobalConfig.jumpDamp;
@@ -240,7 +240,7 @@ public class Player : MonoBehaviour
     }
     private void UpdateInAir()
     {
-        m_Velocity.y -= gravity * Time.fixedDeltaTime;
+        m_Velocity.y -= m_Gravity * Time.fixedDeltaTime;
         Vector3 airDisplacement = m_Velocity * Time.fixedDeltaTime;
         airDisplacement += CalculateAircontrol();
         m_CharacterController.Move(airDisplacement);
@@ -260,7 +260,7 @@ public class Player : MonoBehaviour
     {
         if (!isJumping)
         {
-          float jumpVelocity = Mathf.Sqrt(2 * gravity * jumpHeight);
+          float jumpVelocity = Mathf.Sqrt(2 * m_Gravity * m_JumpHeight);
           SetInAir(jumpVelocity);
         }
     }

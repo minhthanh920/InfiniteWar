@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class EnemyIdleState<T> : State<Enemy>
+public class EnemyIdleState : State<Enemy>
 {
     public EnemyIdleState(BaseStateMachine<Enemy> stateMachine, Enemy enemy) : base(stateMachine, enemy) { }
     public override void Enter()

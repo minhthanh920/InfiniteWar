@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-public class EnemyAttackState<T> : State<Enemy>
+public class EnemyAttackState: State<Enemy>
 {
     public EnemyAttackState(BaseStateMachine<Enemy> stateMachine, Enemy enemy) : base(stateMachine, enemy) { }
     public override void Enter()

@@ -1,7 +1,14 @@
 fileFormatVersion: 2
-guid: e75bdab9610f0c74090f09c5b97a87c5
+guid: 9b7602cd65fbfdf42ad2de0a90177695
 DefaultImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 183324
+  packageName: Powerful Sword Pack(Great Sword + Katana)
+  packageVersion: 2.1.1
+  assetPath: Assets/Grruzam Powerful Sword Animation(Great Sword, Katana)/Scenes/Scenes_Grruzam_Animation.unity
+  uploadId: 737837
