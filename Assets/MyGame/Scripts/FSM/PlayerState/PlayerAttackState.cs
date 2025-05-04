@@ -9,6 +9,10 @@ public class PlayerAttackState : State<Player>
     public override void Enter()
     {
         m_Character.m_Animator.SetBool("Attack", true);
+        if (m_Character.m_EffectPrefab != null)
+        {
+            m_Character.m_EffectPrefab.Play();
+        }
     }
 
     public override void Update()
@@ -22,6 +26,7 @@ public class PlayerAttackState : State<Player>
         if (m_Progress >= 0.5f)
         {
             m_Character.m_Weapon?.EnableDamage();
+
         }
 
         // Disable Damage nếu animation restart (loop lại)
@@ -48,6 +53,10 @@ public class PlayerAttackState : State<Player>
         if (m_Character.m_Weapon != null)
         {
             //player.m_Weapon.DisableWeapon();
+        }
+        if (m_Character.m_EffectPrefab != null)
+        {
+            m_Character.m_EffectPrefab.Stop();
         }
         m_Character.m_Input.attack = false;
     }

@@ -8,7 +8,5 @@ public static class AUDIO
     public const string SE_BTNCLICK = "BtnClick";
     public const string SE_BTNHOVER = "BtnHover";
     public const string SE_FOOTSTEP = "FootStep";
-    public const string SE_PISTOLSHOT = "PistolShot";
-    public const string SE_RIFLESHOT = "RifleShot";
-    public const string SE_SNIPERSHOT = "SniperShot";
+    public const string SE_MELEEATTACK1 = "MeleeAttack1";
 }

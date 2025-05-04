@@ -1,5 +1,4 @@
-﻿using DG.Tweening.Core.Easing;
-using StarterAssets;
+﻿using StarterAssets;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -11,6 +10,7 @@ public class Player : MonoBehaviour
     public Vector2 m_UserInput;
     public AnimatorStateInfo m_StateInfo;
     public PlayerWeapon m_Weapon;
+    public ParticleSystem m_EffectPrefab;
     [SerializeField]
     private PlayerSO m_PlayerSO;
     public CharacterController m_CharacterController;
@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
     private bool m_IsDead;
     public StarterAssetsInputs m_Input;
     private PlayerStateMachine m_StateMachine;
+
     private void Awake()
     {
         m_Animator = GetComponent<Animator>();
@@ -286,16 +287,25 @@ public class Player : MonoBehaviour
             return;
         Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
         body.linearVelocity = pushDir * pushPower;
+    } 
+    public void OnFootStep()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_FOOTSTEP);
+        }
     }
+    public void OnAttack1()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_MELEEATTACK1);
+        }
+    }
+    public void OnIdle()
+    {
 
-    //public void OnFootStep()
-    //{
-    //    if (AudioManager.HasInstance)
-    //    {
-    //        AudioManager.Instance.PlaySE(AUDIO.SE_FOOTSTEP);
-    //    }
-    //}
-
+    }
     //public void OnJump()
     //{
     //    if (AudioManager.HasInstance)
