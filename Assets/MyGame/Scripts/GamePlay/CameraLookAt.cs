@@ -26,6 +26,8 @@ public class CharacterAiming : MonoBehaviour
     void FixedUpdate()
     {
         xAxis.Update(Time.fixedDeltaTime);
+        //xAxis.m_MaxSpeed = 0;
+        //yAxis.m_MaxSpeed = 0;
         yAxis.Update(Time.fixedDeltaTime);
         cameraLookAt.eulerAngles = new Vector3(yAxis.Value, xAxis.Value, 0);
         float yawCamera = mainCamera.transform.rotation.eulerAngles.y;

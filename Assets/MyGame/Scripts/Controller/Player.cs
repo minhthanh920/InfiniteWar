@@ -82,6 +82,7 @@ public class Player : MonoBehaviour
         m_UserInput.x = Input.GetAxis("Horizontal");
         m_UserInput.y = Input.GetAxis("Vertical");
         UpdateState();
+        ShowPopup();
         //UpdateIsSprinting();
 
     }
@@ -90,11 +91,44 @@ public class Player : MonoBehaviour
         if (damage > 0)
         {
             m_Heath -= damage;
-            ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_HEALTH, m_Heath / m_PlayerSO.m_Heath);
+            Debug.Log($"m_Heath : {m_Heath}");
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_HEALTH, this);
             if (m_Heath <= 0)
             {
+                UIManager.Instance.ShowPopup<PopupPlayerDead>();
                 SetDeath();
             }
+        }
+    }
+    private void ShowPopup()
+    {
+        if(Input.GetKeyDown(KeyCode.F3))
+        {
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.ShowPopup<PopupPlayerInfomation>();
+            }
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            return;
+        }
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.ShowPopup<PopupPauseGame>();
+            }
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.Insert))
+        {
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.ShowPopup<PopupCheatGame>();
+            }
+            return;
         }
     }
     public void SetupDefault()
@@ -131,7 +165,6 @@ public class Player : MonoBehaviour
     }
     private void UpdateState()
     {
-        Debug.Log($"m_Input.attack : {m_Input.attack}");
         if (m_Heath <= 0f)
         {
             m_StateMachine.SetState(CharacterStateID.Death);
@@ -139,10 +172,10 @@ public class Player : MonoBehaviour
         }
 
         // Kiểm tra trạng thái tấn công
-        if (m_Input.attack)
+        if (m_Input.attack && m_CharacterController.isGrounded)
         {
             // Nếu nhân vật chưa vào trạng thái tấn công, vào trạng thái Attack
-            if (m_StateMachine.CurrentStateID != CharacterStateID.Attack)
+            if (m_StateMachine.m_CurrentStateID != CharacterStateID.Attack)
             {
                 m_StateMachine.SetState(CharacterStateID.Attack);
             }
@@ -150,16 +183,16 @@ public class Player : MonoBehaviour
         }
 
         // Kiểm tra animation tấn công đã hoàn thành chưa
-        if (m_StateMachine.CurrentStateID == CharacterStateID.Attack)
-        {
-            AnimatorStateInfo stateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.normalizedTime >= 1f)  // Animation đã hoàn thành
-            {
-                // Sau khi hoàn thành animation Attack, chuyển sang trạng thái Idle hoặc các trạng thái khác
-                m_StateMachine.SetState(CharacterStateID.Idle);
-            }
-            return;
-        }
+        //if (m_StateMachine.m_CurrentStateID == CharacterStateID.Attack)
+        //{
+        //    AnimatorStateInfo stateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
+        //    if (stateInfo.normalizedTime >= 1f)  // Animation đã hoàn thành
+        //    {
+        //        // Sau khi hoàn thành animation Attack, chuyển sang trạng thái Idle hoặc các trạng thái khác
+        //        m_StateMachine.SetState(CharacterStateID.Idle);
+        //    }
+        //    return;
+        //}
         m_Animator.SetFloat("x", m_UserInput.x);
         m_Animator.SetFloat("y", m_UserInput.y);
         if (!m_CharacterController.isGrounded || m_Input.jump)
@@ -185,7 +218,7 @@ public class Player : MonoBehaviour
     private void SetDeath()
     {
         m_IsDead = true;
-        ListenerManager.Instance.BroadCast(ListenType.ON_PLAYER_DEATH, m_GameOver);
+        ListenerManager.Instance.BroadCast(ListenType.ON_PLAYER_DEATH, this);
 
     }
     public bool IsPlayerDeath()

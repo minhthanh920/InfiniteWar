@@ -24,6 +24,8 @@ public class ScreenGame : BaseScreen
         {
             ListenerManager.Instance.Register(ListenType.UPDATE_USER_INFO, OnUpdateUserInfoEvent);
             ListenerManager.Instance.Register(ListenType.UPDATE_PLAYER_HEALTH, OnUpdatePlayerHealthEvent);
+            ListenerManager.Instance.Register(ListenType.UPDATE_PLAYER_MANA, OnUpdatePlayerManaEvent);
+            ListenerManager.Instance.Register(ListenType.UPDATE_PLAYER_STAMINA, OnUpdatePlayerStaminaEvent);
             ListenerManager.Instance.Register(ListenType.UPDATE_MISSION, OnUpdateMissionEvent);
             ListenerManager.Instance.Register(ListenType.UPDATE_COUNT_ENEMY, OnUpdateCountEnemyEvent);
             //ListenerManager.Instance.Register(ListenType.ON_PLAYER_DEATH, OnPlayerDeathEvent);
@@ -40,6 +42,8 @@ public class ScreenGame : BaseScreen
         {
             ListenerManager.Instance.Unregister(ListenType.UPDATE_USER_INFO, OnUpdateUserInfoEvent);
             ListenerManager.Instance.Unregister(ListenType.UPDATE_PLAYER_HEALTH, OnUpdatePlayerHealthEvent);
+            ListenerManager.Instance.Unregister(ListenType.UPDATE_PLAYER_MANA, OnUpdatePlayerManaEvent);
+            ListenerManager.Instance.Unregister(ListenType.UPDATE_PLAYER_STAMINA, OnUpdatePlayerStaminaEvent);
             ListenerManager.Instance.Unregister(ListenType.UPDATE_MISSION, OnUpdateMissionEvent);
             ListenerManager.Instance.Unregister(ListenType.UPDATE_COUNT_ENEMY, OnUpdateCountEnemyEvent);
             //ListenerManager.Instance.Unregister(ListenType.ON_PLAYER_DEATH, OnEnemyDeathEvent);
@@ -69,18 +73,35 @@ public class ScreenGame : BaseScreen
     {
         if (value != null)
         {
-            if (value is float currentHealth)
+            if (value is Player currentvalue)
             {
-                //Debug.Log($"currentHealth : {currentHealth}");
-                m_HPSlider.value = currentHealth;
+                m_Heathtxt.text = $"{currentvalue.GetPlayerCurrentHeath().ToString()}/{currentvalue.GetPlayerMaxHeath().ToString()}";
+                m_HPSlider.value = currentvalue.GetPlayerCurrentHeath() / currentvalue.GetPlayerMaxHeath();
             }
         }
-        else
+    }
+    private void OnUpdatePlayerManaEvent(object value)
+    {
+        if (value != null)
         {
-            m_HPSlider.value = 1;
+            if (value is Player currentvalue)
+            {
+                m_Manatxt.text = $"{currentvalue.GetPlayerCurrentMana().ToString()}/{currentvalue.GetPlayerMaxMana().ToString()}";
+                m_MPSlider.value = currentvalue.GetPlayerCurrentMana() / currentvalue.GetPlayerMaxMana();
+            }
         }
     }
-
+    private void OnUpdatePlayerStaminaEvent(object value)
+    {
+        if (value != null)
+        {
+            if (value is Player currentvalue)
+            {
+                m_Staminatxt.text = $"{currentvalue.GetPlayerCurrentStamina().ToString()}/{currentvalue.GetPlayerMaxStamina().ToString()}";
+                m_StaminaSlider.value = currentvalue.GetPlayerCurrentStamina() / currentvalue.GetPlayerMaxStamina();
+            }
+        }
+    }
     private void InitMission()
     {
         if (MissionManager.HasInstance)

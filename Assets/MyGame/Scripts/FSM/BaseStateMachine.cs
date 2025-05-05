@@ -6,7 +6,7 @@ public abstract class BaseStateMachine<T> : MonoBehaviour where T : MonoBehaviou
     protected T m_Character;
     private Dictionary<CharacterStateID, State<T>> m_States = new Dictionary<CharacterStateID, State<T>>();
     private State<T> m_CurrentState;
-    public CharacterStateID CurrentStateID { get; private set; }
+    public CharacterStateID m_CurrentStateID { get; private set; }
 
     protected virtual void Awake()
     {
@@ -28,9 +28,10 @@ public abstract class BaseStateMachine<T> : MonoBehaviour where T : MonoBehaviou
 
         if (m_States.TryGetValue(newState, out var state))
         {
+            m_CurrentStateID = newState;
             m_CurrentState = state;
             m_CurrentState.Enter();
-            CurrentStateID = newState;
+            
         }
         else
         {

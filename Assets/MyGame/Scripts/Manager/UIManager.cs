@@ -28,7 +28,6 @@ public class UIManager : BaseManager<UIManager>
     public BasePopup CurPopup => curPopup;
     public BaseNotify CurNotify => curNotify;
 
-
     #region Screen
     public void ShowScreen<T>(object data = null, bool forceShowData = false) where T : BaseScreen
     {

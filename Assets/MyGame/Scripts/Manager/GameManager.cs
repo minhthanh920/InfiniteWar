@@ -18,8 +18,6 @@ public class GameManager : BaseManager<GameManager>
                     scr.Hide();
                     UIManager.Instance.ShowScreen<ScreenHome>();
                     UIManager.Instance.ShowPopup<PopupStartGame>();
-
-
                 });
             }
         }
@@ -56,6 +54,7 @@ public class GameManager : BaseManager<GameManager>
         {
             ListenerManager.Instance.BroadCast(ListenType.ON_RESUME_GAME);
         }
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void RestartGame()
@@ -67,6 +66,14 @@ public class GameManager : BaseManager<GameManager>
     {
 
     }
+    public void CheatGame()
+    {
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<PopupCheatGame>();
+        }
+        Cursor.lockState = CursorLockMode.Confined;
+    }    
     public void GameOver()
     {
         Time.timeScale = 0;
