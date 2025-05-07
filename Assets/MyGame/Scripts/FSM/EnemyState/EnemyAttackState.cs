@@ -9,8 +9,16 @@ public class EnemyAttackState: State<Enemy>
         //Debug.Log($"{typeof(T).Name} vào trạng thái Attack.");
         if (m_Character.m_Animator != null)
         {
-            m_Character.m_Agent.isStopped = true;
-            m_Character.m_Agent.SetDestination(Vector3.zero);
+            if (m_Character.m_Agent.isOnNavMesh)
+            {
+                m_Character.m_Agent.isStopped = true;
+                m_Character.m_Agent.SetDestination(Vector3.zero);
+            }
+            else
+            {     
+                Debug.LogWarning("Enemy không nằm trên NavMesh!");
+                return; // hoặc có thể đợi vài frame rồi retry
+            } 
             m_Character.m_Animator.SetBool("Attack", true);
             m_Character.m_AttackColdown = m_Character.m_EnemyS0.m_AttackTime;
         }
@@ -45,7 +53,15 @@ public class EnemyAttackState: State<Enemy>
        // Debug.Log($"{typeof(T).Name} rời khỏi trạng thái Attack.");
        if (m_Character.m_Animator != null)
        {
-           m_Character.m_Agent.isStopped = false;
+            if (m_Character.m_Agent.isOnNavMesh)
+            {
+                m_Character.m_Agent.isStopped = false;
+            }
+            else
+            {
+                Debug.LogWarning("Enemy không nằm trên NavMesh!");
+                return; // hoặc có thể đợi vài frame rồi retry
+            }
            m_Character.m_Animator.SetBool("Attack", false);
        }
     }

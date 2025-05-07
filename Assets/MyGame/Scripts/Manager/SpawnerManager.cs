@@ -1,15 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SpawnerManager : MonoBehaviour
 {
+    public static SpawnerManager Instance { get; private set; }
+
     [System.Serializable]
     public class SpawnInfo
     {
-        public string tag;               // tag dùng để lấy prefab từ PoolManager
-        public float spawnInterval = 2f; // thời gian giữa mỗi lần spawn
-        public int spawnCount = 1;       // số lượng spawn mỗi lần
+        public string tag;
+        public float spawnInterval = 2f;
+        public int spawnCount = 1;
         public int maxSpawn = 10;
         [HideInInspector] public int currentSpawned = 0;
     }
@@ -19,6 +22,11 @@ public class SpawnerManager : MonoBehaviour
 
     [Header("Danh sách các loại spawn")]
     public List<SpawnInfo> spawnPrefabs;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -30,45 +38,39 @@ public class SpawnerManager : MonoBehaviour
 
     private IEnumerator SpawnRoutine(SpawnInfo info)
     {
-        while (info.currentSpawned < info.maxSpawn)
+        while (true)
         {
             for (int i = 0; i < info.spawnCount; i++)
             {
                 if (info.currentSpawned >= info.maxSpawn)
                     break;
+                GameObject obj = PoolManager.Instance.SpawnFromPool(
+                    info.tag,
+                    spawnPoints[1].position,
+                    spawnPoints[1].rotation
+                );
 
-                Transform spawnPoint = GetRandomSpawnPoint();
-                if (spawnPoint != null)
+                if (obj != null)
                 {
-                    Vector3 spawnPos = GetNearestNavMeshPoint(spawnPoint.position);
-                    GameObject obj = PoolManager.Instance.SpawnFromPool(
-                        info.tag,
-                        spawnPos,
-                        spawnPoint.rotation
-                    );
-
-                    if (obj != null)
-                        info.currentSpawned++;
+                    info.currentSpawned++;
                 }
             }
 
             yield return new WaitForSeconds(info.spawnInterval);
         }
     }
-
-    private Vector3 GetNearestNavMeshPoint(Vector3 position)
+    /// <summary>
+    /// Gọi khi enemy chết để giảm số lượng đang spawn
+    /// </summary>
+    public void OnEnemyDespawn(GameObject enemy)
     {
-        UnityEngine.AI.NavMeshHit hit;
-        if (UnityEngine.AI.NavMesh.SamplePosition(position, out hit, 10f, UnityEngine.AI.NavMesh.AllAreas))
+        foreach (var info in spawnPrefabs)
         {
-            return hit.position;
+            if (enemy.CompareTag(info.tag))
+            {
+                info.currentSpawned = Mathf.Max(0, info.currentSpawned - 1);
+                break;
+            }
         }
-        return position; // fallback nếu không tìm được
-    }
-
-    private Transform GetRandomSpawnPoint()
-    {
-        if (spawnPoints.Count == 0) return null;
-        return spawnPoints[Random.Range(0, spawnPoints.Count)];
     }
 }

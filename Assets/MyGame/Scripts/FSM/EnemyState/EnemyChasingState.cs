@@ -37,7 +37,16 @@ public class EnemyChasingState : State<Enemy>
         }
         else
         {
-            m_Character.m_Agent.SetDestination(m_Character.GetPlayerPos());
+            if (m_Character.m_Agent.isOnNavMesh)
+            {
+                m_Character.m_Agent.SetDestination(m_Character.GetPlayerPos());
+            }
+            else
+            {
+                Debug.LogWarning("Enemy không nằm trên NavMesh!");
+                return; // hoặc có thể đợi vài frame rồi retry
+            }
+            
         }
     }
 

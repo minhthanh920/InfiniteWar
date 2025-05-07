@@ -25,10 +25,7 @@ public class Enemy : MonoBehaviour , IPoolable
     private EnemyStateMachine m_StateMachine;
     private void Awake()
     {
-        m_Agent = GetComponent<NavMeshAgent>();
-        m_Animator = GetComponent<Animator>();
-        m_StateMachine = GetComponent<EnemyStateMachine>();
-        m_Enemy = GetComponent<Enemy>();
+
     }
     public Vector3 GetAttackPoint()
     {
@@ -37,6 +34,14 @@ public class Enemy : MonoBehaviour , IPoolable
     // Start is called before the first frame update
     void Start()
     {
+
+    }
+    private void OnEnable()
+    {
+        m_Agent = GetComponent<NavMeshAgent>();
+        m_Animator = GetComponent<Animator>();
+        m_StateMachine = GetComponent<EnemyStateMachine>();
+        m_Enemy = GetComponent<Enemy>();
         Initialized();
         m_Agent.stoppingDistance = 2f;
         m_Agent.speed = m_EnemySpeed;

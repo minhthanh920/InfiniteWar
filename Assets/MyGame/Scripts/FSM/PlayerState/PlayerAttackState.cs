@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+﻿using System.Collections;
 using UnityEngine;
 
 public class PlayerAttackState : State<Player>
@@ -9,12 +9,8 @@ public class PlayerAttackState : State<Player>
     public override void Enter()
     {
         m_Character.m_Animator.SetBool("Attack", true);
-        if (m_Character.m_EffectPrefab != null)
-        {
-            m_Character.m_EffectPrefab.Play();
-        }
+        m_Character.StartCoroutine(IEPlayEffect());
     }
-
     public override void Update()
     {
         m_StateInfo = m_Character.m_Animator.GetCurrentAnimatorStateInfo(0);
@@ -26,7 +22,6 @@ public class PlayerAttackState : State<Player>
         if (m_Progress >= 0.5f)
         {
             m_Character.m_Weapon?.EnableDamage();
-
         }
 
         // Disable Damage nếu animation restart (loop lại)
@@ -42,7 +37,14 @@ public class PlayerAttackState : State<Player>
             m_StateMachine.SetState(CharacterStateID.Idle);  // Chuyển về Idle
         }
     }
-
+    private IEnumerator IEPlayEffect()
+    {
+        yield return new WaitForSeconds(0.4f);
+        if (m_Character.m_EffectPrefab != null)
+        {
+            m_Character.m_EffectPrefab.Play();
+        }
+    }
     public override void Exit()
     {
         //Debug.Log($" rời khỏi trạng thái Attack.");
