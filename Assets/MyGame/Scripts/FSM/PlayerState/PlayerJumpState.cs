@@ -19,7 +19,7 @@ public class PlayerJumpState : State<Player>
             //m_Character.m_Velocity = m_Character.m_Animator.velocity * m_Character.m_JumpDamp * m_Character.m_GroundSpeed;
             //m_Character.m_Velocity.y = jumpVelocity;
         }
-        m_Character.OnJump();
+        //m_Character.OnJump();
     }
 
     public override void Update()

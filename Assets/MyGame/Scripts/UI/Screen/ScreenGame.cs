@@ -50,6 +50,17 @@ public class ScreenGame : BaseScreen
             //ListenerManager.Instance.Register(ListenType.ON_ENEMY_DEATH, OnEnemyDeathEvent);
         }
         InitMission();
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<PopupTutorials>();
+            if (GameManager.HasInstance)
+            {
+                if (GameManager.Instance.GetPlayer() != null)
+                {
+                    GameManager.Instance.GetPlayer().SetMouseSpeed(0);
+                }
+            }
+        }
 
     }
     private void OnUseSkill(object value)
@@ -123,11 +134,19 @@ public class ScreenGame : BaseScreen
             ListenerManager.Instance.Unregister(ListenType.UPDATE_COUNT_ENEMY, OnUpdateCountEnemyEvent);
             //ListenerManager.Instance.Unregister(ListenType.ON_PLAYER_DEATH, OnEnemyDeathEvent);
         }
+        if (GameManager.HasInstance)
+        {
+            if (GameManager.Instance.GetPlayer() != null)
+            {
+                GameManager.Instance.GetPlayer().RestoreMouseSpeed();
+            }
+        }
 
     }
     public override void Show(object data)
     {
         base.Show(data);
+
     }
     private void OnUpdateUserInfoEvent(object value)
     {

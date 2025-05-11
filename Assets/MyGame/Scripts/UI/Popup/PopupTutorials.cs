@@ -20,8 +20,25 @@ public class PopupTutorials : BasePopup
             return;
         }
     }
+    public void OnCloseButton()
+    {
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<PopupTutorials>();
+            if (GameManager.HasInstance)
+            {
+                if (GameManager.Instance.GetPlayer() != null)
+                {
+                    GameManager.Instance.GetPlayer().RestoreMouseSpeed();
+                }
+            }
+        }
+        this.Hide();
+    }    
+
     public override void Hide()
     {
+
         base.Hide();
     }
     public override void OnPlaySoundClickButton()

@@ -155,42 +155,42 @@ public class Player : MonoBehaviour
             RestoreMouseSpeed();
             return;
         }
+        if (UIManager.Instance == null)
+        {
+            return;
+        }
         if (Input.GetKeyUp(KeyCode.F12))
         {
-            if (UIManager.HasInstance)
-            {
-                UIManager.Instance.ShowPopup<PopupMission>();
-            }
+            UIManager.Instance.ShowPopup<PopupMission>();
             return;
         }
         if (Input.GetKeyDown(KeyCode.F3))
         {
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.ShowPopup<PopupPlayerInfomation>();
-            }
+            UIManager.Instance.ShowPopup<PopupPlayerInfomation>();
             SetMouseSpeed(0);
             return;
         }
-        if (Input.GetKeyDown(KeyCode.F4))
+        if (Input.GetKeyDown(KeyCode.F2))
         {
+            UIManager.Instance.ShowPopup<PopupTutorials>();
+            SetMouseSpeed(0);
             return;
         }
         if (Input.GetKeyDown(KeyCode.F1))
         {
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.ShowPopup<PopupPauseGame>();
-            }
+            UIManager.Instance.ShowPopup<PopupPauseGame>();
+            SetMouseSpeed(0);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            UIManager.Instance.ShowPopup<PopupPauseGame>();
             SetMouseSpeed(0);
             return;
         }
         if (Input.GetKeyDown(KeyCode.Insert))
         {
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.ShowPopup<PopupCheatGame>();
-            }
+            UIManager.Instance.ShowPopup<PopupCheatGame>();
             return;
         }
     }
