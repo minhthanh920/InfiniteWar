@@ -31,6 +31,8 @@ public enum ListenType
     UPDATE_COUNT_ENEMY,
     ON_PAUSE_GAME,
     ON_RESUME_GAME,
+    UPDATE_PLAYER_DAMAGE,
+    UPDATE_USE_SKILL,
 }
 
 public enum UIType

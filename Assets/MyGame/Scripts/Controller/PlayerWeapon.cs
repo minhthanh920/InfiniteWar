@@ -48,10 +48,10 @@ public class PlayerWeapon : MonoBehaviour
             SpawnImpactEffect(hit.point, hit.normal);
         }
         if (!other.CompareTag("Enemy")) return;
-        if (m_AlreadyHit.Contains(other)) return;
+        //if (m_AlreadyHit.Contains(other)) return;
         m_AlreadyHit.Add(other);
         other.GetComponent<Enemy>()?.TakeDamage(m_Player.GetDamage());
-
+        SpawnHitEffect(gameObject.transform.position, other.transform.position);
     }
 
     public string effectTag = "Ground";  // Cái này có thể thay đổi thành "Wall" hoặc các tag khác
@@ -89,6 +89,20 @@ public class PlayerWeapon : MonoBehaviour
         {
             // Nếu muốn random nhẹ hướng, thêm chút xoay
             //m_Effect.transform.rotation = Quaternion.LookRotation(m_Normal) * Quaternion.Euler(0, Random.Range(0f, 360f), 0);
+
+            // Option: tự disable sau 0.5s nếu bạn không muốn pooling quản lý lifetime
+            // StartCoroutine(DisableAfterSeconds(m_Effect, 0.5f));
+        }
+    }
+    private void SpawnHitEffect(Vector3 m_Position, Vector3 m_Normal)
+    {
+        // Lấy effect từ Pool
+        GameObject m_Effect = PoolManager.Instance.SpawnFromPool(m_EffectEnemy, m_Position, Quaternion.LookRotation(m_Normal), m_EffectLifetime);
+
+        if (m_Effect != null)
+        {
+            // Nếu muốn random nhẹ hướng, thêm chút xoay
+            m_Effect.transform.rotation = Quaternion.LookRotation(m_Normal) * Quaternion.Euler(0, 0, 0);
 
             // Option: tự disable sau 0.5s nếu bạn không muốn pooling quản lý lifetime
             // StartCoroutine(DisableAfterSeconds(m_Effect, 0.5f));

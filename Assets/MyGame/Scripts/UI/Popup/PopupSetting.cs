@@ -22,7 +22,7 @@ public class PopupSetting : BasePopup
         AudioManager.Instance.ChangeBGMVolume(sliderBGM.value);
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            this.Hide();
+            base.Hide();
         }
     }
     public override void Hide()

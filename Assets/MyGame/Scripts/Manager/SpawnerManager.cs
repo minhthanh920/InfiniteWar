@@ -43,12 +43,15 @@ public class SpawnerManager : MonoBehaviour
             for (int i = 0; i < info.spawnCount; i++)
             {
                 if (info.currentSpawned >= info.maxSpawn)
+                {
                     break;
+                }    
                 GameObject obj = PoolManager.Instance.SpawnFromPool(
                     info.tag,
                     spawnPoints[1].position,
                     spawnPoints[1].rotation
                 );
+                Debug.Log($"Object {obj.name} instantiated at position {obj.transform.position}");
 
                 if (obj != null)
                 {

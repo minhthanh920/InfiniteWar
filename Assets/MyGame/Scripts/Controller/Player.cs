@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private PlayerSO m_PlayerSO;
     public CharacterController m_CharacterController;
+    public CharacterAiming m_CharacterAiming;
 
     private string m_GameOver = "GameOver";
     private Vector3 m_RootMotion;
@@ -43,6 +44,7 @@ public class Player : MonoBehaviour
     private bool m_IsDead;
     public StarterAssetsInputs m_Input;
     private PlayerStateMachine m_StateMachine;
+    private int m_DefaultMouseSpeed = 200;
 
     private void Awake()
     {
@@ -51,6 +53,7 @@ public class Player : MonoBehaviour
         m_StateMachine = GetComponent<PlayerStateMachine>();
         m_Input = GetComponent<StarterAssetsInputs>();
         m_Weapon = GetComponentInChildren<PlayerWeapon>();
+        m_CharacterAiming = GetComponent<CharacterAiming>();
 
     }
     void Start()
@@ -59,8 +62,9 @@ public class Player : MonoBehaviour
         if(GameManager.HasInstance)
         {
             GameManager.Instance.SetPlayer(this);
-        }    
-        
+        }
+        m_CharacterAiming.xAxis.m_MaxSpeed = m_DefaultMouseSpeed;
+        m_CharacterAiming.yAxis.m_MaxSpeed = m_DefaultMouseSpeed;
     }
     void Update()
     {
@@ -82,7 +86,8 @@ public class Player : MonoBehaviour
         m_UserInput.x = Input.GetAxis("Horizontal");
         m_UserInput.y = Input.GetAxis("Vertical");
         UpdateState();
-        ShowPopup();
+        UpdatePopup();
+        UpdateUseSkill();
         //UpdateIsSprinting();
 
     }
@@ -100,26 +105,84 @@ public class Player : MonoBehaviour
             }
         }
     }
-    private void ShowPopup()
+    private void UpdateUseSkill()
     {
-        if(Input.GetKeyDown(KeyCode.F3))
+        if (Input.GetKeyUp(KeyCode.Alpha1))
+        {
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.UPDATE_USE_SKILL, 1);
+            }
+            return;
+        }
+        if (Input.GetKeyUp(KeyCode.Alpha2))
+        {
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.UPDATE_USE_SKILL, 2);
+            }
+            return;
+        }
+        if (Input.GetKeyUp(KeyCode.Alpha3))
+        {
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.UPDATE_USE_SKILL, 3);
+            }
+            return;
+        }
+        if (Input.GetKeyUp(KeyCode.Alpha4))
+        {
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.UPDATE_USE_SKILL, 4);
+            }
+            return;
+        }
+        if (Input.GetKeyUp(KeyCode.Alpha5))
+        {
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.UPDATE_USE_SKILL, 5);
+            }
+            return;
+        }
+    }    
+    private void UpdatePopup()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            RestoreMouseSpeed();
+            return;
+        }
+        if (Input.GetKeyUp(KeyCode.F12))
+        {
+            if (UIManager.HasInstance)
+            {
+                UIManager.Instance.ShowPopup<PopupMission>();
+            }
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.F3))
         {
             if (UIManager.Instance != null)
             {
                 UIManager.Instance.ShowPopup<PopupPlayerInfomation>();
             }
+            SetMouseSpeed(0);
             return;
         }
         if (Input.GetKeyDown(KeyCode.F4))
         {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.F1))
         {
             if (UIManager.Instance != null)
             {
                 UIManager.Instance.ShowPopup<PopupPauseGame>();
             }
+            SetMouseSpeed(0);
             return;
         }
         if (Input.GetKeyDown(KeyCode.Insert))
@@ -129,6 +192,26 @@ public class Player : MonoBehaviour
                 UIManager.Instance.ShowPopup<PopupCheatGame>();
             }
             return;
+        }
+    }
+    public void SetMouseSpeed(int value)
+    {
+        if (m_CharacterAiming != null)
+        {
+            m_CharacterAiming.xAxis.m_MaxSpeed = value;
+            m_CharacterAiming.yAxis.m_MaxSpeed = value;
+            Cursor.visible = true; // Hiển thị con trỏ chuột
+            Cursor.lockState = CursorLockMode.None; // Cho phép con trỏ di chuyển tự do
+        }
+    }
+    public void RestoreMouseSpeed()
+    {
+        if (m_CharacterAiming != null)
+        {
+            m_CharacterAiming.xAxis.m_MaxSpeed = m_DefaultMouseSpeed;
+            m_CharacterAiming.yAxis.m_MaxSpeed = m_DefaultMouseSpeed;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
     public void SetupDefault()
@@ -225,27 +308,27 @@ public class Player : MonoBehaviour
     {
         return m_IsDead;
     }
-    public float GetPlayerCurrentHeath()
+    public float GetCurrentHeath()
     {
         return m_Heath;
     }
-    public float GetPlayerCurrentMana()
+    public float GetCurrentMana()
     {
         return m_Mana;
     }
-    public float GetPlayerCurrentStamina()
+    public float GetCurrentStamina()
     {
         return m_Stanima;
     }
-    public float GetPlayerMaxHeath()
+    public float GetMaxHeath()
     {
         return m_MaxHeath;
     }
-    public float GetPlayerMaxMana()
+    public float GetMaxMana()
     {
         return m_MaxMana;
     }
-    public float GetPlayerMaxStamina()
+    public float GetMaxStamina()
     {
         return m_MaxStanima;
     }
@@ -328,6 +411,13 @@ public class Player : MonoBehaviour
             AudioManager.Instance.PlaySE(AUDIO.SE_FOOTSTEP);
         }
     }
+    public void OnJump()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_FOOTSTEP);
+        }
+    }
     public void OnAttack1()
     {
         if (AudioManager.HasInstance)
@@ -350,4 +440,32 @@ public class Player : MonoBehaviour
     {
         return m_MeleeDamage + m_RangedDamage;
     } 
+    public void SetDamage(int damage)
+    {
+        m_MeleeDamage = damage;
+        ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_DAMAGE, this);
+    }
+    public void AddDamage(int damage)
+    {
+        m_MeleeDamage += damage;
+        ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_DAMAGE, this);
+    }
+    public void RestoreFull()
+    {
+        if (m_PlayerSO != null)
+        {
+            m_MaxHeath = m_PlayerSO.m_Heath;
+            m_MaxSpeed = m_PlayerSO.m_Speed;
+            m_MaxStanima = m_PlayerSO.m_Stamina;
+            m_MaxMana = m_PlayerSO.m_Mana;
+            m_Heath = m_MaxHeath;
+            m_Speed = m_MaxSpeed;
+            m_Stanima = m_MaxStanima;
+            m_Mana = m_MaxMana;
+            m_MeleeDamage = m_PlayerSO.m_MeleeDamage;
+            m_RangedDamage = m_PlayerSO.m_RangeDamage;
+            m_IsDead = false;
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_USER_INFO, this);
+        }
+    }    
 }

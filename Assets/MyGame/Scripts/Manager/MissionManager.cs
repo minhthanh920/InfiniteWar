@@ -77,4 +77,12 @@ public class MissionManager : BaseManager<MissionManager>
             mission.IsComplete = false;
         }
     }
+    public MissionSO GetCurrentMission()
+    {
+        return currentMission;
+    }    
+    public int GetKilledEnemy()
+    {
+        return enemyDeadCount;
+    }    
 }

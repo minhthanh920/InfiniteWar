@@ -19,13 +19,18 @@ public class Enemy : MonoBehaviour , IPoolable
     private float m_RangeDamage;
     private GameStateID m_GameState;
     private Player m_Player;
+    private Collider m_Collider;
 
 
     [SerializeField] private GameObject m_AttackPoint;
     private EnemyStateMachine m_StateMachine;
     private void Awake()
     {
-
+        m_Agent = GetComponent<NavMeshAgent>();
+        m_Animator = GetComponent<Animator>();
+        m_StateMachine = GetComponent<EnemyStateMachine>();
+        m_Enemy = GetComponent<Enemy>();
+        m_Collider = GetComponent<Collider>();
     }
     public Vector3 GetAttackPoint()
     {
@@ -38,13 +43,21 @@ public class Enemy : MonoBehaviour , IPoolable
     }
     private void OnEnable()
     {
-        m_Agent = GetComponent<NavMeshAgent>();
-        m_Animator = GetComponent<Animator>();
-        m_StateMachine = GetComponent<EnemyStateMachine>();
-        m_Enemy = GetComponent<Enemy>();
+        if(!m_Collider.enabled)
+        {
+            m_Collider.enabled = true;
+        }
         Initialized();
-        m_Agent.stoppingDistance = 2f;
-        m_Agent.speed = m_EnemySpeed;
+        if (m_Agent != null)
+        {
+            m_Agent.stoppingDistance = 2f;
+            m_Agent.speed = m_EnemySpeed;
+        }
+        else
+        {
+            Debug.Log("Nav Mesh Null");
+        }
+
         m_SpawnPoint = gameObject.transform.position;
     }
     private void Initialized()
@@ -87,7 +100,7 @@ public class Enemy : MonoBehaviour , IPoolable
         {
             for (int i = 0; i < all.Length; i++)
             {
-                if (all[i] != null && all[i].CompareTag("Player"))
+                if (all[i] != null && all[i].CompareTag(PLAYER_TAG))
                 {
                     Debug.Log($"m_MeleeDamage : {m_MeleeDamage}");
                     m_Player.TakeDamage(m_MeleeDamage);
@@ -104,7 +117,7 @@ public class Enemy : MonoBehaviour , IPoolable
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other != null && other.CompareTag("Player"))
+        if (other != null && other.CompareTag(PLAYER_TAG))
         {
             OnHit();
         }
@@ -124,7 +137,19 @@ public class Enemy : MonoBehaviour , IPoolable
             if (m_Heath <= 0)
             {
                 m_StateMachine.SetState(CharacterStateID.Death);
-                ListenerManager.Instance.BroadCast(ListenType.ON_ENEMY_DEATH, "Won !!!");
+                if (m_Collider != null)
+                {
+                    m_Collider.enabled = false;
+                }
+                if (MissionManager.HasInstance)
+                {
+                    MissionManager.Instance.CountEnemyDeath();
+                }
+                if (ListenerManager.HasInstance)
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.ON_ENEMY_DEATH, this);
+                }
+                //ListenerManager.Instance.BroadCast(ListenType.ON_ENEMY_DEATH, "Won !!!");
             }
         }
     }

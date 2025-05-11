@@ -11,6 +11,7 @@ public class PlayerJumpState : State<Player>
         {
             Debug.Log("vao state jum");
             m_Character.m_Animator.SetBool("IsJumping", true);
+            
             // Tính vận tốc nhảy
             //float jumpVelocity = Mathf.Sqrt(2 * m_Character.m_Gravity * m_Character.m_JumpHeight);
 
@@ -18,6 +19,7 @@ public class PlayerJumpState : State<Player>
             //m_Character.m_Velocity = m_Character.m_Animator.velocity * m_Character.m_JumpDamp * m_Character.m_GroundSpeed;
             //m_Character.m_Velocity.y = jumpVelocity;
         }
+        m_Character.OnJump();
     }
 
     public override void Update()
@@ -45,7 +47,9 @@ public class PlayerJumpState : State<Player>
         if (m_Character.m_Animator != null)
         {
             m_Character.m_Animator.SetBool("IsJumping", false);
+            
         }
+        m_Character.OnJump();
     }
 }
 

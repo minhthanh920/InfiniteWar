@@ -65,15 +65,7 @@ public class GameManager : BaseManager<GameManager>
     public void EndGame()
     {
 
-    }
-    public void CheatGame()
-    {
-        if (UIManager.HasInstance)
-        {
-            UIManager.Instance.ShowPopup<PopupCheatGame>();
-        }
-        Cursor.lockState = CursorLockMode.Confined;
-    }    
+    }  
     public void GameOver()
     {
         Time.timeScale = 0;

@@ -10,25 +10,13 @@ public class PlayerAttackState : State<Player>
     {
         m_Character.m_Animator.SetBool("Attack", true);
         m_Character.StartCoroutine(IEPlayEffect());
+        m_Character.StartCoroutine(DoDamage());
+        m_Character.OnAttack1();
     }
     public override void Update()
     {
         m_StateInfo = m_Character.m_Animator.GetCurrentAnimatorStateInfo(0);
         m_Progress = m_StateInfo.normalizedTime % 1f; // normalizedTime có thể >1 nếu loop
-
-        //Debug.Log($"[AttackState] Progress: {m_Progress:F2}");
-
-        // Kích hoạt Damage khi animation tới nửa đoạn
-        if (m_Progress >= 0.5f)
-        {
-            m_Character.m_Weapon?.EnableDamage();
-        }
-
-        // Disable Damage nếu animation restart (loop lại)
-        if (m_Progress < 0.5f)
-        {
-            m_Character.m_Weapon?.DisableDamage();
-        }
 
         // Thoát khỏi AttackState khi animation kết thúc
         if (m_StateInfo.normalizedTime >= 1f)
@@ -44,6 +32,13 @@ public class PlayerAttackState : State<Player>
         {
             m_Character.m_EffectPrefab.Play();
         }
+    }
+    private IEnumerator DoDamage()
+    {
+        yield return new WaitForSeconds(0.4f);
+        m_Character.m_Weapon?.EnableDamage();
+        yield return new WaitForSeconds(0.4f);
+        m_Character.m_Weapon?.DisableDamage();
     }
     public override void Exit()
     {
