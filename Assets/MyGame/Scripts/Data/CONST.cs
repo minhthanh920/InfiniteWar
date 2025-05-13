@@ -19,4 +19,10 @@ public static class CONST
     public const string JUMP = "IsJumping";
     public const string ATTACK = "Attack";
     public const string HEAVY_ATTACK = "HeavyAttack";
+    public const string SKILL_A = "SkillA";
+    public const string SKILL_B = "SkillB";
+    public const string SKILL_C = "SkillC";
+    public const string SKILL_D = "SkillD";
+    public const string SKILL_E = "SkillE";
+    public const string SKILL_I = "SkillI";
 }

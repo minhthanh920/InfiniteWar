@@ -131,7 +131,7 @@ public class GameManager : BaseManager<GameManager>
                     notifyFade.Fade(DataManager.Instance.GetFadeTime(),
                         onDuringFade: () =>
                         {
-                            SceneManager.UnloadSceneAsync("Main");
+                            SceneManager.UnloadSceneAsync("Loading");
                         },
                         onFinish: () =>
                         {

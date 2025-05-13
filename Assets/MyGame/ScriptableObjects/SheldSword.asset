@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a4f795f3415d81409af6214d6025891, type: 3}
   m_Name: SheldSword
   m_EditorClassIdentifier: 
-  m_Speed: 10
+  m_Speed: 5
   m_Heath: 100
   m_Mana: 100
   m_Stamina: 100

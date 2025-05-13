@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 public class EnemyChasingState : State<Enemy>
 {
+    private Vector3 m_DirectionToPlayer;
+    private float m_DistanceToPlayer;
     public EnemyChasingState(BaseStateMachine<Enemy> stateMachine, Enemy enemy) : base(stateMachine, enemy) { }
 
     public override void Enter()
@@ -10,6 +12,8 @@ public class EnemyChasingState : State<Enemy>
             //m_Character.m_Agent.isStopped = false;
             m_Character.m_Animator.SetBool("Run", true);
         }
+        m_Character.m_Agent.isStopped = false;
+        m_Character.m_Agent.SetDestination(m_Character.GetPlayerPos());
     }
 
     public override void Update()
@@ -18,26 +22,33 @@ public class EnemyChasingState : State<Enemy>
         {
             if(m_Character.m_Agent)
             {
-                m_Character.m_Agent.isStopped = true;
-                m_Character.m_Agent.SetDestination(Vector3.zero);
                 m_StateMachine.SetState(CharacterStateID.Death);
                 return;
             }
 
         }
+        m_DistanceToPlayer = Vector3.Distance(m_Character.transform.position, m_Character.GetPlayerPos());
+        m_DirectionToPlayer = m_Character.GetPlayerPos() - m_Character.transform.position;
+        m_DirectionToPlayer.Normalize();
         if (m_Character.m_AttackColdown > 0f)
         {
             m_Character.m_Agent.isStopped = true;
-            m_Character.m_Agent.SetDestination(Vector3.zero);
+            m_Character.m_Agent.ResetPath();
             return;
         }
-        else if (Vector3.Distance(m_Character.transform.position, m_Character.GetPlayerPos()) <= 2f)
+        else if (m_DistanceToPlayer <= 2f)
         {
             if (m_Character.m_AttackColdown > 0f)
             {
                 return;   
             }
-            m_StateMachine.SetState(CharacterStateID.Attack);
+            float dotProduct = Vector3.Dot(m_Character.transform.forward, m_DirectionToPlayer);
+
+            if (dotProduct > 0.7f)
+            {
+                // Enemy đang đối mặt với player, thực hiện tấn công
+                m_StateMachine.SetState(CharacterStateID.Attack);
+            }
         }
         else
         {

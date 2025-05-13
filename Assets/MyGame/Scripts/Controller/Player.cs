@@ -51,8 +51,19 @@ public class Player : MonoBehaviour
     private PlayerStateMachine m_StateMachine;
     private int m_DefaultMouseSpeed = 200;
 
-    public bool m_IsAttack = false;
-    public bool m_IsHeavyAttack = false;
+    public bool m_IsAttack;
+    public bool m_IsHeavyAttack;
+    public bool m_IsUseSkillA;
+    public float m_SkillACost;
+    public bool m_IsUseSkillB;
+    public float m_SkillBCost;
+    public bool m_IsUseSkillC;
+    public float m_SkillCCost;
+    public bool m_IsUseSkillD;
+    public float m_SkillDCost;
+    public bool m_IsUseSkillI;
+    public float m_SkillICost;
+
 
     private Collider m_Collider;
     private void Awake()
@@ -110,6 +121,7 @@ public class Player : MonoBehaviour
         {
             if (ListenerManager.HasInstance)
             {
+                m_IsUseSkillA = true;
                 ListenerManager.Instance.BroadCast(ListenType.UPDATE_USE_SKILL, 1);
             }
             return;
@@ -118,6 +130,7 @@ public class Player : MonoBehaviour
         {
             if (ListenerManager.HasInstance)
             {
+                m_IsUseSkillB = true;
                 ListenerManager.Instance.BroadCast(ListenType.UPDATE_USE_SKILL, 2);
             }
             return;
@@ -126,6 +139,7 @@ public class Player : MonoBehaviour
         {
             if (ListenerManager.HasInstance)
             {
+                m_IsUseSkillC = true;
                 ListenerManager.Instance.BroadCast(ListenType.UPDATE_USE_SKILL, 3);
             }
             return;
@@ -134,6 +148,7 @@ public class Player : MonoBehaviour
         {
             if (ListenerManager.HasInstance)
             {
+                m_IsUseSkillD = true;
                 ListenerManager.Instance.BroadCast(ListenType.UPDATE_USE_SKILL, 4);
             }
             return;
@@ -142,6 +157,7 @@ public class Player : MonoBehaviour
         {
             if (ListenerManager.HasInstance)
             {
+                m_IsUseSkillI = true;
                 ListenerManager.Instance.BroadCast(ListenType.UPDATE_USE_SKILL, 5);
             }
             return;
@@ -255,6 +271,13 @@ public class Player : MonoBehaviour
             m_MeleeDamage = m_PlayerSO.m_MeleeDamage;
             m_RangedDamage = m_PlayerSO.m_RangeDamage;
             m_IsDead = false;
+
+            m_SkillACost = 5f;
+            m_SkillBCost = 10f;
+            m_SkillCCost = 15f;
+            m_SkillDCost = 20f;
+            m_SkillICost = 25f;
+
             ListenerManager.Instance.BroadCast(ListenType.UPDATE_USER_INFO, this);
         }
         else
@@ -280,54 +303,107 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        // Kiểm tra trạng thái tấn công
-        if (m_Input.attack && m_CharacterController.isGrounded)
+        if (m_StateMachine.m_CurrentStateID == CharacterStateID.SkillA)
         {
+            return;
+        }
+        if (m_StateMachine.m_CurrentStateID == CharacterStateID.SkillB)
+        {
+            return;
+        }
+        if (m_StateMachine.m_CurrentStateID == CharacterStateID.SkillC)
+        {
+            return;
+        }
+        if (m_StateMachine.m_CurrentStateID == CharacterStateID.SkillD)
+        {
+            return;
+        }
+        if (m_StateMachine.m_CurrentStateID == CharacterStateID.SkillI)
+        {
+            return;
+        }
+        if(m_CharacterController.isGrounded)
+        {
+            Debug.Log("IIIIIIIIIIIIIIIIIIIIIII");
+            // Kiểm tra trạng thái tấn công
+            m_Animator.SetFloat("x", m_UserInput.x);
+            m_Animator.SetFloat("y", m_UserInput.y);
+            if (m_Input.attack)
+            {
 
-            if (!m_IsAttack)
-            {
-                m_IsAttack = true;
-                m_StateMachine.SetState(CharacterStateID.Attack);
-                
-            }   
-            return;
-        }
-        // Kiểm tra trạng thái tấn công
-        if (Input.GetKeyDown(KeyCode.Mouse1) && m_CharacterController.isGrounded)
-        {
-            if (!m_IsHeavyAttack)
-            {
-                m_IsHeavyAttack = true;
-                m_StateMachine.SetState(CharacterStateID.HeavyAttack);
-            }
-            
-            return;
-        }
+                if (!m_IsAttack)
+                {
+                    m_IsAttack = true;
+                    m_StateMachine.SetState(CharacterStateID.Attack);
 
-        m_Animator.SetFloat("x", m_UserInput.x);
-        m_Animator.SetFloat("y", m_UserInput.y);
-        if(m_CharacterController.isGrounded && m_Input.jump && m_Stanima >= m_JumpCost)
-        {
-            if (!m_IsJumping)
-            {
-                m_Input.jump = false;
-                m_StateMachine.SetState(CharacterStateID.Jump);
+                }
+                return;
             }
-            return;
+            if (Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                if (!m_IsHeavyAttack)
+                {
+                    m_IsHeavyAttack = true;
+                    m_StateMachine.SetState(CharacterStateID.HeavyAttack);
+                }
+
+                return;
+            }
+            // Skill
+            if (m_IsUseSkillA && m_Mana >= m_SkillACost)
+            {
+                m_StateMachine.SetState(CharacterStateID.SkillA);
+                return;
+            }
+            if (m_IsUseSkillB && m_Mana >= m_SkillBCost)
+            {
+                m_StateMachine.SetState(CharacterStateID.SkillB);
+                return;
+            }
+            if (m_IsUseSkillC && m_Mana >= m_SkillCCost)
+            {
+                m_StateMachine.SetState(CharacterStateID.SkillC);
+                return;
+            }
+            if (m_IsUseSkillD && m_Mana >= m_SkillDCost)
+            {
+                m_StateMachine.SetState(CharacterStateID.SkillD);
+                return;
+            }
+            if (m_IsUseSkillI && m_Mana >= m_SkillICost)
+            {
+                m_StateMachine.SetState(CharacterStateID.SkillI);
+                return;
+            }
+            //===============================
+            if (m_Input.jump && m_Stanima >= m_JumpCost)
+            {
+                if (!m_IsJumping)
+                {
+                    m_Input.jump = false;
+                    m_StateMachine.SetState(CharacterStateID.Jump);
+                }
+                return;
+            }
+            if (m_UserInput != Vector2.zero)
+            {
+                if (m_Input.sprint && m_Stanima >= m_RunCost)
+                {
+                    m_StateMachine.SetState(CharacterStateID.Run);
+                }
+                else
+                {
+                    m_StateMachine.SetState(CharacterStateID.Walk);
+                }
+                return;
+            }
+            m_StateMachine.SetState(CharacterStateID.Idle);
         }
-        if (m_UserInput != Vector2.zero)
+        else
         {
-            if (m_Input.sprint && m_Stanima >= m_RunCost)
-            {
-                m_StateMachine.SetState(CharacterStateID.Run);
-            }
-            else
-            {
-                m_StateMachine.SetState(CharacterStateID.Walk);
-            }
-            return;
+            m_StateMachine.SetState(CharacterStateID.Jump);
         }
-        m_StateMachine.SetState(CharacterStateID.Idle);
     }
     private void SetDeath()
     {
@@ -360,6 +436,7 @@ public class Player : MonoBehaviour
         ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_HEALTH, this);
         if (m_Heath >= m_MaxHeath) { return; }
     }
+
     public float GetCurrentMana()
     {
         return m_Mana;
@@ -381,6 +458,12 @@ public class Player : MonoBehaviour
             return; 
         }
         
+    }
+    public void RemainMana(float value)
+    {
+        m_Mana -= value;
+        if (m_Mana < 0) { m_Mana = 0; }
+        ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_MANA, this);
     }
     public float GetCurrentStamina()
     {
@@ -450,7 +533,7 @@ public class Player : MonoBehaviour
     public void Jumping()
     {
         m_Velocity.y -= m_Gravity * Time.fixedDeltaTime;
-        Debug.Log(m_Velocity.y);
+        //Debug.Log(m_Velocity.y);
         Vector3 airDisplacement = m_Velocity * Time.fixedDeltaTime;
         airDisplacement += CalculateAircontrol();
         m_CharacterController.Move(airDisplacement);

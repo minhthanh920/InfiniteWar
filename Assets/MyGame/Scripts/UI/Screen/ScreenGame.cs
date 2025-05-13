@@ -132,6 +132,7 @@ public class ScreenGame : BaseScreen
             ListenerManager.Instance.Unregister(ListenType.UPDATE_PLAYER_STAMINA, OnUpdatePlayerStaminaEvent);
             ListenerManager.Instance.Unregister(ListenType.UPDATE_MISSION, OnUpdateMissionEvent);
             ListenerManager.Instance.Unregister(ListenType.UPDATE_COUNT_ENEMY, OnUpdateCountEnemyEvent);
+            ListenerManager.Instance.Unregister(ListenType.UPDATE_USE_SKILL, OnUseSkill);
             //ListenerManager.Instance.Unregister(ListenType.ON_PLAYER_DEATH, OnEnemyDeathEvent);
         }
         if (GameManager.HasInstance)

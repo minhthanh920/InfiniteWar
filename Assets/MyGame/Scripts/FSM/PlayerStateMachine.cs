@@ -18,5 +18,10 @@ public class PlayerStateMachine : BaseStateMachine<Player>
         AddState(CharacterStateID.Attack, new PlayerAttackState(this, m_Character));
         AddState(CharacterStateID.HeavyAttack, new PlayerHeavyAttackState(this, m_Character));
         AddState(CharacterStateID.Death, new PlayerDeathState(this, m_Character));
+        AddState(CharacterStateID.SkillA, new PlayerSkillAState(this, m_Character));
+        AddState(CharacterStateID.SkillB, new PlayerSkillBState(this, m_Character));
+        AddState(CharacterStateID.SkillC, new PlayerSkillCState(this, m_Character));
+        AddState(CharacterStateID.SkillD, new PlayerSkillDState(this, m_Character));
+        AddState(CharacterStateID.SkillI, new PlayerSkillIState(this, m_Character));
     }
 }

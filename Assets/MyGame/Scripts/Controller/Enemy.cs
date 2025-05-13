@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour , IPoolable
 {
     public NavMeshAgent m_Agent;
     public Enemy m_Enemy;
+    public Player m_Player;
     public Animator m_Animator;
     [SerializeField]
     public EnemySO m_EnemyS0;
@@ -21,23 +22,25 @@ public class Enemy : MonoBehaviour , IPoolable
     public Collider m_WeaponCollider;
     public Collider m_EnemyCollider;
     
-
+    public Rigidbody m_Rigidbody;
 
     [SerializeField] private GameObject m_AttackPoint;
-    private EnemyStateMachine m_StateMachine;
+    public EnemyStateMachine m_StateMachine;
     private void Awake()
     {
         m_Agent = GetComponent<NavMeshAgent>();
         m_Animator = GetComponent<Animator>();
         m_StateMachine = GetComponent<EnemyStateMachine>();
         m_Enemy = GetComponent<Enemy>();
+        m_Rigidbody = GetComponent<Rigidbody>();
+        
         //m_WeaponCollider = GetComponentInChildren<Collider>();
         //m_EnemyCollider = GetComponent<Collider>();
     }
     private void Start()
     {
         Initialized();
-
+        m_SpawnPoint = m_Rigidbody.transform.position;
     }
     public Vector3 GetAttackPoint()
     {
@@ -49,10 +52,7 @@ public class Enemy : MonoBehaviour , IPoolable
         {
             m_WeaponCollider.enabled = true;
         }
-        
-
-
-        m_SpawnPoint = gameObject.transform.position;
+        //m_Rigidbody.transform.position = m_SpawnPoint;
     }
     private void Initialized()
     {
@@ -60,7 +60,7 @@ public class Enemy : MonoBehaviour , IPoolable
         m_AttackColdown = m_EnemyS0.m_AttackTime;
         m_MeleeDamage = m_EnemyS0.m_MeleeDamage;
         m_RangeDamage = m_EnemyS0.m_RangeDamage;
-        m_EnemySpeed = m_EnemyS0.m_Speed;
+        m_EnemySpeed = m_EnemyS0.m_Speed; 
 
         if (m_Agent != null)
         {
@@ -75,7 +75,6 @@ public class Enemy : MonoBehaviour , IPoolable
     // Update is called once per frame
     void Update()
     {
-    
         if (GameManager.Instance.m_Player.IsPlayerDeath())
         {
             m_Agent.isStopped = true;
@@ -93,6 +92,18 @@ public class Enemy : MonoBehaviour , IPoolable
             m_AttackColdown -= Time.deltaTime;
         }
     }
+    public void Respawn()
+    {
+        Initialized();
+        //m_Agent.isStopped = false;
+        //m_Agent.SetDestination(GetPlayerPos());
+        m_Rigidbody.transform.position = m_SpawnPoint;
+        //m_Heath = m_EnemyS0.m_Heath;
+        Debug.Log(m_Heath);
+        //m_EnemyCollider.enabled = true;
+        m_StateMachine.SetState(CharacterStateID.Chasing);
+        
+    }    
     public bool IsDead()
     {
         if (m_Heath <= 0f)
@@ -135,8 +146,9 @@ public class Enemy : MonoBehaviour , IPoolable
     //}
     public Vector3 GetPlayerPos()
     {
-        //m_Player = FindFirstObjectByType<Player>();
-        return GameManager.Instance.m_Player.transform.position;
+        m_Player = FindFirstObjectByType<Player>();
+        //return GameManager.Instance.m_Player.transform.position;
+        return m_Player.transform.position;
     }
     public void TakeDamage(float damage)
     {
@@ -148,10 +160,6 @@ public class Enemy : MonoBehaviour , IPoolable
             if (m_Heath <= 0)
             {
                 m_StateMachine.SetState(CharacterStateID.Death);
-                if (m_WeaponCollider != null)
-                {
-                    m_WeaponCollider.enabled = false;
-                }
                 if (MissionManager.HasInstance)
                 {
                     MissionManager.Instance.CountEnemyDeath();

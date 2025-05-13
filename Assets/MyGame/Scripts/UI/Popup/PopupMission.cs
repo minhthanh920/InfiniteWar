@@ -7,7 +7,6 @@ public class PopupMission : BasePopup
     [SerializeField] TextMeshProUGUI m_MisstionDes;
     [SerializeField] TextMeshProUGUI m_MisstionAim;
     [SerializeField] GameObject m_MisionProgress;
-    [SerializeField] 
     public override void Show(object data)
     {
         base.Show(data);
@@ -30,7 +29,7 @@ public class PopupMission : BasePopup
         {
             m_MissionName.text = MissionManager.Instance.GetCurrentMission().MissionName;
             m_MisstionDes.text = MissionManager.Instance.GetCurrentMission().MissionDes;
-            m_MisstionAim.text = $"{MissionManager.Instance.GetKilledEnemy().ToString()}/{MissionManager.Instance.CurrentMission.TotalEnemy.ToString()}";
+            m_MisstionAim.text = $"Tiêu Diệt : {MissionManager.Instance.GetKilledEnemy().ToString()}/{MissionManager.Instance.CurrentMission.TotalEnemy.ToString()}";
         }
         if (ListenerManager.HasInstance)
         {
@@ -45,7 +44,7 @@ public class PopupMission : BasePopup
     {
         if (value is int)
         {
-            m_MisstionAim.text = $"{value}/{MissionManager.Instance.CurrentMission.TotalEnemy.ToString()}";
+            m_MisstionAim.text = $"Tiêu Diệt : {value}/{MissionManager.Instance.CurrentMission.TotalEnemy.ToString()}";
             m_MissionName.text = MissionManager.Instance.GetCurrentMission().MissionName;
             m_MisstionDes.text = MissionManager.Instance.GetCurrentMission().MissionDes;
         }

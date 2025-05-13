@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d25102d010ebdc40af4389acd4a664b, type: 3}
   m_Name: Mission2SO
   m_EditorClassIdentifier: 
-  MissionName: "Nhi\u1EC7m v\u1EE5 2"
+  MissionName: "M\u1EDF K\u1EF9 N\u0103ng 2"
   MissionDes: "M\u1EE5c Ti\xEAu : Ti\xEAu di\u1EC7t t\u1EA5t c\u1EA3 qu\xE1i v\u1EADt"
   IsComplete: 0
   TotalEnemy: 20

@@ -38,7 +38,6 @@ public class PlayerAttackState : State<Player>
     }
     public override void Exit()
     {
-        Debug.Log($" rời khỏi trạng thái Attack.");
         if (m_Character.m_Animator != null)
         {
             m_Character.m_Animator.SetBool(CONST.ATTACK, false);

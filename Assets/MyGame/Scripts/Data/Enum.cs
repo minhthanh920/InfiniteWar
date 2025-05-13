@@ -43,4 +43,9 @@ public enum CharacterStateID
     Attack,
     Chasing,
     HeavyAttack,
+    SkillA,
+    SkillB,
+    SkillC,
+    SkillD,
+    SkillI,
 }

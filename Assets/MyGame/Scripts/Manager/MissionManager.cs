@@ -43,7 +43,7 @@ public class MissionManager : BaseManager<MissionManager>
         {
             if (GameManager.HasInstance)
             {
-                GameManager.Instance.WinGame();
+                //GameManager.Instance.WinGame();
             }
         }
     }
