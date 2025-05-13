@@ -6,19 +6,9 @@ public enum GameStateID
     Pause,
     GameOver,
 }
-public enum PlayerStateID
-{
-    None,
-    Walk,
-    Run,
-    Attack,
-    Jump,
-    Die,
-    WalkBack
-}
 public enum ListenType
 {
-    ANY = 0,
+    ANY = 0,    
     ON_PLAYER_DEATH,
     ON_ENEMY_DEATH,
     UPDATE_COUNT_TEXT,
@@ -52,22 +42,5 @@ public enum CharacterStateID
     Idle,
     Attack,
     Chasing,
-}
-
-public enum WeaponSlot
-{
-    Primary = 0,
-    Secondary = 1
-}
-
-public enum SocketID
-{
-    RightLeg,
-    RightHand
-}
-
-public enum EquipWeaponBy
-{
-    Player,
-    AI
+    HeavyAttack,
 }

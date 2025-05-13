@@ -127,6 +127,8 @@ MonoBehaviour:
   m_EffectEnemy: Impact_Enemy
   m_EnemyTag: Enemy
   m_EffectLifetime: 0.1
+  m_WeaponCollider: {fileID: 0}
+  m_Player: {fileID: 0}
   effectTag: Ground
   spawnRate: 0.1
 --- !u!1001 &5195922118232178710
@@ -269,6 +271,8 @@ MonoBehaviour:
   m_Animator: {fileID: 0}
   m_EnemyS0: {fileID: 11400000, guid: 75ab88b17f88ecf4eb59b851d60e33a0, type: 2}
   m_AttackColdown: 0
+  m_WeaponCollider: {fileID: 9039346743715554224}
+  m_EnemyCollider: {fileID: 3747144195019773199}
   m_AttackPoint: {fileID: 1566790286154740287}
 --- !u!135 &3747144195019773199
 SphereCollider:

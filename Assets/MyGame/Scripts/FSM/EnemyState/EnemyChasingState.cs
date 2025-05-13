@@ -31,8 +31,12 @@ public class EnemyChasingState : State<Enemy>
             m_Character.m_Agent.SetDestination(Vector3.zero);
             return;
         }
-        else if(Vector3.Distance(m_Character.transform.position, m_Character.GetPlayerPos()) <=2f)
+        else if (Vector3.Distance(m_Character.transform.position, m_Character.GetPlayerPos()) <= 2f)
         {
+            if (m_Character.m_AttackColdown > 0f)
+            {
+                return;   
+            }
             m_StateMachine.SetState(CharacterStateID.Attack);
         }
         else

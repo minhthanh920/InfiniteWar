@@ -16,5 +16,5 @@ MonoBehaviour:
   m_Heath: 500
   m_Mana: 200
   m_Stamina: 100
-  m_MeleeDamage: 500
+  m_MeleeDamage: 100
   m_RangeDamage: 0

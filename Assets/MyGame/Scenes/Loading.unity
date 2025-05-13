@@ -194,6 +194,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203373660}
   m_CullTransparentMesh: 1
+--- !u!1 &416063783 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3447699724096460976, guid: fd48e7ad26be41e43a67e07aeee15510, type: 3}
+  m_PrefabInstance: {fileID: 810495773}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &416063790
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416063783}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &503051885
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,6 +448,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2993109096666014986, guid: fd48e7ad26be41e43a67e07aeee15510, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3447699724096460976, guid: fd48e7ad26be41e43a67e07aeee15510, type: 3}
       propertyPath: m_Name
       value: SheldSwordAI
@@ -428,10 +460,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5924032611852466008, guid: fd48e7ad26be41e43a67e07aeee15510, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2993109096666014986, guid: fd48e7ad26be41e43a67e07aeee15510, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3447699724096460976, guid: fd48e7ad26be41e43a67e07aeee15510, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 416063790}
   m_SourcePrefab: {fileID: 100100000, guid: fd48e7ad26be41e43a67e07aeee15510, type: 3}
 --- !u!1 &929828386
 GameObject:
@@ -767,7 +807,7 @@ Transform:
   m_GameObject: {fileID: 1316667963}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 500.95, y: 36.673, z: 396.37}
+  m_LocalPosition: {x: 500.95, y: 36.701, z: 396.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1329,7 +1369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 740111574468753293, guid: d860afeacfa6ff749bac03a5762aa958, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482431572856435760, guid: d860afeacfa6ff749bac03a5762aa958, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1598,6 +1638,10 @@ PrefabInstance:
     - target: {fileID: 5873004831731935308, guid: 574bc276a4990ce49b06430fb034fe0a, type: 3}
       propertyPath: m_Name
       value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5873004831731935308, guid: 574bc276a4990ce49b06430fb034fe0a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -12,4 +12,11 @@ public static class CONST
     //Time it takes for the BGM to fade
     public const float BGM_FADE_SPEED_RATE_HIGH = 0.9f;
     public const float BGM_FADE_SPEED_RATE_LOW = 0.3f;
+
+    public const string RUN = "Run";
+    public const string WALK = "Walk";
+    public const string GROUNDED = "Grounded";
+    public const string JUMP = "IsJumping";
+    public const string ATTACK = "Attack";
+    public const string HEAVY_ATTACK = "HeavyAttack";
 }

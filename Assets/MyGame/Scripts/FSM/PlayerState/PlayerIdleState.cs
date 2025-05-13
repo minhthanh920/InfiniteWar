@@ -1,4 +1,6 @@
-﻿public class PlayerIdleState : State<Player>
+﻿using UnityEngine;
+
+public class PlayerIdleState : State<Player>
 {
     public PlayerIdleState(BaseStateMachine<Player> stateMachine, Player character) : base(stateMachine, character) { }
     public override void Enter()
@@ -20,6 +22,7 @@
         {
             m_Character.m_Animator.SetBool("Idle", false);
         }
+        m_Character.m_RootMotion = Vector3.zero;
     }
 }
 

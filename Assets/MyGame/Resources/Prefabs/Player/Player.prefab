@@ -2238,7 +2238,7 @@ Transform:
   m_GameObject: {fileID: 8001622701488033419}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 500.45, y: 34.873, z: 400.37}
+  m_LocalPosition: {x: 500.45, y: 34.901, z: 400.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2288,13 +2288,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 0.2
+  m_Height: 1.8
   m_Radius: 0.2
   m_SlopeLimit: 45
   m_StepOffset: 0.4
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.32, z: 0}
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!114 &8381332829378922193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2482,7 +2482,20 @@ MonoBehaviour:
   m_PlayerSO: {fileID: 11400000, guid: e1788f06ecb46f741be5d2595b93c99e, type: 2}
   m_CharacterController: {fileID: 7040392312154746264}
   m_CharacterAiming: {fileID: 0}
+  m_RootMotion: {x: 0, y: 0, z: 0}
+  m_JumpCost: 10
+  m_RunCost: 1
+  m_JumpHeight: 0
+  m_Gravity: 0
+  m_StepDown: 0
+  m_AirControl: 0
+  jumpDamp: 0
+  m_GroundSpeed: 0
+  pushPower: 0
+  m_IsJumping: 0
   m_Input: {fileID: 1436824987487048684}
+  m_IsAttack: 0
+  m_IsHeavyAttack: 0
 --- !u!114 &8122694388552349407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2859,8 +2872,8 @@ GameObject:
   - component: {fileID: 5029103536381697266}
   - component: {fileID: 5168262175191740529}
   - component: {fileID: 1991358916983024542}
-  - component: {fileID: 5193149040015695138}
-  - component: {fileID: 2158309872896448287}
+  - component: {fileID: 5572596314237908823}
+  - component: {fileID: 176377930801561191}
   m_Layer: 0
   m_Name: default
   m_TagString: Untagged
@@ -2953,9 +2966,11 @@ MonoBehaviour:
   m_EffectEnemy: Impact_Enemy
   m_EnemyTag: Enemy
   m_EffectLifetime: 0.1
+  m_WeaponCollider: {fileID: 5572596314237908823}
+  m_Player: {fileID: 2642857474293803558}
   effectTag: Ground
   spawnRate: 0.1
---- !u!136 &5193149040015695138
+--- !u!136 &5572596314237908823
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2970,15 +2985,15 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.1
-  m_Height: 1.4
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 1}
---- !u!54 &2158309872896448287
+  m_Radius: 0.9951181
+  m_Height: 0.12123566
+  m_Direction: 1
+  m_Center: {x: -0.00000041477418, y: 0.0000021567957, z: 0.61077195}
+--- !u!54 &176377930801561191
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

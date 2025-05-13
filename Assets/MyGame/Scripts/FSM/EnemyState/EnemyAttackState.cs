@@ -1,9 +1,11 @@
-﻿using UnityEditor;
+﻿using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 public class EnemyAttackState: State<Enemy>
 {
     public EnemyAttackState(BaseStateMachine<Enemy> stateMachine, Enemy enemy) : base(stateMachine, enemy) { }
+    
     public override void Enter()
     {
         //Debug.Log($"{typeof(T).Name} vào trạng thái Attack.");
@@ -21,6 +23,8 @@ public class EnemyAttackState: State<Enemy>
             } 
             m_Character.m_Animator.SetBool("Attack", true);
             m_Character.m_AttackColdown = m_Character.m_EnemyS0.m_AttackTime;
+            m_Character.StartCoroutine(DoDamage());
+
         }
     }
 
@@ -64,5 +68,11 @@ public class EnemyAttackState: State<Enemy>
             }
            m_Character.m_Animator.SetBool("Attack", false);
        }
+
+    }
+    private IEnumerator DoDamage()
+    {
+        yield return new WaitForSeconds(1f);
+        m_Character.OnAttack();
     }
 }

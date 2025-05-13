@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : BaseManager<GameManager>
 {
-    private Player m_Player;
+    public Player m_Player;
     void Start()
     {
         if (UIManager.HasInstance)
@@ -24,6 +24,8 @@ public class GameManager : BaseManager<GameManager>
     }
     public void StartGame()
     {
+        m_Player = FindFirstObjectByType<Player>();
+        Debug.Log($"m_Player {m_Player}");
         if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlayBGM(AUDIO.BGM_BMG_4);

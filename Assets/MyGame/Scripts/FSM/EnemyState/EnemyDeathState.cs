@@ -9,6 +9,8 @@ public class EnemyDeathState : State<Enemy>
         {
             m_Character.m_Animator.SetBool("IsDead", true);
         }
+        m_Character.m_WeaponCollider.enabled = false;
+        m_Character.m_EnemyCollider.enabled = false;
     }
 
     public override void Update()
@@ -17,6 +19,7 @@ public class EnemyDeathState : State<Enemy>
         {
             m_Character.m_Agent.SetDestination(Vector3.zero);
             m_Character.m_Agent.isStopped = true;
+            
         }
     }
 

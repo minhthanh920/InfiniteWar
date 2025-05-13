@@ -16,6 +16,7 @@ public class PlayerStateMachine : BaseStateMachine<Player>
         AddState(CharacterStateID.Run, new PlayerRunState(this, m_Character));
         AddState(CharacterStateID.Jump, new PlayerJumpState(this, m_Character));
         AddState(CharacterStateID.Attack, new PlayerAttackState(this, m_Character));
+        AddState(CharacterStateID.HeavyAttack, new PlayerHeavyAttackState(this, m_Character));
         AddState(CharacterStateID.Death, new PlayerDeathState(this, m_Character));
     }
 }

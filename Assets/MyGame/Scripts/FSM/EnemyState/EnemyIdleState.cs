@@ -15,6 +15,10 @@ public class EnemyIdleState : State<Enemy>
     {
         if (Vector3.Distance(m_Character.transform.position, m_Character.GetPlayerPos()) <= 1.5f)
         {
+            if (m_Character.m_AttackColdown > 0f)
+            {
+                return;
+            }
             m_StateMachine.SetState(CharacterStateID.Attack);
         }
         else

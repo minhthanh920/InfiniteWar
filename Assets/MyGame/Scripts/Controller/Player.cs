@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     public CharacterAiming m_CharacterAiming;
 
     private string m_GameOver = "GameOver";
-    private Vector3 m_RootMotion;
+    public Vector3 m_RootMotion;
     private Vector3 m_Velocity;
     private float m_Heath;
     private float m_Speed;
@@ -30,22 +30,31 @@ public class Player : MonoBehaviour
     private float m_MeleeDamage;
     private float m_RangedDamage;
     private float m_AttackTime = 1f;
+    private float m_RecoverTimer = 0f;
+    private float m_RecoverInterval = 0.5f;
     private CharacterStateID CurrentStateID = CharacterStateID.Idle;
 
+    public float m_JumpCost = 10f;
+    public float m_HeavyAttackCost = 10f;
+    public float m_RunCost = 1f;
 
-    private float m_JumpHeight;
-    private float m_Gravity;
-    private float stepDown;
-    private float airControl;
-    private float jumpDamp;
-    private float groundSpeed;
-    private float pushPower;
-    private bool isJumping;
+    public float m_JumpHeight;
+    public float m_Gravity;
+    public float m_StepDown;
+    public float m_AirControl;
+    public float jumpDamp;
+    public float m_GroundSpeed;
+    public float pushPower;
+    public bool m_IsJumping;
     private bool m_IsDead;
     public StarterAssetsInputs m_Input;
     private PlayerStateMachine m_StateMachine;
     private int m_DefaultMouseSpeed = 200;
 
+    public bool m_IsAttack = false;
+    public bool m_IsHeavyAttack = false;
+
+    private Collider m_Collider;
     private void Awake()
     {
         m_Animator = GetComponent<Animator>();
@@ -54,7 +63,7 @@ public class Player : MonoBehaviour
         m_Input = GetComponent<StarterAssetsInputs>();
         m_Weapon = GetComponentInChildren<PlayerWeapon>();
         m_CharacterAiming = GetComponent<CharacterAiming>();
-
+        m_Collider = GetComponent<Collider>();
     }
     void Start()
     {
@@ -74,29 +83,19 @@ public class Player : MonoBehaviour
             m_StateMachine.SetState(CharacterStateID.Death);
             return;
         }
-
-        //if(UIManager.Instance.GetExistPopup<PopupSetting>())
-        //{
-        //    return;
-        //}
-        //if(Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    GameManager.Instance.PauseGame();
-        //}
         m_UserInput.x = Input.GetAxis("Horizontal");
         m_UserInput.y = Input.GetAxis("Vertical");
         UpdateState();
         UpdatePopup();
         UpdateUseSkill();
-        //UpdateIsSprinting();
-
+        RecoverStat();
     }
     public void TakeDamage(float damage)
     {
         if (damage > 0)
         {
             m_Heath -= damage;
-            Debug.Log($"m_Heath : {m_Heath}");
+            //Debug.Log($"m_Heath : {m_Heath}");
             ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_HEALTH, this);
             if (m_Heath <= 0)
             {
@@ -204,6 +203,23 @@ public class Player : MonoBehaviour
             Cursor.lockState = CursorLockMode.None; // Cho phép con trỏ di chuyển tự do
         }
     }
+    private void RecoverStat()
+    {
+        if (m_StateMachine != null)
+        {
+            if(m_StateMachine.m_CurrentStateID == CharacterStateID.Walk || m_StateMachine.m_CurrentStateID == CharacterStateID.Idle)
+            {
+                m_RecoverTimer += Time.deltaTime;
+                if (m_RecoverTimer >= m_RecoverInterval)
+                {
+                    RecoverHeath(5);
+                    RecoverMana(1);
+                    RecoverStamina(1);
+                    m_RecoverTimer = 0f;
+                }
+            }
+        }
+    }
     public void RestoreMouseSpeed()
     {
         if (m_CharacterAiming != null)
@@ -220,10 +236,10 @@ public class Player : MonoBehaviour
         {
             m_JumpHeight = DataManager.Instance.GlobalConfig.jumpHeight;
             m_Gravity = DataManager.Instance.GlobalConfig.gravity;
-            stepDown = DataManager.Instance.GlobalConfig.stepDown;
-            airControl = DataManager.Instance.GlobalConfig.airControl;
+            m_StepDown = DataManager.Instance.GlobalConfig.stepDown;
+            m_AirControl = DataManager.Instance.GlobalConfig.airControl;
             jumpDamp = DataManager.Instance.GlobalConfig.jumpDamp;
-            groundSpeed = DataManager.Instance.GlobalConfig.groundSpeed;
+            m_GroundSpeed = DataManager.Instance.GlobalConfig.groundSpeed;
             pushPower = DataManager.Instance.GlobalConfig.pushPower;
         }
         if (m_PlayerSO != null)
@@ -248,45 +264,60 @@ public class Player : MonoBehaviour
     }
     private void UpdateState()
     {
-        if (m_Heath <= 0f)
+        if (m_StateMachine.m_CurrentStateID == CharacterStateID.Death)
         {
-            m_StateMachine.SetState(CharacterStateID.Death);
             return;
         }
-
+        if (m_StateMachine.m_CurrentStateID == CharacterStateID.Attack)
+        {
+            return;
+        }
+        if (m_StateMachine.m_CurrentStateID == CharacterStateID.HeavyAttack)
+        {
+            return;
+        }
+        if (m_StateMachine.m_CurrentStateID == CharacterStateID.Jump)
+        {
+            return;
+        }
         // Kiểm tra trạng thái tấn công
         if (m_Input.attack && m_CharacterController.isGrounded)
         {
-            // Nếu nhân vật chưa vào trạng thái tấn công, vào trạng thái Attack
-            if (m_StateMachine.m_CurrentStateID != CharacterStateID.Attack)
+
+            if (!m_IsAttack)
             {
+                m_IsAttack = true;
                 m_StateMachine.SetState(CharacterStateID.Attack);
+                
+            }   
+            return;
+        }
+        // Kiểm tra trạng thái tấn công
+        if (Input.GetKeyDown(KeyCode.Mouse1) && m_CharacterController.isGrounded)
+        {
+            if (!m_IsHeavyAttack)
+            {
+                m_IsHeavyAttack = true;
+                m_StateMachine.SetState(CharacterStateID.HeavyAttack);
             }
+            
             return;
         }
 
-        // Kiểm tra animation tấn công đã hoàn thành chưa
-        //if (m_StateMachine.m_CurrentStateID == CharacterStateID.Attack)
-        //{
-        //    AnimatorStateInfo stateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
-        //    if (stateInfo.normalizedTime >= 1f)  // Animation đã hoàn thành
-        //    {
-        //        // Sau khi hoàn thành animation Attack, chuyển sang trạng thái Idle hoặc các trạng thái khác
-        //        m_StateMachine.SetState(CharacterStateID.Idle);
-        //    }
-        //    return;
-        //}
         m_Animator.SetFloat("x", m_UserInput.x);
         m_Animator.SetFloat("y", m_UserInput.y);
-        if (!m_CharacterController.isGrounded || m_Input.jump)
+        if(m_CharacterController.isGrounded && m_Input.jump && m_Stanima >= m_JumpCost)
         {
-            m_StateMachine.SetState(CharacterStateID.Jump);
-            Jump();
+            if (!m_IsJumping)
+            {
+                m_Input.jump = false;
+                m_StateMachine.SetState(CharacterStateID.Jump);
+            }
             return;
         }
         if (m_UserInput != Vector2.zero)
         {
-            if (m_Input.sprint)
+            if (m_Input.sprint && m_Stanima >= m_RunCost)
             {
                 m_StateMachine.SetState(CharacterStateID.Run);
             }
@@ -300,7 +331,10 @@ public class Player : MonoBehaviour
     }
     private void SetDeath()
     {
+        m_Heath = 0;
         m_IsDead = true;
+        SetMouseSpeed(0);
+        m_Collider.enabled = false;
         ListenerManager.Instance.BroadCast(ListenType.ON_PLAYER_DEATH, this);
 
     }
@@ -312,14 +346,69 @@ public class Player : MonoBehaviour
     {
         return m_Heath;
     }
+    public void RecoverHeath(float value)
+    {
+        if(m_Heath >= m_MaxHeath)
+        {
+            return;
+        }
+        if (m_Heath + value > m_MaxHeath)
+        {
+            value = m_MaxHeath - m_Heath;
+        }
+        m_Heath += value;
+        ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_HEALTH, this);
+        if (m_Heath >= m_MaxHeath) { return; }
+    }
     public float GetCurrentMana()
     {
         return m_Mana;
+    }
+    public void RecoverMana(float value)
+    {
+        if (m_Mana >= m_MaxMana)
+        {
+            return;
+        }
+        if (m_Mana + value > m_MaxMana)
+        {
+            value = m_MaxMana - m_Mana;
+        }
+        m_Mana += value;
+        ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_MANA, this);
+        if (m_Mana >= m_MaxMana) 
+        { 
+            return; 
+        }
+        
     }
     public float GetCurrentStamina()
     {
         return m_Stanima;
     }
+    public void RecoverStamina(float value)
+    {
+        if (m_Stanima >= m_MaxStanima)
+        {
+            return;
+        }
+        if (m_Stanima + value > m_MaxStanima)
+        {
+            value = m_MaxStanima - m_Stanima;
+        }
+        m_Stanima += value;
+        ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_STAMINA, this);
+        if (m_Stanima >= m_MaxStanima)
+        { return; }
+
+    }
+    public void RemainStamina(float value)
+    {
+        m_Stanima -= value;
+        if (m_Stanima < 0) { m_Stanima = 0; }
+        ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_STAMINA, this);
+    }
+
     public float GetMaxHeath()
     {
         return m_MaxHeath;
@@ -332,66 +421,54 @@ public class Player : MonoBehaviour
     {
         return m_MaxStanima;
     }
-    private void FixedUpdate()
+
+    public void OnRunAndWalk()
     {
-        if (isJumping)
+        if (!m_CharacterController.isGrounded)
         {
-            UpdateInAir();
+            m_Velocity.y -= m_Gravity * Time.fixedDeltaTime;
+            Vector3 airDisplacement = m_Velocity * Time.fixedDeltaTime;
+            airDisplacement += CalculateAircontrol();
+            m_CharacterController.Move(airDisplacement);
         }
         else
         {
-            UpdateOnGround();
+            Vector3 stepForwardAmount = m_RootMotion * m_GroundSpeed;
+            Vector3 stepDownAmount = Vector3.down * m_StepDown;
+            m_CharacterController.Move(stepForwardAmount + stepDownAmount);
+            m_RootMotion = Vector3.zero;
         }
     }
-    private void UpdateOnGround()
-    {
-        Vector3 stepForwardAmount = m_RootMotion * groundSpeed;
-        Vector3 stepDownAmount = Vector3.down * stepDown;
-        m_CharacterController.Move(stepForwardAmount + stepDownAmount);
-        m_RootMotion = Vector3.zero;
-        
-        if (!m_CharacterController.isGrounded)
-        {
-            SetInAir(0);
-        }
-    }
-    private void UpdateInAir()
+    public void Jump()
     {
         m_Velocity.y -= m_Gravity * Time.fixedDeltaTime;
         Vector3 airDisplacement = m_Velocity * Time.fixedDeltaTime;
         airDisplacement += CalculateAircontrol();
         m_CharacterController.Move(airDisplacement);
-        isJumping = !m_CharacterController.isGrounded;
-        //m_RootMotion = Vector3.zero;
-        m_Animator.SetBool("Grounded", m_CharacterController.isGrounded);
-        m_Input.jump = isJumping;
-
+        SetInAir(m_JumpHeight);
     }
-
-    private void OnAnimatorMove()
+    public void Jumping()
     {
-        m_RootMotion += m_Animator.deltaPosition;
-    }
-
-    private void Jump()
-    {
-        if (!isJumping)
-        {
-          float jumpVelocity = Mathf.Sqrt(2 * m_Gravity * m_JumpHeight);
-          SetInAir(jumpVelocity);
-        }
+        m_Velocity.y -= m_Gravity * Time.fixedDeltaTime;
+        Debug.Log(m_Velocity.y);
+        Vector3 airDisplacement = m_Velocity * Time.fixedDeltaTime;
+        airDisplacement += CalculateAircontrol();
+        m_CharacterController.Move(airDisplacement);
     }
 
     private void SetInAir(float jumpVelocity)
     {
-        isJumping = true;
-        m_Velocity = m_Animator.velocity * jumpDamp * groundSpeed;
+        m_Velocity = m_Animator.velocity * jumpDamp * m_GroundSpeed;
         m_Velocity.y = jumpVelocity;
     }
 
     private Vector3 CalculateAircontrol()
     {
-        return ((transform.forward * m_Input.move.y) + (transform.right * m_Input.move.x)) * (airControl / 100);
+        return ((transform.forward * m_Input.move.y) + (transform.right * m_Input.move.x)) * (m_AirControl / 100);
+    }
+    private void OnAnimatorMove()
+    {
+        m_RootMotion += m_Animator.deltaPosition;
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
@@ -411,14 +488,14 @@ public class Player : MonoBehaviour
             AudioManager.Instance.PlaySE(AUDIO.SE_FOOTSTEP);
         }
     }
-    public void OnJump()
+    public void JumpSound()
     {
         if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE(AUDIO.SE_FOOTSTEP);
         }
     }
-    public void OnAttack1()
+    public void AttackSound()
     {
         if (AudioManager.HasInstance)
         {

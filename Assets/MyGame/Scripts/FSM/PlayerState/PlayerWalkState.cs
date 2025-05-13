@@ -9,16 +9,16 @@ public class PlayerWalkState : State<Player>
     {
         if (m_Character.m_Animator != null)
         {
-            m_Character.m_Animator.SetBool("Walk", true);
+            m_Character.m_Animator.SetBool(CONST.WALK, true);
         }
     }
 
     public override void Update()
     {
+        m_Character.OnRunAndWalk();
+        m_FootstepTimer += Time.deltaTime;
         if (m_Character.m_CharacterController.isGrounded)
         {
-            m_FootstepTimer += Time.deltaTime;
-
             if (m_FootstepTimer >= m_FootstepInterval)
             {
                 m_Character.OnFootStep();
@@ -31,8 +31,9 @@ public class PlayerWalkState : State<Player>
     {
         if (m_Character.m_Animator != null)
         {
-            m_Character.m_Animator.SetBool("Walk", false);
+            m_Character.m_Animator.SetBool(CONST.WALK, false);
         }
+        m_Character.m_RootMotion = Vector3.zero;
     }
 }
 

@@ -20,8 +20,8 @@ MonoBehaviour:
   maxSight: 5
   timeDestroyAI: 2
   pickupWeaponSpeed: 5
-  jumpHeight: 3
-  gravity: 20
+  jumpHeight: 6
+  gravity: 10
   stepDown: 0.1
   airControl: 10
   jumpDamp: 0.5
