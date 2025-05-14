@@ -14,16 +14,16 @@ public class PopupPlayerDead : BasePopup
     public void OnClickPlayAgianButton()
     {
         this.Hide();
-        if(GameManager.HasInstance)
+        if (GameManager.HasInstance)
         {
-            GameManager.Instance.GameOver();
-        }    
+            GameManager.Instance.RestartGame();
+        }
+        
     }
 
     public void OnClickExitButton()
     {
 #if UNITY_EDITOR
-        // Nếu đang chạy trong Unity Editor
         UnityEditor.EditorApplication.isPlaying = false;
 #else
         // Nếu đang chạy bản build (EXE, APK...)

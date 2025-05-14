@@ -128,10 +128,7 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-        if (!GameManager.HasInstance)
-        {
-            return;
-        }
+
         if (IsPlayerDeath())
         {
             m_StateMachine.SetState(CharacterStateID.Death);
@@ -242,7 +239,7 @@ public class Player : MonoBehaviour
         if (damage > 0)
         {
             m_Heath -= damage;
-            if (m_Heath <= 0)
+            if (m_Heath <= 0 && !IsPlayerDeath())
             {
                 SetDeath();
             }
@@ -517,6 +514,11 @@ public class Player : MonoBehaviour
         m_IsDead = true;
         SetMouseSpeed(0);
         ListenerManager.Instance.BroadCast(ListenType.ON_PLAYER_DEATH, this);
+        if(UIManager.HasInstance)
+        {
+            Debug.Log("REset game");
+            UIManager.Instance.ShowPopup<PopupPlayerDead>();   
+        }
 
     }
     public bool IsPlayerDeath()

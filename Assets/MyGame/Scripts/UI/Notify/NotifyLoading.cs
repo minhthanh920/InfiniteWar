@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -10,7 +10,7 @@ public class NotifyLoading : BaseNotify
 {
     public TextMeshProUGUI tmpLoading;
     public Slider slProgress;
-    private string loadingText = "Loading";
+    private string loadingText = "Đang tải";
 
     public override void Hide()
     {

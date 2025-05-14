@@ -78,8 +78,13 @@ public class MissionManager : BaseManager<MissionManager>
             mission.IsComplete = false;
             
         }
-        currentMission = MissionData[missionIndex];
+        currentMission = MissionData[0];
         enemyDeadCount = 0;
+        if (ListenerManager.HasInstance)
+        {
+            //ListenerManager.Instance.BroadCast(ListenType.UPDATE_COUNT_ENEMY, enemyDeadCount);
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_MISSION, currentMission);
+        }
     }
     public MissionSO GetCurrentMission()
     {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class PlayerDeathState : State<Player>
 {
@@ -11,12 +12,10 @@ public class PlayerDeathState : State<Player>
         }
         m_Character.m_Collider.enabled = false;
         m_Character.m_Weapon.enabled = false;
-        if(UIManager.HasInstance)
-        {
-            UIManager.Instance.ShowPopup<PopupPlayerDead>();
-        }
-    }
+        //m_Character.StartCoroutine(RestartGame());
+        
 
+    }
     public override void Update()
     {
 

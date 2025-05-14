@@ -70,7 +70,35 @@ public class GameManager : BaseManager<GameManager>
 
     public void RestartGame()
     {
+        m_GameStateID = GameStateID.Unknow;
+        Time.timeScale = 0;
+        if (UIManager.HasInstance)
+        {
+            Time.timeScale = 1;
+            ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+            screenGame.Hide();
+            PopupPlayerDead popDead = UIManager.Instance.GetExistPopup<PopupPlayerDead>();
+            popDead.Hide();
 
+            UIManager.Instance.HideAllPopups();
+            UIManager.Instance.HideAllNotify();
+            UIManager.Instance.HideAllScreens();
+
+            UIManager.Instance.ShowNotify<NotifyFade>();
+            NotifyFade notifyFade = UIManager.Instance.GetExistNotify<NotifyFade>();
+            if (notifyFade != null)
+            {
+                notifyFade.Fade(DataManager.Instance.GetFadeTime(),
+                    onDuringFade: () =>
+                    {
+                        SceneManager.UnloadSceneAsync("DesertTown");
+                    },
+                    onFinish: () =>
+                    {
+                        UIManager.Instance.ShowScreen<ScreenHome>();
+                    });
+            }
+        }
     }
 
     public void EndGame()

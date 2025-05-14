@@ -10,6 +10,13 @@ public class PopupPlayerInfomation : BasePopup
     public override void Show(object data)
     {
         base.Show(data);
+        if (GameManager.HasInstance)
+        {
+            m_AttackDamage.text = GameManager.Instance.GetPlayer().GetDamage().ToString();
+            m_HP.text = $"{GameManager.Instance.GetPlayer().GetCurrentHeath().ToString()}/{GameManager.Instance.GetPlayer().GetMaxHeath().ToString()}";
+            m_MP.text = $"{GameManager.Instance.GetPlayer().GetCurrentMana().ToString()}/{GameManager.Instance.GetPlayer().GetMaxMana().ToString()}";
+            m_MP.text = $"{GameManager.Instance.GetPlayer().GetCurrentMana().ToString()}/{GameManager.Instance.GetPlayer().GetMaxMana().ToString()}";
+        }
 
     }
     private void OnEnable()
@@ -87,7 +94,15 @@ public class PopupPlayerInfomation : BasePopup
     }
     public override void Hide()
     {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.UPDATE_PLAYER_HEALTH, OnUpdatePlayerHealthEvent);
+            ListenerManager.Instance.Unregister(ListenType.UPDATE_PLAYER_MANA, OnUpdatePlayerManaEvent);
+            ListenerManager.Instance.Unregister(ListenType.UPDATE_PLAYER_STAMINA, OnUpdatePlayerStaminaEvent);
+            ListenerManager.Instance.Unregister(ListenType.UPDATE_PLAYER_DAMAGE, OnUpdatePlayerDamageEvent);
+        }
         base.Hide();
+
     }
     public override void OnPlaySoundClickButton()
     {

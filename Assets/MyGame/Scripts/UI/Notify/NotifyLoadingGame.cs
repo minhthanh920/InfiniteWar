@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -35,11 +35,11 @@ public class NotifyLoadingGame : BaseNotify
         while (!asyncOperation.isDone)
         {
             loadingSlider.value = asyncOperation.progress;
-            loadingPercentText.SetText($"LOADING SCENES: {asyncOperation.progress * 100}%");
+            loadingPercentText.SetText($"Đang tải trò chơi: {asyncOperation.progress * 100}%");
             if (asyncOperation.progress >= 0.9f)
             {
                 loadingSlider.value = 1f;
-                loadingPercentText.SetText("Press the space bar to continue");
+                loadingPercentText.SetText("Nhấn 'Nút Cách' để tiếp tục");
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     if (UIManager.HasInstance)
