@@ -21,7 +21,7 @@ public class PlayerRunState : State<Player>
         {
             m_StateMachine.SetState(CharacterStateID.Walk);
         }
-        m_Character.OnRunAndWalk();
+        //m_Character.OnRunAndWalk();
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             m_Character.m_Input.sprint = false;

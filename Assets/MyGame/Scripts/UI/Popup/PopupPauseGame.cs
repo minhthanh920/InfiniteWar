@@ -13,6 +13,7 @@ public class PopupPauseGame : BasePopup
                 if (GameManager.Instance.GetPlayer() != null)
                 {
                     GameManager.Instance.GetPlayer().SetMouseSpeed(0);
+                    GameManager.Instance.SetGameState(GameStateID.Pause);
                 }
             }
         }
@@ -40,6 +41,7 @@ public class PopupPauseGame : BasePopup
             if (GameManager.Instance.GetPlayer() != null)
             {
                 GameManager.Instance.GetPlayer().RestoreMouseSpeed();
+                GameManager.Instance.SetGameState(GameStateID.Start);
             }
         }
     }

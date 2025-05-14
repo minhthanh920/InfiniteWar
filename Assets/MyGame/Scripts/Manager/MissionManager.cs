@@ -44,7 +44,7 @@ public class MissionManager : BaseManager<MissionManager>
         {
             if (GameManager.HasInstance)
             {
-                //GameManager.Instance.WinGame();
+                GameManager.Instance.WinGame();
             }
         }
     }
@@ -57,18 +57,18 @@ public class MissionManager : BaseManager<MissionManager>
     public void CountEnemyDeath()
     {
         enemyDeadCount++;
-
-        if (ListenerManager.HasInstance)
-        {
-            ListenerManager.Instance.BroadCast(ListenType.UPDATE_COUNT_ENEMY, enemyDeadCount);
-        }
-
         if (enemyDeadCount >= currentMission.TotalEnemy)
         {
             currentMission.IsComplete = true;
 
             NextMission();
         }
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_COUNT_ENEMY, enemyDeadCount);
+        }
+
+
     }
 
     public void ResetMission()
@@ -76,7 +76,10 @@ public class MissionManager : BaseManager<MissionManager>
         foreach (var mission in MissionData)
         {
             mission.IsComplete = false;
+            
         }
+        currentMission = MissionData[missionIndex];
+        enemyDeadCount = 0;
     }
     public MissionSO GetCurrentMission()
     {

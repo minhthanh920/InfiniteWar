@@ -15,7 +15,7 @@ public class PlayerWalkState : State<Player>
 
     public override void Update()
     {
-        m_Character.OnRunAndWalk();
+        //m_Character.OnRunAndWalk();
         m_FootstepTimer += Time.deltaTime;
         if (m_Character.m_CharacterController.isGrounded)
         {

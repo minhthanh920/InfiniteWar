@@ -24,6 +24,7 @@ public enum ListenType
     UPDATE_PLAYER_DAMAGE,
     UPDATE_USE_SKILL,
     UN_BLOCK_SKILL,
+    BLOCK_SKILL,
 }
 
 public enum UIType

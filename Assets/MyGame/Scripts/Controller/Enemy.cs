@@ -78,13 +78,21 @@ public class Enemy : MonoBehaviour , IPoolable
         if (GameManager.Instance.m_Player.IsPlayerDeath())
         {
             m_Agent.isStopped = true;
-            m_Agent.SetDestination(Vector3.zero);
+            m_Agent.ResetPath();
+            m_StateMachine.SetState(CharacterStateID.Idle);
+            return;
+        }
+        if (GameManager.Instance.GetGameState() != GameStateID.Start)
+        {
+            m_Agent.isStopped = true;
+            m_Agent.ResetPath();
             m_StateMachine.SetState(CharacterStateID.Idle);
             return;
         }
         if (IsDead())
         {
             m_StateMachine.SetState(CharacterStateID.Death);
+            m_Agent.ResetPath();
             return;
         }
         if (m_AttackColdown > 0)

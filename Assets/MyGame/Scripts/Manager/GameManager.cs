@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : BaseManager<GameManager>
 {
     public Player m_Player;
+    private GameStateID m_GameStateID = GameStateID.Unknow;
     void Start()
     {
         if (UIManager.HasInstance)
@@ -25,7 +26,7 @@ public class GameManager : BaseManager<GameManager>
     public void StartGame()
     {
         m_Player = FindFirstObjectByType<Player>();
-        Debug.Log($"m_Player {m_Player}");
+        //Debug.Log($"m_Player {m_Player}");
         if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlayBGM(AUDIO.BGM_BMG_4);
@@ -38,6 +39,12 @@ public class GameManager : BaseManager<GameManager>
         {
             MissionManager.Instance.ResetMission();
         }
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<PopupMission>();
+            UIManager.Instance.ShowPopup<PopupPlayerInfomation>();
+        }
+
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -48,6 +55,7 @@ public class GameManager : BaseManager<GameManager>
             UIManager.Instance.ShowPopup<PopupSetting>();
         }
         Cursor.lockState = CursorLockMode.Confined;
+        m_GameStateID = GameStateID.Pause;
     }
 
     public void ResumeGame()
@@ -57,6 +65,7 @@ public class GameManager : BaseManager<GameManager>
             ListenerManager.Instance.BroadCast(ListenType.ON_RESUME_GAME);
         }
         Cursor.lockState = CursorLockMode.Locked;
+        m_GameStateID = GameStateID.Start;
     }
 
     public void RestartGame()
@@ -70,34 +79,54 @@ public class GameManager : BaseManager<GameManager>
     }  
     public void GameOver()
     {
+        m_GameStateID = GameStateID.End;
         Time.timeScale = 0;
         if (UIManager.HasInstance)
         {
-            string txtMessage = "You Loose \n<size=50><#667986>Try again later";
+            Time.timeScale = 1;
+            ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+            screenGame.Hide();
 
-            PopupShowMessageData data = new PopupShowMessageData(txtMessage, () =>
+            UIManager.Instance.HideAllPopups();
+
+            UIManager.Instance.ShowNotify<NotifyFade>();
+            NotifyFade notifyFade = UIManager.Instance.GetExistNotify<NotifyFade>();
+            if (notifyFade != null)
             {
-                Time.timeScale = 1;
-                ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
-                screenGame.Hide();
-
-                UIManager.Instance.ShowNotify<NotifyFade>();
-                NotifyFade notifyFade = UIManager.Instance.GetExistNotify<NotifyFade>();
-                if (notifyFade != null)
-                {
-                    notifyFade.Fade(DataManager.Instance.GetFadeTime(),
-                        onDuringFade: () =>
-                        {
-                            SceneManager.UnloadSceneAsync("DesertTown");
-                        },
-                        onFinish: () =>
-                        {
-                            UIManager.Instance.ShowScreen<ScreenHome>();
-                        });
-                }
-            });
-
-            UIManager.Instance.ShowPopup<PopupShowMessage>(data, forceShowData: true);
+                notifyFade.Fade(DataManager.Instance.GetFadeTime(),
+                    onDuringFade: () =>
+                    {
+                        SceneManager.UnloadSceneAsync("DesertTown");
+                    },
+                    onFinish: () =>
+                    {
+                        UIManager.Instance.ShowScreen<ScreenHome>();
+                    });
+            }
+            //string txtMessage = "You Loose \n<size=50><#667986>Try again later";
+            //PopupShowMessageData data = new PopupShowMessageData(txtMessage, () =>
+            //{
+            //    Time.timeScale = 1;
+            //    ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+            //    screenGame.Hide();
+            //
+            //    UIManager.Instance.ShowNotify<NotifyFade>();
+            //    NotifyFade notifyFade = UIManager.Instance.GetExistNotify<NotifyFade>();
+            //    if (notifyFade != null)
+            //    {
+            //        notifyFade.Fade(DataManager.Instance.GetFadeTime(),
+            //            onDuringFade: () =>
+            //            {
+            //                SceneManager.UnloadSceneAsync("DesertTown");
+            //            },
+            //            onFinish: () =>
+            //            {
+            //                UIManager.Instance.ShowScreen<ScreenHome>();
+            //            });
+            //    }
+            //});
+            //
+            //UIManager.Instance.ShowPopup<PopupShowMessage>(data, forceShowData: true);
         }
 
         if (MissionManager.HasInstance)
@@ -156,5 +185,13 @@ public class GameManager : BaseManager<GameManager>
     public Player GetPlayer()
     {
         return m_Player;
+    }
+    public GameStateID GetGameState()
+    {
+        return m_GameStateID;
+    }
+    public void SetGameState(GameStateID gameStateID)
+    {
+        m_GameStateID = gameStateID;
     }
 }

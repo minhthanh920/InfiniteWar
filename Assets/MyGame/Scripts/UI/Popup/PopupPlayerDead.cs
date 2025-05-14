@@ -14,6 +14,10 @@ public class PopupPlayerDead : BasePopup
     public void OnClickPlayAgianButton()
     {
         this.Hide();
+        if(GameManager.HasInstance)
+        {
+            GameManager.Instance.GameOver();
+        }    
     }
 
     public void OnClickExitButton()

@@ -1,10 +1,13 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ScreenHome : BaseScreen
 {
     public override void Show(object data)
     {
         base.Show(data);
+        UIManager.Instance.ShowPopup<PopupStartGame>();
+        Cursor.visible = true; // Hiển thị con trỏ chuột
+        Cursor.lockState = CursorLockMode.None; // Không khóa con trỏ chuột
     }
 
     public override void Hide()
@@ -22,7 +25,7 @@ public class ScreenHome : BaseScreen
 
     public void StartGame()
     {
-        Debug.Log("Click start game");
+        //Debug.Log("Click start game");
         if (UIManager.HasInstance)
         {
             this.Hide();

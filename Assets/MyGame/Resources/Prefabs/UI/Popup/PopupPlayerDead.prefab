@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 491644089054009938}
-  - component: {fileID: 5456977890987897756}
+  - component: {fileID: 3426238653640320399}
   m_Layer: 0
   m_Name: PopupPlayerDead
   m_TagString: Untagged
@@ -38,7 +38,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5456977890987897756
+--- !u!114 &3426238653640320399
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 491644089054009933}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31640bf2d34c3fb4983bd75019aef815, type: 3}
+  m_Script: {fileID: 11500000, guid: 959723554c2eb4248801efd413422dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &586379700420772387
@@ -307,8 +307,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5456977890987897756}
-        m_TargetAssemblyTypeName: PopupPauseGame, Assembly-CSharp
+      - m_Target: {fileID: 3426238653640320399}
+        m_TargetAssemblyTypeName: PopupPlayerDead, Assembly-CSharp
         m_MethodName: OnClickExitButton
         m_Mode: 1
         m_Arguments:
@@ -319,8 +319,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5456977890987897756}
-        m_TargetAssemblyTypeName: PopupPauseGame, Assembly-CSharp
+      - m_Target: {fileID: 3426238653640320399}
+        m_TargetAssemblyTypeName: PopupPlayerDead, Assembly-CSharp
         m_MethodName: OnPlaySoundClickButton
         m_Mode: 1
         m_Arguments:
@@ -588,9 +588,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5456977890987897756}
-        m_TargetAssemblyTypeName: PopupPauseGame, Assembly-CSharp
-        m_MethodName: OnClickResumeButton
+      - m_Target: {fileID: 3426238653640320399}
+        m_TargetAssemblyTypeName: PopupPlayerDead, Assembly-CSharp
+        m_MethodName: OnClickPlayAgianButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -600,8 +600,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5456977890987897756}
-        m_TargetAssemblyTypeName: PopupPauseGame, Assembly-CSharp
+      - m_Target: {fileID: 3426238653640320399}
+        m_TargetAssemblyTypeName: PopupPlayerDead, Assembly-CSharp
         m_MethodName: OnPlaySoundClickButton
         m_Mode: 1
         m_Arguments:

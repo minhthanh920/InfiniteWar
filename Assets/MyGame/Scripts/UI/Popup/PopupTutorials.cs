@@ -36,8 +36,11 @@ public class PopupTutorials : BasePopup
     public void OnCloseButton()
     {
         this.Hide();
-    }    
-
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.SetGameState(GameStateID.Start);
+        }
+    }
     public override void Hide()
     {
 
@@ -47,6 +50,7 @@ public class PopupTutorials : BasePopup
             if (GameManager.Instance.GetPlayer() != null)
             {
                 GameManager.Instance.GetPlayer().RestoreMouseSpeed();
+                GameManager.Instance.SetGameState(GameStateID.Start);
             }
         }
     }

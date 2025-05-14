@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Schema;
 using TMPro;
@@ -56,17 +56,20 @@ public class ScreenGame : BaseScreen
             ListenerManager.Instance.Register(ListenType.UPDATE_PLAYER_STAMINA, OnUpdatePlayerStaminaEvent);
             ListenerManager.Instance.Register(ListenType.UPDATE_MISSION, OnUpdateMissionEvent);
             ListenerManager.Instance.Register(ListenType.UPDATE_COUNT_ENEMY, OnUpdateCountEnemyEvent);
-            ListenerManager.Instance.Register(ListenType.UPDATE_USE_SKILL, OnUseSkill);
+            //ListenerManager.Instance.Register(ListenType.UPDATE_USE_SKILL, OnUseSkill);
             ListenerManager.Instance.Register(ListenType.UN_BLOCK_SKILL, OnUnBlockSkill);
-            //ListenerManager.Instance.Register(ListenType.ON_PLAYER_DEATH, OnPlayerDeathEvent);
-            //ListenerManager.Instance.Register(ListenType.ON_ENEMY_DEATH, OnEnemyDeathEvent);
+            ListenerManager.Instance.Register(ListenType.BLOCK_SKILL, OnBlockSkill);
         }
         InitMission();
-        if (UIManager.HasInstance && UIManager.Instance.GetExistPopup<PopupTutorials>())
+        if (UIManager.HasInstance)
         {
             UIManager.Instance.ShowPopup<PopupTutorials>();
-        }
 
+        }
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.GetPlayer().SetMouseSpeed(0);
+        }
     }
     private void OnUnBlockSkill(object value)
     {
@@ -76,33 +79,68 @@ public class ScreenGame : BaseScreen
         }
         if (value is int nvalue)
         {
-            if (nvalue == 1 && !m_IsUnblockSkill1)
+            if (nvalue == 1)
             {
                 m_IsUnblockSkill1 = true;
                 m_Skill1.color = m_Skill1Color;
             }
-            else if (nvalue == 2 && !m_IsUnblockSkill2)
+            else if (nvalue == 2)
             {
                 m_IsUnblockSkill2 = true;
                 m_Skill2.color = m_Skill2Color;
             }
-            else if (nvalue == 3 && !m_IsUnblockSkill3)
+            else if (nvalue == 3)
             {
                 m_IsUnblockSkill3 = true;
                 m_Skill3.color = m_Skill3Color;
             }
-            else if (nvalue == 4 && !m_IsUnblockSkill4)
+            else if (nvalue == 4)
             {
                 m_IsUnblockSkill4 = true;
                 m_Skill4.color = m_Skill4Color;
             }
-            else if (nvalue == 5 && !m_IsUnblockSkill5)
+            else if (nvalue == 5)
             {
                 m_IsUnblockSkill5 = true;
                 m_Skill5.color = m_Skill5Color;
             }
         }
-    }    
+    }
+    private void OnBlockSkill(object value)
+    {
+        if (value == null)
+        {
+            return;
+        }
+        if (value is int nvalue)
+        {
+            if (nvalue == 1)
+            {
+                m_IsUnblockSkill1 = false;
+                m_Skill1.color = Color.black;
+            }
+            else if (nvalue == 2)
+            {
+                m_IsUnblockSkill2 = false;
+                m_Skill2.color = Color.black;
+            }
+            else if (nvalue == 3)
+            {
+                m_IsUnblockSkill3 = false;
+                m_Skill3.color = Color.black;
+            }
+            else if (nvalue == 4)
+            {
+                m_IsUnblockSkill4 = false;
+                m_Skill4.color = Color.black;
+            }
+            else if (nvalue == 5)
+            {
+                m_IsUnblockSkill5 = false;
+                m_Skill5.color = Color.black;
+            }
+        }
+    }
     private void OnUseSkill(object value)
     {
         if(value == null)
@@ -190,7 +228,39 @@ public class ScreenGame : BaseScreen
     public override void Show(object data)
     {
         base.Show(data);
+        m_Skill1Color = m_Skill1.color;
+        m_Skill2Color = m_Skill2.color;
+        m_Skill3Color = m_Skill3.color;
+        m_Skill4Color = m_Skill4.color;
+        m_Skill5Color = m_Skill5.color;
 
+        m_Skill1.color = Color.black;
+        m_Skill2.color = Color.black;
+        m_Skill3.color = Color.black;
+        m_Skill4.color = Color.black;
+        m_Skill5.color = Color.black;
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.UPDATE_USER_INFO, OnUpdateUserInfoEvent);
+            ListenerManager.Instance.Register(ListenType.UPDATE_PLAYER_HEALTH, OnUpdatePlayerHealthEvent);
+            ListenerManager.Instance.Register(ListenType.UPDATE_PLAYER_MANA, OnUpdatePlayerManaEvent);
+            ListenerManager.Instance.Register(ListenType.UPDATE_PLAYER_STAMINA, OnUpdatePlayerStaminaEvent);
+            ListenerManager.Instance.Register(ListenType.UPDATE_MISSION, OnUpdateMissionEvent);
+            ListenerManager.Instance.Register(ListenType.UPDATE_COUNT_ENEMY, OnUpdateCountEnemyEvent);
+            //ListenerManager.Instance.Register(ListenType.UPDATE_USE_SKILL, OnUseSkill);
+            ListenerManager.Instance.Register(ListenType.UN_BLOCK_SKILL, OnUnBlockSkill);
+            ListenerManager.Instance.Register(ListenType.BLOCK_SKILL, OnBlockSkill);
+        }
+        InitMission();
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<PopupTutorials>();
+
+        }
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.GetPlayer().SetMouseSpeed(0);
+        }
     }
     private void OnUpdateUserInfoEvent(object value)
     {

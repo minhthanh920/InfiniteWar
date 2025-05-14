@@ -46,7 +46,7 @@ public class PopupMission : BasePopup
     }
     private void OnDisable()
     {
-        ListenerManager.Instance.Register(ListenType.UPDATE_COUNT_ENEMY, OnUpdateCountEnemyEvent);
+        ListenerManager.Instance.Unregister(ListenType.UPDATE_COUNT_ENEMY, OnUpdateCountEnemyEvent);
     }
     private void OnUpdateCountEnemyEvent(object value)
     {
