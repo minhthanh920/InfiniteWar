@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     private PlayerSO m_PlayerSO;
     public CharacterController m_CharacterController;
     public CharacterAiming m_CharacterAiming;
+    private ScreenGame m_ScreenGame;
 
     private string m_GameOver = "GameOver";
     public Vector3 m_RootMotion;
@@ -64,6 +65,17 @@ public class Player : MonoBehaviour
     public bool m_IsUseSkillI;
     public float m_SkillICost;
 
+    private bool m_IsUnblockSkill1;
+    private bool m_IsUnblockSkill2;
+    private bool m_IsUnblockSkill3;
+    private bool m_IsUnblockSkill4;
+    private bool m_IsUnblockSkill5;
+
+    private float m_Skill1Damage = 1.5f;
+    private float m_Skill2Damage = 2f;
+    private float m_Skill3Damage = 2.5f;
+    private float m_Skill4Damage = 3f;
+    private float m_Skill5Damage = 4f;
 
     private Collider m_Collider;
     private void Awake()
@@ -76,10 +88,25 @@ public class Player : MonoBehaviour
         m_CharacterAiming = GetComponent<CharacterAiming>();
         m_Collider = GetComponent<Collider>();
     }
+    private void OnEnable()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.UN_BLOCK_SKILL, OnUnBlockSkill);
+        }
+    }
+    private void OnDisable()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.UN_BLOCK_SKILL, OnUnBlockSkill);
+        }
+    }
     void Start()
     {
         SetupDefault();
-        if(GameManager.HasInstance)
+        m_ScreenGame = FindAnyObjectByType<ScreenGame>();
+        if (GameManager.HasInstance)
         {
             GameManager.Instance.SetPlayer(this);
         }
@@ -101,6 +128,36 @@ public class Player : MonoBehaviour
         UpdateUseSkill();
         RecoverStat();
     }
+    private void OnUnBlockSkill(object value)
+    {
+        if (value == null)
+        {
+            return;
+        }
+        if (value is int nvalue)
+        {
+            if (nvalue == 1 && !m_IsUnblockSkill1)
+            {
+                m_IsUnblockSkill1 = true;
+            }
+            else if (nvalue == 2 && !m_IsUnblockSkill2)
+            {
+                m_IsUnblockSkill2 = true;
+            }
+            else if (nvalue == 3 && !m_IsUnblockSkill3)
+            {
+                m_IsUnblockSkill3 = true;
+            }
+            else if (nvalue == 4 && !m_IsUnblockSkill4)
+            {
+                m_IsUnblockSkill4 = true;
+            }
+            else if (nvalue == 5 && !m_IsUnblockSkill5)
+            {
+                m_IsUnblockSkill5 = true;
+            }
+        }
+    }
     public void TakeDamage(float damage)
     {
         if (damage > 0)
@@ -117,7 +174,11 @@ public class Player : MonoBehaviour
     }
     private void UpdateUseSkill()
     {
-        if (Input.GetKeyUp(KeyCode.Alpha1))
+        if(!m_CharacterController.isGrounded)
+        {
+            return;
+        }
+        if (Input.GetKeyUp(KeyCode.Alpha1) && m_IsUnblockSkill1)
         {
             if (ListenerManager.HasInstance)
             {
@@ -126,7 +187,7 @@ public class Player : MonoBehaviour
             }
             return;
         }
-        if (Input.GetKeyUp(KeyCode.Alpha2))
+        if (Input.GetKeyUp(KeyCode.Alpha2) && m_IsUnblockSkill2)
         {
             if (ListenerManager.HasInstance)
             {
@@ -135,7 +196,7 @@ public class Player : MonoBehaviour
             }
             return;
         }
-        if (Input.GetKeyUp(KeyCode.Alpha3))
+        if (Input.GetKeyUp(KeyCode.Alpha3) && m_IsUnblockSkill3)
         {
             if (ListenerManager.HasInstance)
             {
@@ -144,7 +205,7 @@ public class Player : MonoBehaviour
             }
             return;
         }
-        if (Input.GetKeyUp(KeyCode.Alpha4))
+        if (Input.GetKeyUp(KeyCode.Alpha4) && m_IsUnblockSkill4)
         {
             if (ListenerManager.HasInstance)
             {
@@ -153,7 +214,7 @@ public class Player : MonoBehaviour
             }
             return;
         }
-        if (Input.GetKeyUp(KeyCode.Alpha5))
+        if (Input.GetKeyUp(KeyCode.Alpha5) && m_IsUnblockSkill5)
         {
             if (ListenerManager.HasInstance)
             {
@@ -165,45 +226,34 @@ public class Player : MonoBehaviour
     }    
     private void UpdatePopup()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            RestoreMouseSpeed();
-            return;
-        }
         if (UIManager.Instance == null)
         {
             return;
         }
-        if (Input.GetKeyUp(KeyCode.F12))
+        if (Input.GetKeyUp(KeyCode.F12) && !UIManager.Instance.GetExistPopup<PopupMission>())
         {
             UIManager.Instance.ShowPopup<PopupMission>();
             return;
         }
-        if (Input.GetKeyDown(KeyCode.F3))
+        if (Input.GetKeyDown(KeyCode.F3) && !UIManager.Instance.GetExistPopup<PopupPlayerInfomation>())
         {
             UIManager.Instance.ShowPopup<PopupPlayerInfomation>();
-            SetMouseSpeed(0);
+            //SetMouseSpeed(0);
             return;
         }
-        if (Input.GetKeyDown(KeyCode.F2))
+        if (Input.GetKeyDown(KeyCode.F1) && !UIManager.Instance.GetExistPopup<PopupTutorials>())
         {
             UIManager.Instance.ShowPopup<PopupTutorials>();
-            SetMouseSpeed(0);
+            //SetMouseSpeed(0);
             return;
         }
-        if (Input.GetKeyDown(KeyCode.F1))
+        if (Input.GetKeyDown(KeyCode.Escape) && !UIManager.Instance.GetExistPopup<PopupPauseGame>())
         {
             UIManager.Instance.ShowPopup<PopupPauseGame>();
-            SetMouseSpeed(0);
+            //SetMouseSpeed(0);
             return;
         }
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            UIManager.Instance.ShowPopup<PopupPauseGame>();
-            SetMouseSpeed(0);
-            return;
-        }
-        if (Input.GetKeyDown(KeyCode.Insert))
+        if (Input.GetKeyDown(KeyCode.Insert) && !UIManager.Instance.GetExistPopup<PopupCheatGame>())
         {
             UIManager.Instance.ShowPopup<PopupCheatGame>();
             return;
@@ -323,12 +373,12 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        if(m_CharacterController.isGrounded)
+        m_Animator.SetFloat("x", m_UserInput.x);
+        m_Animator.SetFloat("y", m_UserInput.y);
+        if (m_CharacterController.isGrounded)
         {
-            Debug.Log("IIIIIIIIIIIIIIIIIIIIIII");
+            //Debug.Log("IIIIIIIIIIIIIIIIIIIIIII");
             // Kiểm tra trạng thái tấn công
-            m_Animator.SetFloat("x", m_UserInput.x);
-            m_Animator.SetFloat("y", m_UserInput.y);
             if (m_Input.attack)
             {
 
@@ -519,7 +569,7 @@ public class Player : MonoBehaviour
             Vector3 stepForwardAmount = m_RootMotion * m_GroundSpeed;
             Vector3 stepDownAmount = Vector3.down * m_StepDown;
             m_CharacterController.Move(stepForwardAmount + stepDownAmount);
-            m_RootMotion = Vector3.zero;
+            //m_RootMotion = Vector3.zero;
         }
     }
     public void Jump()
@@ -554,16 +604,16 @@ public class Player : MonoBehaviour
         m_RootMotion += m_Animator.deltaPosition;
     }
 
-    void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        Rigidbody body = hit.collider.attachedRigidbody;
-        if (body == null || body.isKinematic)
-            return;
-        if (hit.moveDirection.y < -0.3f)
-            return;
-        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
-        body.linearVelocity = pushDir * pushPower;
-    } 
+    //void OnControllerColliderHit(ControllerColliderHit hit)
+    //{
+    //    Rigidbody body = hit.collider.attachedRigidbody;
+    //    if (body == null || body.isKinematic)
+    //        return;
+    //    if (hit.moveDirection.y < -0.3f)
+    //        return;
+    //    Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+    //    body.linearVelocity = pushDir * pushPower;
+    //} 
     public void OnFootStep()
     {
         if (AudioManager.HasInstance)
@@ -600,11 +650,36 @@ public class Player : MonoBehaviour
     {
         return m_MeleeDamage + m_RangedDamage;
     } 
+    public float GetSkillDamage(int skill)
+    {
+        if (skill == 1)
+        {
+            return m_Skill1Damage;
+        }
+        if (skill == 2)
+        {
+            return m_Skill2Damage;
+        }
+        if (skill == 3)
+        {
+            return m_Skill3Damage;
+        }
+        if (skill == 4)
+        {
+            return m_Skill4Damage;
+        }
+        if (skill == 5)
+        {
+            return m_Skill5Damage;
+        }
+        return 1f;
+    }
     public void SetDamage(int damage)
     {
         m_MeleeDamage = damage;
         ListenerManager.Instance.BroadCast(ListenType.UPDATE_PLAYER_DAMAGE, this);
     }
+
     public void AddDamage(int damage)
     {
         m_MeleeDamage += damage;

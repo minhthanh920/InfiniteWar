@@ -6,33 +6,35 @@ public class PopupTutorials : BasePopup
     public override void Show(object data)
     {
         base.Show(data);
+        if (UIManager.HasInstance)
+        {
+            if (GameManager.HasInstance)
+            {
+                if (GameManager.Instance.GetPlayer() != null)
+                {
+                    GameManager.Instance.GetPlayer().SetMouseSpeed(0);
+                }
+            }
+        }
 
     }
     private void Update()
     {
-        if (base.isHide)
+        if (Input.GetKeyDown(KeyCode.F1))
         {
-            return;
-        }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            this.Hide();
+            if (!isHide)
+            {
+                this.Hide();
+            }
+            else
+            {
+                this.Show(this);
+            }
             return;
         }
     }
     public void OnCloseButton()
     {
-        if (UIManager.HasInstance)
-        {
-            UIManager.Instance.ShowPopup<PopupTutorials>();
-            if (GameManager.HasInstance)
-            {
-                if (GameManager.Instance.GetPlayer() != null)
-                {
-                    GameManager.Instance.GetPlayer().RestoreMouseSpeed();
-                }
-            }
-        }
         this.Hide();
     }    
 
@@ -40,6 +42,13 @@ public class PopupTutorials : BasePopup
     {
 
         base.Hide();
+        if (GameManager.HasInstance)
+        {
+            if (GameManager.Instance.GetPlayer() != null)
+            {
+                GameManager.Instance.GetPlayer().RestoreMouseSpeed();
+            }
+        }
     }
     public override void OnPlaySoundClickButton()
     {

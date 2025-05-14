@@ -1289,6 +1289,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6882232952390949714, guid: cc104d40dfd7bb84790472d13ddb5a3d, type: 3}
+      propertyPath: MissionData.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6882232952390949714, guid: cc104d40dfd7bb84790472d13ddb5a3d, type: 3}
+      propertyPath: 'MissionData.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 256c8f266aac03049b743227ba7e7a72, type: 2}
+    - target: {fileID: 6882232952390949714, guid: cc104d40dfd7bb84790472d13ddb5a3d, type: 3}
+      propertyPath: 'MissionData.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 1cbcb5ffce621f440b8c3ec2a1f42bda, type: 2}
+    - target: {fileID: 6882232952390949714, guid: cc104d40dfd7bb84790472d13ddb5a3d, type: 3}
+      propertyPath: 'MissionData.Array.data[5]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 3face8932fb688648888010547c066e0, type: 2}
     - target: {fileID: 8044371067593546713, guid: cc104d40dfd7bb84790472d13ddb5a3d, type: 3}
       propertyPath: m_Name
       value: MissionManager

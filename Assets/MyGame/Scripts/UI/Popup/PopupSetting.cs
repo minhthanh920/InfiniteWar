@@ -15,15 +15,33 @@ public class PopupSetting : BasePopup
         effectVolume = PlayerPrefs.GetFloat(CONST.SE_VOLUME_KEY, CONST.SE_VOLUME_DEFAULT);
         sliderBGM.value = bgmVolume;
         sliderEffect.value = effectVolume;
+        if (UIManager.HasInstance)
+        {
+            if (GameManager.HasInstance)
+            {
+                if (GameManager.Instance.GetPlayer() != null)
+                {
+                    GameManager.Instance.GetPlayer().SetMouseSpeed(0);
+                }
+            }
+        }
     }
     private void Update()
     {
         AudioManager.Instance.ChangeSEVolume(sliderEffect.value);
         AudioManager.Instance.ChangeBGMVolume(sliderBGM.value);
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            base.Hide();
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    if (!isHide)
+        //    {
+        //        this.Hide();
+        //    }
+        //    else
+        //    {
+        //        this.Show(this);
+        //    }
+        //    return;
+        //}
     }
     public override void Hide()
     {

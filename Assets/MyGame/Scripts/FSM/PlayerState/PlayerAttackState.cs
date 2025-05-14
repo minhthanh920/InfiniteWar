@@ -28,7 +28,7 @@ public class PlayerAttackState : State<Player>
     private IEnumerator DoDamage()
     {
         yield return new WaitForSeconds(0.4f);
-        m_Character.m_Weapon?.EnableDamage();
+        m_Character.m_Weapon?.EnableDamage(1);
         m_Character.m_EffectPrefab?.Play();
         m_Character.AttackSound();
         yield return new WaitForSeconds(0.2f);

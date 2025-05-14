@@ -23,6 +23,7 @@ public enum ListenType
     ON_RESUME_GAME,
     UPDATE_PLAYER_DAMAGE,
     UPDATE_USE_SKILL,
+    UN_BLOCK_SKILL,
 }
 
 public enum UIType

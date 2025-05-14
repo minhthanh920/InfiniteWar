@@ -31,9 +31,17 @@ public class PopupPlayerInfomation : BasePopup
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.F3))
         {
-            this.Hide();
+            if (!isHide)
+            {
+                this.Hide();
+            }
+            else
+            {
+                this.Show(this);
+            }
+            return;
         }
     }
     private void OnUpdatePlayerDamageEvent(object value)

@@ -13,7 +13,7 @@ public class PlayerIdleState : State<Player>
 
     public override void Update()
     {
-
+        //m_Character.Jumping();
     }
 
     public override void Exit()

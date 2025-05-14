@@ -10,18 +10,18 @@ public class PlayerSkillCState : State<Player>
     {
         m_Character.m_Animator.SetBool(CONST.SKILL_C, true);
         m_Character.StartCoroutine(DoDamage());
-        m_Character.RemainStamina(m_Character.m_SkillCCost);
+        m_Character.RemainMana(m_Character.m_SkillCCost);
     }
     public override void Update()
     {
     }
     private IEnumerator DoDamage()
     {
-        yield return new WaitForSeconds(0.9f);
-        m_Character.m_Weapon?.EnableDamage();
+        yield return new WaitForSeconds(0.5f);
+        m_Character.m_Weapon?.EnableDamage(m_Character.GetSkillDamage(3));
         m_Character.m_EffectPrefab?.Play();
         m_Character.AttackSound();
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.6f);
         m_Character.m_Weapon?.DisableDamage();
         m_Character.m_EffectPrefab.Stop();
         yield return new WaitForSeconds(0.4f);

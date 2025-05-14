@@ -18,9 +18,17 @@ public class PopupMission : BasePopup
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.F12))
         {
-            this.Hide();
+            if (!isHide)
+            {
+                this.Hide();
+            }
+            else
+            {
+                this.Show(this);
+            }
+            return;
         }
     }
     private void OnEnable()

@@ -28,6 +28,11 @@ public class ScreenGame : BaseScreen
     private Color m_Skill3Color;
     private Color m_Skill4Color;
     private Color m_Skill5Color;
+    public bool m_IsUnblockSkill1;
+    public bool m_IsUnblockSkill2;
+    public bool m_IsUnblockSkill3;
+    public bool m_IsUnblockSkill4;
+    public bool m_IsUnblockSkill5;
     private List<TMP_Text> m_MisionProgressViews = new();
     public override void Init()
     {
@@ -37,6 +42,12 @@ public class ScreenGame : BaseScreen
         m_Skill3Color = m_Skill3.color;
         m_Skill4Color = m_Skill4.color;
         m_Skill5Color = m_Skill5.color;
+
+        m_Skill1.color = Color.black;
+        m_Skill2.color = Color.black;
+        m_Skill3.color = Color.black;
+        m_Skill4.color = Color.black;
+        m_Skill5.color = Color.black;
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.UPDATE_USER_INFO, OnUpdateUserInfoEvent);
@@ -46,23 +57,52 @@ public class ScreenGame : BaseScreen
             ListenerManager.Instance.Register(ListenType.UPDATE_MISSION, OnUpdateMissionEvent);
             ListenerManager.Instance.Register(ListenType.UPDATE_COUNT_ENEMY, OnUpdateCountEnemyEvent);
             ListenerManager.Instance.Register(ListenType.UPDATE_USE_SKILL, OnUseSkill);
+            ListenerManager.Instance.Register(ListenType.UN_BLOCK_SKILL, OnUnBlockSkill);
             //ListenerManager.Instance.Register(ListenType.ON_PLAYER_DEATH, OnPlayerDeathEvent);
             //ListenerManager.Instance.Register(ListenType.ON_ENEMY_DEATH, OnEnemyDeathEvent);
         }
         InitMission();
-        if (UIManager.HasInstance)
+        if (UIManager.HasInstance && UIManager.Instance.GetExistPopup<PopupTutorials>())
         {
             UIManager.Instance.ShowPopup<PopupTutorials>();
-            if (GameManager.HasInstance)
-            {
-                if (GameManager.Instance.GetPlayer() != null)
-                {
-                    GameManager.Instance.GetPlayer().SetMouseSpeed(0);
-                }
-            }
         }
 
     }
+    private void OnUnBlockSkill(object value)
+    {
+        if (value == null)
+        {
+            return;
+        }
+        if (value is int nvalue)
+        {
+            if (nvalue == 1 && !m_IsUnblockSkill1)
+            {
+                m_IsUnblockSkill1 = true;
+                m_Skill1.color = m_Skill1Color;
+            }
+            else if (nvalue == 2 && !m_IsUnblockSkill2)
+            {
+                m_IsUnblockSkill2 = true;
+                m_Skill2.color = m_Skill2Color;
+            }
+            else if (nvalue == 3 && !m_IsUnblockSkill3)
+            {
+                m_IsUnblockSkill3 = true;
+                m_Skill3.color = m_Skill3Color;
+            }
+            else if (nvalue == 4 && !m_IsUnblockSkill4)
+            {
+                m_IsUnblockSkill4 = true;
+                m_Skill4.color = m_Skill4Color;
+            }
+            else if (nvalue == 5 && !m_IsUnblockSkill5)
+            {
+                m_IsUnblockSkill5 = true;
+                m_Skill5.color = m_Skill5Color;
+            }
+        }
+    }    
     private void OnUseSkill(object value)
     {
         if(value == null)
@@ -71,27 +111,30 @@ public class ScreenGame : BaseScreen
         }    
         if(value is int nvalue)
         {
-            if (nvalue == 1)
+            if (nvalue == 1 && m_IsUnblockSkill1)
             {
                 m_Skill1.color = Color.black;
-                
             }
-            else if (nvalue == 2)
+            else if (nvalue == 2 && m_IsUnblockSkill2)
             {
                 m_Skill2.color = Color.black;
             }
-            else if (nvalue == 3)
+            else if (nvalue == 3 && m_IsUnblockSkill3)
             {
                 m_Skill3.color = Color.black;
             }
-            else if (nvalue == 4)
+            else if (nvalue == 4 && m_IsUnblockSkill4)
             {
                 m_Skill4.color = Color.black;
             }
-            else
+            else if (nvalue == 5 && m_IsUnblockSkill5)
             {
                 m_Skill5.color = Color.black;
             }
+            else
+            {
+
+            }    
             StartCoroutine(ColdDown(nvalue));
         }    
     }

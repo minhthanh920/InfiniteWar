@@ -17,11 +17,11 @@ public class PlayerSkillAState : State<Player>
     }
     private IEnumerator DoDamage()
     {
-        yield return new WaitForSeconds(0.9f);
-        m_Character.m_Weapon?.EnableDamage();
+        yield return new WaitForSeconds(0.3f);
+        m_Character.m_Weapon?.EnableDamage(m_Character.GetSkillDamage(1));
         m_Character.m_EffectPrefab?.Play();
         m_Character.AttackSound();
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.4f);
         m_Character.m_Weapon?.DisableDamage();
         m_Character.m_EffectPrefab.Stop();
         yield return new WaitForSeconds(0.4f);

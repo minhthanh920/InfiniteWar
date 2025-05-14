@@ -25,7 +25,7 @@ MonoBehaviour:
   stepDown: 0.1
   airControl: 10
   jumpDamp: 0.5
-  groundSpeed: 2
+  groundSpeed: 1.8
   pushPower: 2
   turnSpeed: 15
   LoadingTime: 2

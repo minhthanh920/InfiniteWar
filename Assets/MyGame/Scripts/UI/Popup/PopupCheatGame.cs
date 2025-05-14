@@ -17,15 +17,23 @@ public class PopupCheatGame : BasePopup
     }
     private void Update()
     {
-        if(base.isHide)
+        if (Input.GetKeyDown(KeyCode.Insert))
         {
+            if (!isHide)
+            {
+                this.Hide();
+            }
+            else
+            {
+                this.Show(this);
+            }
             return;
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            this.Hide();
-            return;
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    this.Hide();
+        //    return;
+        //}
         if (Input.GetKeyDown(KeyCode.F9))
         {
             m_Player.AddDamage(1000);

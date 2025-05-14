@@ -16,6 +16,7 @@ public class PlayerWeapon : MonoBehaviour
 
     [SerializeField]private CapsuleCollider m_WeaponCollider;
     [SerializeField] private Player m_Player;
+    private float m_SkillActive;
     private bool m_CanDamage;
     private HashSet<Collider> m_AlreadyHit = new HashSet<Collider>(); // Tránh trúng 1 địch nhiều lần
     void Awake()
@@ -28,8 +29,13 @@ public class PlayerWeapon : MonoBehaviour
     {
         m_WeaponCollider.enabled = false;
     }
-    public void EnableDamage()
+    public void EnableDamage(float value)
     {
+        if (value <= 0f)
+        {
+            value = 1f;
+        }
+        m_SkillActive = value;
         m_WeaponCollider.enabled = true;
         m_CanDamage = true;
     }
@@ -51,7 +57,7 @@ public class PlayerWeapon : MonoBehaviour
         if (!other.CompareTag("Enemy")) return;
         //if (m_AlreadyHit.Contains(other)) return;
         //m_AlreadyHit.Add(other);
-        other.GetComponent<Enemy>()?.TakeDamage(m_Player.GetDamage());
+        other.GetComponent<Enemy>()?.TakeDamage(m_Player.GetDamage() * m_SkillActive);
         SpawnHitEffect(other.transform.position, Vector3.zero);
     }
     public void ResetHits()

@@ -36,6 +36,7 @@ public class MissionManager : BaseManager<MissionManager>
                 if (ListenerManager.HasInstance)
                 {
                     ListenerManager.Instance.BroadCast(ListenType.UPDATE_MISSION, currentMission);
+                    ListenerManager.Instance.BroadCast(ListenType.UN_BLOCK_SKILL, missionIndex);
                 }
             }
         }
